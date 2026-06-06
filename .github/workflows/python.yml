@@ -1,0 +1,51 @@
+name: python
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "research/**"
+      - ".github/workflows/python.yml"
+  pull_request:
+    paths:
+      - "research/**"
+      - ".github/workflows/python.yml"
+
+concurrency:
+  group: python-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test:
+    name: ruff + mypy + pytest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Install Python (from .python-version)
+        run: uv python install
+
+      - name: Sync dependencies (frozen, all workspace members + dev group)
+        run: uv sync --all-packages --frozen
+
+      - name: ruff check
+        run: uv run ruff check .
+
+      - name: ruff format --check
+        run: uv run ruff format --check .
+
+      - name: mypy
+        run: uv run mypy quantfoundry-logging/src
+
+      - name: pytest
+        run: uv run pytest

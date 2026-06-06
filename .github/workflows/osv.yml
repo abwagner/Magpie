@@ -1,0 +1,72 @@
+name: osv
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "package-lock.json"
+      - "core/Cargo.lock"
+      - "research/uv.lock"
+      - ".github/workflows/osv.yml"
+  pull_request:
+    paths:
+      - "package-lock.json"
+      - "core/Cargo.lock"
+      - "research/uv.lock"
+      - ".github/workflows/osv.yml"
+  schedule:
+    # 06:00 UTC daily — catches advisories published since the last PR run
+    # without waiting for the next merge. Per polyglot-migration-tdd.md §6.2
+    # ("OSV-Scanner runs on every PR — and nightly").
+    - cron: "0 6 * * *"
+  # Manual trigger for one-off scans (post-incident, post-rotation, etc.).
+  workflow_dispatch:
+
+concurrency:
+  group: osv-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: cross-ecosystem SCA (npm + cargo + pip)
+    runs-on: ubuntu-latest
+
+    env:
+      # Pinned OSV-Scanner version. Cadence: opportunistic — bump when
+      # advisory-db format changes or when a CVE-of-interest is added.
+      # See docs/dependency-pins.md §5 "CI tooling pins".
+      OSV_SCANNER_VERSION: v2.3.8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The osv-scanner GitHub Action's path keeps moving across releases;
+      # downloading the pinned binary directly is the most reproducible
+      # invocation and doesn't depend on action-path stability.
+      - name: Install OSV-Scanner
+        run: |
+          set -euo pipefail
+          curl -fsSL \
+            -o /usr/local/bin/osv-scanner \
+            "https://github.com/google/osv-scanner/releases/download/${OSV_SCANNER_VERSION}/osv-scanner_linux_amd64"
+          chmod +x /usr/local/bin/osv-scanner
+          osv-scanner --version
+
+      # Blocking. As of the dep-refresh PR (QF-94 follow-up) the baseline is
+      # clean: 0 advisories across all three lockfiles. Any new finding
+      # surfaced by a future PR fails the workflow — that's the contract.
+      # If a finding genuinely can't be patched (unmaintained upstream, etc.)
+      # file an exception ADR per docs/dependency-admission.md §5 and add
+      # the advisory to the per-tool ignore list in this step rather than
+      # re-enabling continue-on-error globally.
+      - name: Scan all three lockfiles
+        run: |
+          osv-scanner \
+            --lockfile=./package-lock.json \
+            --lockfile=./core/Cargo.lock \
+            --lockfile=./research/uv.lock \
+            --format=table

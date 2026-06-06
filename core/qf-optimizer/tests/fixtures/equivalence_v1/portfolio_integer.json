@@ -1,0 +1,66 @@
+{
+  "model": {
+    "optimize": "expectedPnL",
+    "opType": "max",
+    "constraints": {
+      "deltaLower": {
+        "min": -20
+      },
+      "deltaUpper": {
+        "max": 20
+      },
+      "budget": {
+        "max": 1500
+      },
+      "posCount": {
+        "max": 4
+      }
+    },
+    "variables": {
+      "L1": {
+        "expectedPnL": 100,
+        "deltaLower": 50,
+        "deltaUpper": 50,
+        "budget": 300,
+        "posCount": 1
+      },
+      "S1": {
+        "expectedPnL": 60,
+        "deltaLower": -40,
+        "deltaUpper": -40,
+        "budget": 200,
+        "posCount": 1
+      },
+      "L2": {
+        "expectedPnL": 80,
+        "deltaLower": 30,
+        "deltaUpper": 30,
+        "budget": 250,
+        "posCount": 1
+      },
+      "S2": {
+        "expectedPnL": 45,
+        "deltaLower": -25,
+        "deltaUpper": -25,
+        "budget": 180,
+        "posCount": 1
+      }
+    },
+    "ints": {
+      "L1": 1,
+      "S1": 1,
+      "L2": 1,
+      "S2": 1
+    }
+  },
+  "expected": {
+    "feasible": true,
+    "objectiveValue": 320,
+    "values": {
+      "L1": 2,
+      "S1": 2,
+      "L2": 0,
+      "S2": 0
+    }
+  }
+}

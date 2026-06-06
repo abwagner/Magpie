@@ -1,0 +1,43 @@
+{
+  "portfolios": {
+    "main": {
+      "mode": "paper_local",
+      "broker": "ibkr",
+      "initial_cash": 100000,
+      "limits": {
+        "max_net_delta": 50,
+        "max_net_vega": 100,
+        "max_daily_loss": 5000,
+        "max_symbol_concentration": 20,
+        "max_drawdown": 10000,
+        "max_order_size": 10,
+        "max_open_orders": 20
+      },
+      "strategies": {},
+      "execution_profile": {
+        "default": {
+          "pricing_strategy": "cross_spread",
+          "pricing_params": {},
+          "time_in_force": "day",
+          "working_policies": ["cancel_if_crossed", "repeg_on_stale", "expire_after"]
+        },
+        "strategy_overrides": {}
+      },
+      "policy_configs": {
+        "repeg_on_stale": { "stale_after_ms": 30000, "min_ticks_moved": 2, "max_repegs": 5 },
+        "expire_after": { "working_ttl_ms": 300000 },
+        "urgency_ramp": { "interval_ms": 5000, "horizon_ms_default": 60000 }
+      },
+      "semi_auto_whitelist": {
+        "symbols": ["OPT:SPY:*"],
+        "max_qty": 5,
+        "strategy_ids": []
+      },
+      "reconciliation": {
+        "interval_seconds": 60,
+        "halt_on_drift": true
+      },
+      "approval_timeout_seconds": 300
+    }
+  }
+}

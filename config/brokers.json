@@ -1,0 +1,12 @@
+{
+  "_doc": "Active-broker selection for the QF Order Plane. Defaults are wired in server/order/brokers-config.ts; missing keys here use those defaults. Schwab routes through the Python NT bridge (QF-237) over NATS — flipping enabled=true requires a running quantfoundry-schwab-nt service on the credential host and a reachable NATS connection (refuses-to-start guard in server/index.ts §8). Multi-account shape added in QF-243; the legacy single-object shape (brokers.schwab.enabled) is still accepted and synthesises a default account.",
+  "schwab": {
+    "accounts": [
+      {
+        "id": "default",
+        "label": "Schwab Brokerage",
+        "enabled": false
+      }
+    ]
+  }
+}

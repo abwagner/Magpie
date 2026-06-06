@@ -1,0 +1,12 @@
+# Pinned toolchain per polyglot-migration-tdd.md §6.7.
+# Bumped through the admission workflow (§6.3); renovate's "continuous" cadence
+# for Rust applies, see CODING-STANDARDS.md.
+[toolchain]
+channel = "1.94.0"
+components = ["rustfmt", "clippy"]
+# wasm32 target required by qf-optimizer's `wasm` feature (QF-133 — Greek
+# Builder Web Worker). Auto-installed on `rustup show`; CI's existing
+# rust.yml step ("Install Rust toolchain: rustup show active-toolchain")
+# picks it up too.
+targets = ["wasm32-unknown-unknown"]
+profile = "minimal"

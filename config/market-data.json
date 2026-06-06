@@ -1,0 +1,50 @@
+{
+  "source_order": ["schwab", "ibkr", "marketdata"],
+  "sources": {
+    "ibkr": {
+      "enabled": true,
+      "timeout_ms": 10000,
+      "host": "127.0.0.1",
+      "port": 4002,
+      "client_id": 2
+    },
+    "schwab": {
+      "enabled": true,
+      "timeout_ms": 10000
+    },
+    "marketdata": {
+      "enabled": true,
+      "timeout_ms": 10000
+    }
+  },
+  "cache": {
+    "quote_ttl_ms": 5000,
+    "expirations_ttl_ms": 3600000,
+    "chain_ttl_ms": 30000,
+    "candles_daily_ttl_ms": 3600000,
+    "candles_minute_ttl_ms": 30000,
+    "max_entries": 10000
+  },
+  "subscription": {
+    "poll_interval_ms": 5000,
+    "max_queue_depth": 50
+  },
+  "stream_priority": {
+    "trades": ["schwab", "ibkr"],
+    "book": ["schwab", "ibkr"]
+  },
+  "book_budget": {
+    "schwab": 100,
+    "ibkr": 3
+  },
+  "quality_gate_defaults": {
+    "max_quote_age_ms": 60000,
+    "max_chain_age_ms": 300000
+  },
+  "_nt_bridge_doc": "M13-07: optional NATS bridge to the Python MD service (research/quantfoundry-md-bridge/). enabled=false keeps boot wiring identical to pre-M13. Modes per docs/tdd/broker-integration.md §6: 'observe' appends the nt-bridge adapter at lowest priority (legacy still owns prod), 'first' prepends (NT canonical, legacy fallback), 'only' replaces legacy. Brokers must include 'schwab' and/or 'ibkr'. Operator changes mode by editing this block + restarting the server (hot-reload not supported in v1).",
+  "nt_bridge": {
+    "enabled": false,
+    "brokers": [],
+    "mode": "observe"
+  }
+}

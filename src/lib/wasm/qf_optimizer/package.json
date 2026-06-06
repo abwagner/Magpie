@@ -1,0 +1,17 @@
+{
+  "name": "qf-optimizer",
+  "type": "module",
+  "description": "Magpie LP/MIP optimizer crate — replaces javascript-lp-solver for Greek Builder (WASM, QF-133) and automated strategies (PyO3, QF-134). Per docs/polyglot-migration-tdd.md §B.2 Phase 5.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "files": [
+    "qf_optimizer_bg.wasm",
+    "qf_optimizer.js",
+    "qf_optimizer.d.ts"
+  ],
+  "main": "qf_optimizer.js",
+  "types": "qf_optimizer.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

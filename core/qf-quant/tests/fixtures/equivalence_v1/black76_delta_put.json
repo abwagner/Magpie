@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "black76::delta_put",
+  "input_columns": ["F", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "black76_delta_put_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": -5.3385185161403115e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": -0.00042930403467955625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": -0.033867763072358725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": -2.9687363678476686e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": -0.0013092089212201063,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": -0.047002696850927506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": -0.13763604294438248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": -0.00010892167345244452,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": -0.047002696850927506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": -0.13763604294438248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": -0.16287562464728778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": -0.00354148724158887,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": -0.09451193410661451,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": -0.16255084773218997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": -0.1385347379515992,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": -5.3251888888266164e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": -0.00042823211505068487,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": -0.033783199413295224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": -2.931858132405195e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": -0.0012929456668055199,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": -0.046418819973319675,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": -0.13592630055969465,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": -0.0001036095007538235,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": -0.044710348275489295,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": -0.1309234539205405,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": -0.15493208669843386,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": -0.003204470171686565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": -0.08551793443061381,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": -0.14708208936155118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": -0.12535141459641327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": -5.311892543960811e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": -0.00042716287187392654,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": -0.03369884689933803,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": -2.8954380057608214e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": -0.0012768844377818902,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": -0.04584219613077249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": -0.13423779693601348,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": -0.00009855640577486581,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": -0.04252979885932017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": -0.12453824172648148,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": -0.14737595966684597,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": -0.00289952451632212,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": -0.0773798269859651,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": -0.13308537797724024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": -0.1134226503305737,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": -1.2234657731369225e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": -0.0012300630452589667,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": -0.051211430211247855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": -0.16746272344068824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": -0.00038701303940025245,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": -0.06828441118953366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": -0.18434115762311476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": -0.24544780428732094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": -0.03627069303675179,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": -0.18434115762311476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": -0.24544780428732094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": -0.21719204523510027,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": -0.08890732158542058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": -0.2253572509245506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": -0.24264396318923365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": -0.17175603221213342,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": -1.2204109288505027e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": -0.0012269917283915476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": -0.05108356153815936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": -0.16704458951726886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": -0.0003822054862133532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": -0.06743616861057944,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": -0.1820512349859316,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": -0.2423988026941251,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": -0.03450175046359146,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": -0.17535073327763087,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": -0.23347717361719217,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": -0.2065994641951175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": -0.08044667130784469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": -0.20391167306225222,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": -0.2195533371541586,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": -0.1554112847189279,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": -1.217363712136361e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": -0.001223928080226425,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": -0.05095601213749676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": -0.1666274996230777,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": -0.0003774576534112778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": -0.06659846307017056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": -0.17978975822460105,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": -0.2393876764070144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": -0.03281908023774934,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": -0.166798777101459,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": -0.222090357493935,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": -0.19652348942847744,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": -0.07279115835577771,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": -0.18450691176104103,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": -0.19866007471174738,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": -0.1406219455987261,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": -0.00794186751085113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": -0.14164070407250495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": -0.2663927713823534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": -0.3335802036341673,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": -0.11919280628694551,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": -0.2816293713658431,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": -0.33821478076545497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": -0.3288368192217024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": -0.24955199537251804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": -0.33821478076545497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": -0.3288368192217024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": -0.2535438484318281,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": -0.29654428370274855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": -0.34174253025236456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": -0.2993710175310106,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": -0.19320519688200688,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": -0.007922037639740948,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": -0.14128704457089833,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": -0.26572762123801025,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": -0.3327472946950624,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": -0.11771216946755493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": -0.27813091512795385,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": -0.3340134092828683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": -0.3247519426483729,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": -0.23738120094120518,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": -0.3217198512651589,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": -0.3127992583029053,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": -0.2411783690295041,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": -0.26832436399891807,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": -0.30922142870662533,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": -0.27088209853755757,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": -0.1748192914978443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": -0.0079022572813918,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": -0.1409342681137802,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": -0.2650641318921649,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": -0.3319164654276326,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": -0.11624992541413091,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": -0.27467591741141506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": -0.3298642280750377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": -0.32071780922679527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": -0.22580398315859093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": -0.3060293889694124,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": -0.29754385845972275,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": -0.229415961173956,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": -0.242789924716922,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": -0.27979511915229344,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": -0.24510425863288599,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": -0.15818303634178524,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": -0.4937232544848502,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": -0.48442365685186783,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": -0.4692261922554122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": -0.43992447408624846,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": -0.4860500068927618,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": -0.46569261588795485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": -0.4332131955956463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": -0.3733228045143635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": -0.4724040781389016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": -0.4332131955956463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": -0.3733228045143635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": -0.27167233238492217,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": -0.46132397510378154,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": -0.40761318602281715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": -0.32843649879847114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": -0.20371739125205435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": -0.4924904879488739,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": -0.4832141102729339,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": -0.46805459188544457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": -0.43882603652009333,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": -0.4800121967371896,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": -0.4599076893048684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": -0.427831734851274,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": -0.3686853141565024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": -0.4493646593798577,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": -0.4120851387325619,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": -0.35511563649119054,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": -0.2584227163872762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": -0.41742319451099097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": -0.36882366279829715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": -0.2971816335615792,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": -0.18433111830953022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": -0.4912607994800504,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": -0.48200758378376224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": -0.46688591685819986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": -0.437730341618095,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": -0.47404938946395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": -0.4541946242339253,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": -0.42251712368590266,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": -0.36410543162907427,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": -0.42744888633286143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": -0.3919875093618717,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": -0.33779644253071994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": -0.24581929178697995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": -0.3777001255496472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": -0.33372545075697657,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": -0.2689010619995679,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": -0.16678969315487632,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": -0.9887055216977375,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": -0.8341281660384766,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": -0.6825792643531616,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": -0.5573015631059872,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": -0.8595558780076302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": -0.6607903031809255,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": -0.5383843556793648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": -0.4195125705615532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": -0.7051822101476426,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": -0.5383843556793648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": -0.4195125705615532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": -0.28974503703937016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": -0.6375754757503193,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": -0.47849277341532925,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": -0.35788748040764595,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": -0.21408951757308115,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": -0.9862368450251029,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": -0.8320454501030474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": -0.68087494747604,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": -0.5559100493152074,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": -0.8488783034043625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": -0.6525818342031035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": -0.5316964378021427,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": -0.41430130171471297,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": -0.6707900679268837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": -0.5121270408130699,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": -0.39905270106608143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": -0.2756140048348981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": -0.5769021472809674,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": -0.43295816564599193,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": -0.32382998371944943,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": -0.19371620630939093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": -0.9837743323359601,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": -0.82996793445439,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": -0.6791748860695567,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": -0.5545220099640454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": -0.838333367763058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": -0.6444753324645637,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": -0.5250915985750718,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": -0.40915476828916814,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": -0.6380752502748843,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": -0.4871503103038701,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": -0.37959067118054407,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": -0.2621721512034372,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": -0.5220026494051114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": -0.39175674872070465,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": -0.29301348635133345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": -0.17528167194871055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": -0.9999999998404419,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": -0.994987269249085,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": -0.906912262420623,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": -0.7330884239665421,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": -0.9979255885746563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": -0.8817482022897658,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": -0.7037016109896799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": -0.5164415895670416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": -0.9297406383202799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": -0.7037016109896799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": -0.5164415895670416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": -0.325678038845751,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": -0.8519102094093581,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": -0.6122074424937961,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": -0.41779674463767713,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": -0.23442224876708806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": -0.9975031222383003,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": -0.9925029078216846,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": -0.9046478135051161,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": -0.7312579919000587,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": -0.9855291578211212,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": -0.8707949502067609,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": -0.694960089185189,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": -0.5100262491081827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": -0.8843966523243263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": -0.6693816784419385,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": -0.4912544360320909,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": -0.3097945334637649,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": -0.7708402342804372,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": -0.5539482015684847,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": -0.3780381276817849,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": -0.21211402230459536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": -0.99501247903392,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": -0.990024749540689,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": -0.9023890186413885,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": -0.7294321301984052,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": -0.97328671800357,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": -0.859977761606372,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": -0.6863271563085406,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": -0.5036906012884036,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": -0.841264118620827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": -0.6367355487556471,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": -0.46729567447022863,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": -0.2946856757802042,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": -0.697485087304545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": -0.501233060432891,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": -0.3420630433707347,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": -0.191928704271312,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": -1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": -0.9999988832247149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": -0.9917478591979015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": -0.8829200771460508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": -0.9999999359960534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": -0.9841830502138034,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": -0.8535218972557134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": -0.6377710646031978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": -0.9962545033338277,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": -0.8535218972557134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": -0.6377710646031978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": -0.37896042203719094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": -0.9714598588381969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": -0.7512548498270952,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": -0.5097893621525134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": -0.26393529806856864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": -0.9975031223974601,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": -0.9975020084106262,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": -0.9892715861809034,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": -0.880715533780592,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": -0.9875777372850046,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": -0.9719573320135072,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": -0.8429192779651621,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": -0.6298485451994672,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": -0.9476665978624816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": -0.8118951431253097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": -0.6066666027457075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": -0.3604783041629848,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": -0.8790132303967317,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": -0.6797634986045413,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": -0.4612764901922789,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": -0.23881853363291503,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": -0.9950124791926823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": -0.9950113679873371,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": -0.9868014961145393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": -0.8785164948900863,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": -0.9753098496046491,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": -0.9598834841238006,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": -0.8324483665267254,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": -0.6220244409123609,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": -0.9014483525032779,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": -0.7722985497500132,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": -0.5770791233936026,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": -0.34289756981394937,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": -0.7953640618116268,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": -0.6150754489524238,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": -0.41738022838627126,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_put_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": -0.2160919453515408,
+      "tolerance": 1e-9
+    }
+  ]
+}

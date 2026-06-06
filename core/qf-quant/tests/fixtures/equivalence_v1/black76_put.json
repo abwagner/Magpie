@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "black76::put",
+  "input_columns": ["F", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "black76_put_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 4.387823437923544e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.0013986699635221145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.3916181328928672,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 1.965094753586527e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.005270111456035509,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.6597684540386011,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 6.198396073120582,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.00028636244738589056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.6597684540386011,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 6.198396073120582,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 24.0309910586139,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.017952238394048914,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 2.3893681398186217,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 13.164695923476081,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 35.962055557464936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 4.376867579857493e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.0013951776558168507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.3906403103480985,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 1.9406839545090483e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.0052046450801091545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.6515726786746902,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 6.1213983604823365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.00027239638602549667,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.6275911668388643,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 5.896096729461977,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 22.858985794867102,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.01624385703643724,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 2.1619896983708653,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 11.91190946862662,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 32.5398134978823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 4.365939077228064e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.0013916940679764777,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.3896649293065411,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 1.9165763912478138e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.0051399919405655005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.6434787128674571,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 6.045357128791998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 0.0002591114575151075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.5969831844538644,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 5.608540698766658,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 21.74413990232143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.014698049659795126,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 1.9562491764942367,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 10.77834140747021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 29.44324082879549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 3.4139358007223564e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.002155323161412148,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.3059622546517904,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 2.9937617183174225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.0005496662814089004,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.49067201787763803,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 3.89536114152304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 14.473127740133283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.17953599065561487,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 3.89536114152304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 14.473127740133283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 34.794190763785366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.7804820436774591,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 7.946738957879848,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 23.85730442112319,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 47.44864664929288,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 3.405411620885024e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.0021499415832841825,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.3051983043509277,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 2.9862866617356145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.0005428382171994527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.48457679217949223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 3.846972188274659,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 14.293339659867808,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.1707799170685061,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 3.7053821368734057,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 13.767264970972303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 33.097258056203614,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.706209357224541,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 7.190506760453774,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 21.58698173370699,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 42.933310923446754,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 3.396908724881407e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.002144573442298111,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.3044362615404608,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 2.9788302694551634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.0005360949725658554,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.4785572825910036,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 3.7991843322574215,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 14.115784943004213,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.16245088222935472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 3.524668517613315,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 13.095827535286821,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 31.48308573335418,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.6390046513838884,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 6.506239571499105,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 19.532708815116855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 38.84766620370662,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.006721268946622061,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.5370614578457769,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 2.6649900765653136,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 8.154468972147669,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.38202537786736634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 3.263499575943335,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 9.5296850852489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 22.027296236959607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 2.1509284842810814,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 9.5296850852489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 22.027296236959607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 42.029643545293084,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 4.035178057077228,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 15.001084493833098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 30.915397964304983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 55.289480660235014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.006704486760728593,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.5357204811204943,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 2.6583359225321463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 8.134108261210507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.3772797824070976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 3.222959733122834,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 9.411305435889457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 21.75366876852372,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 2.046026464244886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 9.06491685931435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 20.95301232278983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 39.97983364155929,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 3.651180094481119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 13.57354256113921,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 27.97340887157588,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 50.02799092515617,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.006687746477899205,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.5343828526499627,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 2.651698383107149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 8.113798388476456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.3725931376804116,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 3.182923484317795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 9.294396322151819,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 21.483440355091098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 1.9462405760968937,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 8.622815647232407,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 19.931121853363738,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 38.02999414649472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 3.303724369474587,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 12.281849204622407,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 25.311387057020927,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 45.26719813824472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 1.2553491030299497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 3.115268629626435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 6.154761548917563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 12.015105182750304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 2.789998621447644,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 6.861476822409031,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 13.357360880870743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 25.335439097127306,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 5.519184372219684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 13.357360880870743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 25.335439097127306,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 45.66553352301557,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 7.73520497924369,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 18.477362795436562,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 34.312700240305816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 59.256521749589126,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 1.2522146499712257,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 3.1074901851592256,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 6.139393862657097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 11.985104935727334,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 2.755340701950226,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 6.776242188414458,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 13.191433079133343,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 25.020717218087675,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 5.250010574099864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 12.705914703559028,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 24.099815151833297,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 43.438399172616165,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 6.999102901397759,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 16.71900924393652,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 31.04741509128016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 53.61751814168991,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 1.2490880232581403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 3.099731162515789,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 6.124064547628257,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 11.955179595649227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 2.721113310043271,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 6.692066356048196,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 13.027566465652736,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 24.709904877018413,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 4.993964537023676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 12.086239931221613,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 22.924453297451972,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 41.31988344619996,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 6.333050197868741,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 15.12798515640286,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 28.09286290788463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 48.51513667682291,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 5.009848728126968,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 5.619610812060287,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 7.922472771211176,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 13.749591166269774,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 5.4468362584560595,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 8.561796428576287,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 15.20275718503953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 28.302638819343485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 7.371620560787804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 15.20275718503953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 28.302638819343485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 49.312640824897336,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 9.383811676878786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 20.950286357271303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 37.63296680816113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 63.25160565038975,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 4.997339749045595,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 5.605579331688663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 7.902691326392007,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 13.715260120042634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 5.379174571776358,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 8.455440085209739,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 15.013905502243892,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 27.951057793379984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 7.012102383675813,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 14.461309967949248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 26.92230283597567,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 46.90763495247751,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 8.490823929042689,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 18.956603014627355,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 34.05171651972948,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 57.23241954332737,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 4.984862003353921,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 5.591582886206109,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 7.8829592734193525,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 13.681014794235892,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 5.312353392067512,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 8.35040492155923,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 14.827399772729006,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 27.603844177063568,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 6.670118114964028,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 13.7560235583388,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 25.609286632899078,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 44.61992260053476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 7.682815200952928,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 17.1526437264881,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 30.811267255404456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 51.78603472753513,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 15.000000000053305,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 15.009769495339683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 15.572592237591152,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 19.25799400762716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 15.003305082176382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 15.859570783950943,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 20.409779566816454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 33.32587158593832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 15.363813444150367,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 20.409779566816454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 33.32587158593832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 56.63678477786499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 16.286993454573377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 25.438060987023825,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 44.05934547899161,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 71.31809128109444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 14.962546836015074,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 14.972291938067482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 15.533709380819625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 19.209909153719668,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 14.816931033194425,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 15.662560031591296,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 20.156245213161558,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 32.91189096038251,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 14.614511420615486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 19.41438287152925,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 31.70054964967681,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 53.874576189819315,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 14.737081105004748,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 23.01730942333991,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 39.86654440356509,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 64.53127757403837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 14.925187187943274,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 14.934907957668633,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 15.494923609782292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 19.16194436180692,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 14.632872159831683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 15.46799658610231,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 19.905860313829415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 32.50305288474902,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 13.90175328799118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 18.467532245921284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 30.15449559961838,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 51.24708210426169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 13.334662416439022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 20.826922828749645,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 36.072741104137776,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 58.390314582654696,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 30,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 30.000001242061046,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 30.033466097697996,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 31.443787924606625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 30.000000057036374,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 30.077775295555384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 32.116909296759445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 42.246131981958875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 30.01246888141479,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 32.116909296759445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 42.246131981958875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 67.68218596223022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 30.172682714035687,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 35.66241871589493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 53.203099236535635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 83.58387348066549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 29.925093671923804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 29.925094910883573,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 29.95847620887201,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 31.365276634798658,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 29.6273340711443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 29.70414317013379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 31.717946641955187,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 41.72134210211717,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 28.54874350191378,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 30.550549147098117,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 40.18576381257995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 64.38128680180256,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 27.30137232218628,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 32.26869087180765,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 48.140154944697834,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 75.62981626968967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 29.85037437578047,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 29.85037561164671,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 29.883673560619858,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 31.286961378071766,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 29.25929741647812,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 29.335152377516078,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 31.323939980844393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 41.20307126686164,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 27.15640485154394,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 29.06058128337492,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 38.22588098456204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 61.241374393094056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 24.703303240845443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 29.19791893184697,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 43.55901350401142,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_put_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 68.43268768000002,
+      "tolerance": 1e-9
+    }
+  ]
+}

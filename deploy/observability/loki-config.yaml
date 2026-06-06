@@ -1,0 +1,90 @@
+# Loki single-binary configuration — Magpie Phase 1.
+#
+# Filesystem storage with 365-day retention per the 2026-05-20
+# decision. Upgrade path to S3 (`aws_s3` config under storage_config)
+# is documented inline — flip when QF moves to k8s / shared storage.
+#
+# Phase 1 assumptions:
+#   - Single Loki instance, no replication.
+#   - Compactor runs in-process.
+#   - No alerting / ruler — Phase 1 ships rules inert (no routing
+#     destination decided per 2026-05-20).
+
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+  log_level: info
+
+common:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: inmemory
+  replication_factor: 1
+  path_prefix: /loki
+
+ingester:
+  # 1h idle / 2h max age = small chunks, good for low-volume Phase 1.
+  # Raise both if log volume grows enough that small-chunk overhead
+  # becomes visible.
+  chunk_idle_period: 1h
+  max_chunk_age: 2h
+  chunk_target_size: 1048576
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  tsdb_shipper:
+    active_index_directory: /loki/tsdb-shipper-active
+    cache_location: /loki/tsdb-shipper-cache
+    cache_ttl: 24h
+  filesystem:
+    directory: /loki/chunks
+  # ── S3 upgrade path (commented out until k8s / shared storage) ──
+  # Replace the `filesystem` block above with:
+  #
+  # aws:
+  #   s3: s3://<region>/<bucket>
+  #   s3forcepathstyle: true
+  #   bucketnames: quantfoundry-loki
+  #   endpoint: https://minio.example.com  # or AWS S3 endpoint
+  #   access_key_id: ${MINIO_ACCESS_KEY}
+  #   secret_access_key: ${MINIO_SECRET_KEY}
+  #
+  # Local cache via `boltdb_shipper.cache_location` still applies.
+
+compactor:
+  working_directory: /loki/compactor
+  delete_request_store: filesystem
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 2h
+  retention_delete_worker_count: 150
+
+limits_config:
+  # 365 days. Per 2026-05-20 decision: warm search horizon for trade
+  # records; cold storage older lives offsite via the MinIO backup
+  # job (QF-279 / M15-5).
+  retention_period: 8760h
+  allow_structured_metadata: true
+  max_query_series: 10000
+  max_query_parallelism: 16
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h # 1 week
+
+# No alerting in Phase 1.
+ruler:
+  alertmanager_url: ""
+
+analytics:
+  reporting_enabled: false

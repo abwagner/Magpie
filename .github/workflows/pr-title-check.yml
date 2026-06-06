@@ -1,0 +1,44 @@
+name: pr-title-check
+
+# Silo (the GitHub ↔ Plane bridge) links PRs to Plane tickets by reading
+# the leading prefix of the PR title for a bare `QF-N` reference. Mid-title
+# or in-body refs are deliberately ignored. The plane-pr skill codifies this
+# as `QF-N: <subject>` (or `QF-N QF-M: <subject>` for bundles). This check
+# fails any PR whose title doesn't match, so unlinked PRs can't slip through.
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+concurrency:
+  group: pr-title-check-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check:
+    name: title must start with QF-N
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate title prefix
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          echo "PR title: ${PR_TITLE}"
+          if ! printf '%s\n' "$PR_TITLE" | grep -Eq '^QF-[0-9]+( QF-[0-9]+)*:'; then
+            cat <<'EOF' >&2
+          PR title must start with a bare Plane ticket reference followed by a colon, e.g.
+            QF-194: Write-dispatch infrastructure
+            QF-194 QF-195: bundle subject
+          Silo (the Plane ↔ GitHub bridge) only links tickets it can read from the
+          *leading prefix* of the title — bracketed forms, mid-title refs, and
+          body-only mentions are ignored. See the plane-pr skill for the full
+          convention.
+          EOF
+            echo "::error::PR title does not start with 'QF-N:' (or 'QF-N QF-M: ...' for bundles)"
+            exit 1
+          fi

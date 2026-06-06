@@ -1,0 +1,38 @@
+# cargo-deny config for the Magpie Rust workspace.
+#
+# Per polyglot-migration-tdd.md §6.7 and CODING-STANDARDS.md "Rust Conventions".
+# Run with `cargo deny check`. Wired into CI by QF-94 (OSV-Scanner +
+# cross-ecosystem SCA); this file ships in QF-88 so the config exists when
+# QF-94 turns it on.
+
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+yanked = "deny"
+ignore = []
+
+[licenses]
+allow = [
+  "MIT",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "MPL-2.0",
+  "Unicode-DFS-2016",  # legacy form of the Unicode license
+  "Unicode-3.0",       # SPDX rename of Unicode-DFS-2016 (2023); used by unicode-ident
+  "Zlib",              # common transitive license
+]
+confidence-threshold = 0.95
+exceptions = []
+
+[bans]
+multiple-versions = "warn"
+deny = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

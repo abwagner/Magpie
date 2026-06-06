@@ -1,0 +1,30 @@
+{
+  "model": {
+    "optimize": "obj",
+    "opType": "max",
+    "constraints": {
+      "budget": {
+        "max": 10
+      }
+    },
+    "variables": {
+      "x": {
+        "obj": 5,
+        "budget": 2
+      },
+      "y": {
+        "obj": 3,
+        "budget": 1
+      }
+    },
+    "ints": {}
+  },
+  "expected": {
+    "feasible": true,
+    "objectiveValue": 30,
+    "values": {
+      "x": 0,
+      "y": 10
+    }
+  }
+}

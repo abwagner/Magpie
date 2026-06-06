@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "function": "futures_specs::futures_root",
+  "input_columns": ["symbol"],
+  "cases": [
+    {
+      "id": "futures_root_0000",
+      "inputs": ["/CLM26"],
+      "expected": "CL",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0001",
+      "inputs": ["./CLM26"],
+      "expected": "CL",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0002",
+      "inputs": ["CLM26"],
+      "expected": "CL",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0003",
+      "inputs": ["ESH25"],
+      "expected": "ES",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0004",
+      "inputs": ["/ESH25"],
+      "expected": "ES",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0005",
+      "inputs": ["/NQU24"],
+      "expected": "NQ",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0006",
+      "inputs": ["/YMZ26"],
+      "expected": "YM",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0007",
+      "inputs": ["/RTYH24"],
+      "expected": "RTY",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0008",
+      "inputs": ["/GCM25"],
+      "expected": "GC",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0009",
+      "inputs": ["/SIK26"],
+      "expected": "SI",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0010",
+      "inputs": ["/HGN24"],
+      "expected": "HG",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0011",
+      "inputs": ["/NGU24"],
+      "expected": "NG",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0012",
+      "inputs": ["/ZBZ24"],
+      "expected": "ZB",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0013",
+      "inputs": ["/ZNH25"],
+      "expected": "ZN",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0014",
+      "inputs": ["/ZCK25"],
+      "expected": "ZC",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0015",
+      "inputs": ["/ZSU24"],
+      "expected": "ZS",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0016",
+      "inputs": ["/ZWZ25"],
+      "expected": "ZW",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0017",
+      "inputs": ["/6EU24"],
+      "expected": "6E",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0018",
+      "inputs": ["/MNQU24"],
+      "expected": "MNQ",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0019",
+      "inputs": ["AAPL"],
+      "expected": "AAPL",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0020",
+      "inputs": ["/ZB"],
+      "expected": "ZB",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0021",
+      "inputs": ["GC"],
+      "expected": "GC",
+      "tolerance": 0
+    },
+    {
+      "id": "futures_root_0022",
+      "inputs": [""],
+      "expected": "",
+      "tolerance": 0
+    }
+  ]
+}

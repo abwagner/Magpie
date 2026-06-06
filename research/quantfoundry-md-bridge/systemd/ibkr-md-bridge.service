@@ -1,0 +1,26 @@
+[Unit]
+Description=Magpie IBKR MD + Order NATS bridge (M13-06 + QF-240, shared NT TradingNode)
+Documentation=https://github.com/your-org/Magpie/blob/main/docs/tdd/market-data-via-nt.md
+After=network-online.target nats.service ibkr-gateway.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=awagner
+WorkingDirectory=~/Magpie/research
+EnvironmentFile=~/.config/quantfoundry/.env
+Environment=PYTHONUNBUFFERED=1
+Environment=NATS_URL=nats://localhost:4222
+# The actual entrypoint is a shared bootstrap script (not in this repo
+# yet) that constructs the NT TradingNode, registers the IB Data + Exec
+# clients, and feeds the node to both IbkrBrokerBridge (QF-240, orders)
+# and IbkrMdBridge (M13-06, market data). v1 stub command below; replace
+# once the bootstrap script lands.
+ExecStart=/usr/local/bin/uv run --package quantfoundry-md-bridge python -c "import asyncio; from quantfoundry_md_bridge.ibkr.__main__ import amain; asyncio.run(amain(trading_node=None))"
+Restart=on-failure
+RestartSec=15s
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

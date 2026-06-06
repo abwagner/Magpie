@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "bs::delta_call",
+  "input_columns": ["S", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "bs_delta_call_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 0.9999999999466148,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.9995706959653204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.9661322369276413,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 0.9999999999997031,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.9986907910787799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.9529973031490725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 0.8623639570556175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.9998910783265476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.9529973031490725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 0.8623639570556175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 0.8371243753527122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.9964585127584111,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 0.9054880658933855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 0.83744915226781,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 0.8614652620484008,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 0.9999999999602167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.9996033575376895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.966947318929199,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 0.9999999999999534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.9990560813883167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.9576176999356603,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 0.867835029360727,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.9999860331777456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.9693007242769175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 0.8832789098411082,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 0.8493429213400876,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.9996453862784109,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 0.9444044468317611,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 0.8701987996477697,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 0.8765935746913738,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 0.9999999999704108,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.9996337034668092,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.9677460731197032,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 0.9999999999999931,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.9993256410899649,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.9618602743058515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 0.8731428142082762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 0.999998586737388,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.9805956469318085,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 0.9017075006801916,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 0.860875245988979,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.9999776298158451,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 0.9692729823389634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 0.8977620208677892,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 0.890450385602016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 0.9999999999998777,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.998769936954741,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.9487885697887521,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 0.8325372765593118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.9996129869605997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.9317155888104663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 0.8156588423768852,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 0.7545521957126791,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.9637293069632482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 0.8156588423768852,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 0.7545521957126791,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 0.7828079547648997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.9110926784145794,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 0.7746427490754494,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 0.7573560368107664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 0.8282439677878666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 0.9999999999999469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.9989369882133969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.9510558230302474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 0.8353871598956605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.9998454364144831,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.9437620330534571,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 0.8290396078404386,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 0.7628773273146535,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.9888325235955935,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 0.8649505677315151,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 0.7866533700374732,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 0.7978765648155567,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.979427449605087,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 0.852317031535214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 0.8014637015961856,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 0.8460064149003403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 0.9999999999999772,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.9990830274511264,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.9532411731011649,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 0.8382016080084844,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.9999417655224982,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.9540427835934389,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 0.8417020475654601,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 0.7710008911520259,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.9972276894838957,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 0.9037135014006065,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 0.815648433671239,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 0.812183316900863,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.9968653544631743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 0.9082228746144166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 0.8395139582650186,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 0.8623853896476965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.9920581324891489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.858359295927495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 0.7336072286176466,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 0.6664197963658327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.8808071937130545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 0.7183706286341569,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 0.661785219234545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 0.6711631807782976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 0.750448004627482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 0.661785219234545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 0.6711631807782976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 0.7464561515681719,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 0.7034557162972515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 0.6582574697476354,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 0.7006289824689894,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 0.8067948031179931,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.9941468506343079,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.8682408240294994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 0.7415081477484837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 0.6710752430980954,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.9233094232705075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 0.7538127192993469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 0.6824509226875847,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 0.681404379285107,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 0.8831969862693311,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 0.7390983835093878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 0.7107762137596181,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 0.7632900574022672,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 0.8977096245160919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 0.7644070604612907,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 0.7520070091031338,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 0.82616120103515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.99573348333998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.8776004702698033,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 0.7492425371298737,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 0.675684468309265,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.9529169134464832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 0.7859837331660701,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 0.702207779443065,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 0.6914180503448919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 0.9540694061030155,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 0.8030140774918229,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 0.7469018978177109,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 0.7793181555644513,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 0.9752612913835513,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 0.8447493931232516,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 0.7968222741892397,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 0.8440824380879863,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 0.5062767455151498,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 0.5155763431481322,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 0.5307738077445878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 0.5600755259137515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 0.5139499931072382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 0.5343073841120451,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 0.5667868044043537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 0.6266771954856365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 0.5275959218610984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 0.5667868044043537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 0.6266771954856365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 0.7283276676150778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 0.5386760248962185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 0.5923868139771828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 0.6715635012015289,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 0.7962826087479457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 0.5657663947601987,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 0.5397150578051839,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 0.54266644347494,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 0.5657663947601987,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 0.6378915239313202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 0.5854426557263257,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 0.5915273214900744,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 0.6378915239313202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 0.7460098523401482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 0.6595940529600199,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 0.6700904608933986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 0.7460098523401482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 0.8164115150125804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 0.7134286069265534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 0.7265039354488607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 0.8164115150125804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 0.6197320756476401,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 0.5629278836962375,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 0.554328977840669,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 0.5714021626878837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 0.7372734968727441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 0.6323150644280058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 0.6152149406632698,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 0.648862402867606,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 0.8806343101184105,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 0.7372734968727441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 0.709796362803501,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 0.7628648731042147,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 0.9461981657621363,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 0.8065346319792286,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 0.7746257590252461,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 0.8350671640501387,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 0.01129447830226249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 0.16587183396152338,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 0.31742073564683837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 0.44269843689401284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 0.14044412199236977,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 0.33920969681907454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 0.46161564432063523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 0.5804874294384468,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 0.2948177898523574,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 0.46161564432063523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 0.5804874294384468,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 0.7102549629606298,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 0.36242452424968075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 0.5215072265846707,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 0.642112519592354,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 0.7859104824269189,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 0.0149633957438563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 0.17754985262968515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 0.3265461130992975,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 0.448472142840299,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 0.20558514767351171,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 0.3834789568233401,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 0.4887263686327307,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 0.5926975325506286,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 0.5340928768509565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 0.5692286554930915,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 0.627773358364045,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 0.7287654516244463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 0.703228398810678,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 0.658156965334886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 0.7005832239730526,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 0.8067780213910735,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 0.019614014477571107,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 0.1898102837772625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 0.3358557150152021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 0.45430241832396784,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 0.28989908777405843,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 0.43178835885591377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 0.5166149630047001,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 0.6046450376378527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 0.7501632659325252,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 0.6616441227740553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 0.6710940309861313,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 0.7464273677904681,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 0.8976046826914881,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 0.7643297535010978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 0.7519669323769232,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 0.8261456483071653,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 1.5955808896350732e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 0.005012730750915018,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 0.09308773757937705,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 0.2669115760334579,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 0.002074411425343703,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 0.1182517977102342,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 0.2962983890103202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 0.4835584104329585,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 0.07025936167972013,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 0.2962983890103202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 0.4835584104329585,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 0.674321961154249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 0.14808979059064187,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 0.3877925575062039,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 0.5822032553623229,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 0.7655777512329119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 3.239645218755527e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 0.005683370012337652,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 0.09684261107567149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 0.2709305821328841,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 0.00437144337146067,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 0.13936660725772415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 0.3159859512262279,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 0.4974527634636965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 0.16516346769328277,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 0.3806078251545266,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 0.5385516564159116,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 0.6944378722051496,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 0.3915727041105697,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 0.5352746935033168,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 0.647698503210586,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 0.7878574747053328,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 6.498123705789283e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 0.006432377349704088,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 0.10071239329741671,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 0.2749919918999669,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 0.008714853827483049,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 0.16314711428571038,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 0.3365802236370759,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 0.5114484415880112,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 0.3308990100892543,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 0.48107672031390253,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 0.5893328470380328,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 0.713661105157581,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 0.7271157922010039,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 0.6689079814464027,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 0.7055047025056097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 0.8085873537361947,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 0.000001116775285192606,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 0.008252140802098462,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 0.11707992285394919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 6.400394658712116e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 0.015816949786196632,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 0.14647810274428663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 0.3622289353968022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 0.003745496666172299,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 0.14647810274428663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 0.3622289353968022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 0.6210395779628091,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 0.028540141161803145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 0.24874515017290477,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 0.49021063784748664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 0.7360647019314314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 0.0000013869806509414495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 0.008757531650868122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 0.11929680010134402,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 2.396920338876285e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 0.0201204413592716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 0.15845031731538373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 0.3734459315086366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 0.014430196971219167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 0.1986390087348464,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 0.40860412208670754,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 0.6434666860712694,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 0.11398987563432034,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 0.3588100091599987,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 0.5662483684550006,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 0.7603215443299697,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 0.0000017192689232281566,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 0.009289831084034472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 0.12154504029909224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 8.452514017043278e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 0.025380620922878794,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 0.1711215259753182,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 0.38491090410198214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 0.04492703574892182,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 0.2629185506774444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 0.4591976108365363,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 0.6649284067141246,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 0.3215686246262589,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 0.5002165676002103,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 0.6335950146049574,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_call_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 0.782959280292665,
+      "tolerance": 1e-9
+    }
+  ]
+}

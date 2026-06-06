@@ -1,0 +1,21 @@
+[Unit]
+Description=Magpie Schwab MD NATS bridge (M13-05)
+Documentation=https://github.com/your-org/Magpie/blob/main/docs/tdd/market-data-via-nt.md
+After=network-online.target nats.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=awagner
+WorkingDirectory=~/Magpie/research
+EnvironmentFile=~/.config/quantfoundry/.env
+Environment=PYTHONUNBUFFERED=1
+Environment=NATS_URL=nats://localhost:4222
+ExecStart=/usr/local/bin/uv run --package quantfoundry-md-bridge python -m quantfoundry_md_bridge.schwab
+Restart=on-failure
+RestartSec=10s
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

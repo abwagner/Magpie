@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie OFAC SDN vessels ingest — daily 02:00
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Unit=quantfoundry-ingest@ofac.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

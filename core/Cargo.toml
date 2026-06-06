@@ -1,0 +1,43 @@
+# Magpie Rust workspace.
+#
+# Owns all Rust crates per the polyglot migration plan (docs/polyglot-migration-tdd.md
+# §5.1 and CODING-STANDARDS.md "Rust Conventions"). Phase 0 scaffolds the
+# workspace + CI; Phase 1+ adds the real crates (qf-quant for math, qf-logging
+# for the tracing subscriber, qf-execution for the NT sidecar, qf-optimizer
+# for the LP).
+
+[workspace]
+resolver = "2"
+members = [
+  "qf-logging",
+  "qf-optimizer",
+  "qf-quant",
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+authors = ["Magpie contributors"]
+rust-version = "1.94"
+
+# Workspace-wide lints. Crates can opt-in via `[lints] workspace = true`
+# in their own Cargo.toml; the smoke crate does so as a worked example.
+[workspace.lints.rust]
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Allowed pedantic lints — adjust as real crates land in Phase 1+.
+module_name_repetitions = "allow"
+# qf-quant's math kernels use the canonical option-pricing names
+# (S, K, r, T, v, F) — the alternatives would be worse, not better.
+many_single_char_names = "allow"
+# qf-quant's parity-fixture tables intentionally use wide tuple rows
+# rather than structs so the JS reference values can be pasted in.
+type_complexity = "allow"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

@@ -1,0 +1,12 @@
+{
+  "ts": "2026-05-20T18:30:01.500Z",
+  "bids": [
+    { "price": 512.34, "size": 200, "num_orders": 4 },
+    { "price": 512.33, "size": 350, "num_orders": 6 },
+    { "price": 512.32, "size": 100 }
+  ],
+  "asks": [
+    { "price": 512.38, "size": 180, "num_orders": 3 },
+    { "price": 512.39, "size": 240, "num_orders": 5 }
+  ]
+}

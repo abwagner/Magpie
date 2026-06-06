@@ -1,0 +1,54 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+.env copy
+data/chains/
+data/databento/
+data/etfs/
+data/futures/
+data/results/
+data/macro/
+data/portfolio.duckdb
+data/portfolio.duckdb.wal
+run_ibgateway.sh
+data/signals/
+scripts/.schwab-auth-*.pem
+# Local secrets store (Schwab OAuth refresh tokens etc.). QF-161.
+data/secrets/
+.claude/settings.local.json
+
+# Rust build artifacts (core/ cargo workspace, per QF-88).
+core/target/
+
+# Python build artifacts (research/ uv workspace, per QF-89).
+research/.venv/
+research/**/__pycache__/
+research/**/.pytest_cache/
+research/**/.mypy_cache/
+research/**/.ruff_cache/
+research/**/*.egg-info/
+research/**/dist/
+research/**/build/
+
+# qf-quant Python wheel build artifacts (maturin + local pytest venv, QF-97).
+core/qf-quant/.venv/
+core/qf-quant/__pycache__/
+core/qf-quant/.pytest_cache/
+core/qf-quant/python_smoke/__pycache__/
+core/qf-quant/*.egg-info/
+core/qf-quant/dist/
+
+# qf-optimizer Python wheel build artifacts (maturin + local pytest venv, QF-134).
+core/qf-optimizer/.venv/
+core/qf-optimizer/__pycache__/
+core/qf-optimizer/.pytest_cache/
+core/qf-optimizer/python_smoke/__pycache__/
+core/qf-optimizer/*.egg-info/
+core/qf-optimizer/dist/
+
+# Discovery symlink to the sibling quantfoundry-strategies repo
+# (`scripts/setup-strategies-symlink.sh`). Each operator creates it
+# locally; not tracked. See docs/RUNBOOK.md §"Operator setup".
+strategies

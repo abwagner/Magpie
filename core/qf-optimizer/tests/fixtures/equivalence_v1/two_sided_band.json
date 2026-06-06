@@ -1,0 +1,26 @@
+{
+  "model": {
+    "optimize": "obj",
+    "opType": "max",
+    "constraints": {
+      "band": {
+        "min": 1,
+        "max": 4
+      }
+    },
+    "variables": {
+      "x": {
+        "obj": 1,
+        "band": 1
+      }
+    },
+    "ints": {}
+  },
+  "expected": {
+    "feasible": true,
+    "objectiveValue": 4,
+    "values": {
+      "x": 4
+    }
+  }
+}

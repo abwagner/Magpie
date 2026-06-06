@@ -1,0 +1,61 @@
+# Alert routing rules — QF-61 alertRouter + QF-218 quote-unavailable banner.
+#
+# Each rule matches AlertEvents by `type_prefix` and (optionally) `level`,
+# then dispatches matching events to one or more channels. Channels:
+#   - log:      structured log entry at the event's level
+#   - internal: WS push for the in-app banner area (via stateWs.pushAlert)
+#   - slack:    POST to SLACK_WEBHOOK_URL
+#
+# Producers call alertRouter.record({type, level, message, payload}).
+# Order-flow producer call sites: Execution Layer's rejectPreSubmit
+# (quote_unavailable), risk store halt + drift detection, etc.
+#
+# v1 ships with the quote_unavailable rule per QF-218; operators can edit
+# the live config via the Settings → Alerts screen (writes here via the
+# router's replace() path).
+
+version: 1
+rules:
+  # QF-218 — operator-visible banner when the Execution Layer aborts an
+  # intent because the upstream market-data adapter couldn't deliver a
+  # usable quote. The Execution Layer dedupes per (symbol, reason) over
+  # a 5-minute window before emitting, so this rule sees at most one
+  # event per outage per symbol.
+  - id: quote_unavailable_banner
+    description: Show an in-app banner when market-data is unavailable for a quoting attempt.
+    match:
+      type_prefix: quote_unavailable
+    channels:
+      - log
+      - internal
+  # QF-218 — companion auto-dismiss event. Fires from the Execution
+  # Layer the next time getQuote + validateQuote succeed for a symbol
+  # that previously had an outstanding quote_unavailable. The banner
+  # consumer (frontend) clears its UI on this type.
+  - id: quote_recovered_dismiss
+    description: Auto-dismiss the quote-unavailable banner on the next successful quote.
+    match:
+      type_prefix: quote_recovered
+    channels:
+      - log
+      - internal
+  # QF-295 — operator-visible banner when a data source has not completed
+  # a successful ingest within its expected cadence. The freshness monitor
+  # dedupes per source (only fires on fresh→stale transition; no re-fire
+  # while continuously stale).
+  - id: ingest_stale_banner
+    description: Show an in-app banner when a data-source ingest falls behind its cadence.
+    match:
+      type_prefix: ingest.stale
+    channels:
+      - log
+      - internal
+  # QF-295 — companion auto-dismiss. Fires when the freshness monitor
+  # sees a source transition back to fresh after having been stale/missing.
+  - id: ingest_recovered_dismiss
+    description: Auto-dismiss the ingest-stale banner when the source recovers.
+    match:
+      type_prefix: ingest.recovered
+    channels:
+      - log
+      - internal

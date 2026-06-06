@@ -1,0 +1,21 @@
+{
+  "quote": {
+    "symbol": "EQ:SPY",
+    "bid": 512.34,
+    "ask": 512.38,
+    "mid": 512.36,
+    "last": 512.37,
+    "volume": 12345678,
+    "timestamp": "2026-05-20T18:30:00Z",
+    "_meta": {
+      "source": "schwab",
+      "source_timestamp": "2026-05-20T18:29:59.500Z",
+      "fetched_at": "2026-05-20T18:30:00.123Z",
+      "freshness_ms": 623,
+      "latency_ms": 47,
+      "from_cache": false,
+      "cache_age_ms": 0,
+      "sources_tried": ["schwab"]
+    }
+  }
+}

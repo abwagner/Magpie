@@ -1,0 +1,98 @@
+# Magpie Python research workspace.
+#
+# Owns the Python half of the polyglot stack per docs/polyglot-migration-tdd.md
+# §5.1 and CODING-STANDARDS.md "Python Conventions": NautilusTrader strategies,
+# the backtest orchestrator, the walk-forward driver, the signal worker SDK,
+# and shared research helpers. Phase 0 scaffolds the workspace + CI; Phase 0
+# QF-84 lands `quantfoundry-logging` as the first real package; Phase 2+
+# adds the orchestrator and strategy packages.
+
+[project]
+name = "quantfoundry-research-workspace"
+version = "0.0.0"
+description = "Umbrella uv workspace for the Magpie research Python packages."
+license = "MIT"
+requires-python = ">=3.13"
+# No runtime dependencies at the workspace root — they live in member packages.
+dependencies = []
+
+# Workspace-wide dev tooling (PEP 735 dependency groups). `uv sync` pulls
+# the dev group by default; CI uses `uv sync --all-packages --frozen` so
+# both members and dev tools are installed against the locked versions.
+[dependency-groups]
+dev = [
+  "ruff>=0.9.0",
+  "mypy>=1.13.0",
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+]
+
+[tool.uv.workspace]
+members = [
+  "quantfoundry-ibkr-nt",
+  "quantfoundry-logging",
+  "quantfoundry-md-bridge",
+  "quantfoundry-research",
+  "quantfoundry-risk-gate",
+  "quantfoundry-schwab-nt",
+  "quantfoundry-signals",
+  "vol-forecast-spy-1d",
+]
+
+# ── Security overrides ───────────────────────────────────────────────
+# protobuf >=5.29.6,<6 pins out GHSA-7gcm-g887-7qv7 (HIGH, CVSS 8.2)
+# which affects 5.29.5 — pulled in transitively by nautilus-ibapi 10.45.1
+# (nautilus-trader[ib] extras). Patch-release range only; a major bump
+# would risk breaking nautilus-ibapi's ABI assumptions.
+[tool.uv]
+override-dependencies = ["protobuf>=5.29.6,<6"]
+
+# ── Workspace-wide tool config ───────────────────────────────────────────
+# Each tool block applies to every workspace member unless that member
+# overrides it in its own pyproject.toml.
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+# Pragmatic baseline matching CODING-STANDARDS.md "Python Conventions".
+# Adjust as real packages land; this is the minimum a fresh codebase should
+# turn on, not a maximalist set.
+select = [
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "I",   # isort
+  "W",   # pycodestyle warnings
+  "B",   # flake8-bugbear
+  "UP",  # pyupgrade
+  "N",   # pep8-naming
+  "SIM", # flake8-simplify
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+strict = true
+python_version = "3.13"
+# Errors on packages without stubs would fire on every third-party import;
+# tighten to warning-only at the workspace level. Member packages with
+# strong typing posture (qf-logging when it lands) can re-enable.
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = [
+  "quantfoundry-logging/tests",
+  "quantfoundry-research/tests",
+  "quantfoundry-schwab-nt/tests",
+  "quantfoundry-signals/tests",
+  "vol-forecast-spy-1d/tests",
+  "tests",
+]
+addopts = "-ra -v --strict-markers"
+# Auto-mode lets `pytest.mark.asyncio` work without per-test decorators
+# being strictly required, but we use the decorator explicitly in
+# schwab-nt tests so it works either way.
+asyncio_mode = "auto"

@@ -1,0 +1,30 @@
+{
+  "model": {
+    "optimize": "obj",
+    "opType": "min",
+    "constraints": {
+      "floor": {
+        "min": 7
+      }
+    },
+    "variables": {
+      "a": {
+        "obj": 2,
+        "floor": 1
+      },
+      "b": {
+        "obj": 1,
+        "floor": 1
+      }
+    },
+    "ints": {}
+  },
+  "expected": {
+    "feasible": true,
+    "objectiveValue": 7,
+    "values": {
+      "a": 0,
+      "b": 7
+    }
+  }
+}

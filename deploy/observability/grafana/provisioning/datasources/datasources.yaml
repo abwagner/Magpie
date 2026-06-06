@@ -1,0 +1,34 @@
+# Grafana provisioned datasources — Magpie Phase 1.
+#
+# Both datasources resolve to other containers in the docker-compose
+# network (prometheus / loki). The Grafana container is started by
+# the same `--profile observability` so service names are reachable.
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    uid: prometheus
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: 15s
+      httpMethod: POST
+
+  - name: Loki
+    type: loki
+    access: proxy
+    uid: loki
+    url: http://loki:3100
+    editable: true
+    jsonData:
+      maxLines: 5000
+      # Allow click-through from a metrics panel to logs filtered by
+      # correlation_id (M15-3 dashboards will set this up per-panel).
+      derivedFields:
+        - matcherRegex: '"correlation_id":"([0-9A-HJKMNP-TV-Z]{26})"'
+          name: correlation_id
+          url: '/explore?left={"datasource":"loki","queries":[{"expr":"{service=~\".+\"} | json | correlation_id=\"${__value.raw}\""}]}'

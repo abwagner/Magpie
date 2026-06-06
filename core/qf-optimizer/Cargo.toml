@@ -1,0 +1,60 @@
+[package]
+name = "qf-optimizer"
+version = "0.0.1"
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Magpie LP/MIP optimizer crate — replaces javascript-lp-solver for Greek Builder (WASM, QF-133) and automated strategies (PyO3, QF-134). Per docs/polyglot-migration-tdd.md §B.2 Phase 5."
+
+# Two solver backends, chosen at compile time:
+#
+# - `highs` (default): native builds (Rust callers, PyO3 wheel via QF-134).
+#   Vendored C++ via good_lp's `highs` feature. Needs cmake at compile time.
+# - `microlp`: pure-Rust LP/MIP solver used for the wasm32 path (QF-133).
+#   HiGHS doesn't cross-compile to wasm32; microlp does. Smaller MIP
+#   heuristics than HiGHS but fine for the Greek Builder's continuous LPs.
+#
+# Composite features:
+# - `python`: PyO3 wheel — uses HiGHS, doesn't run in browser.
+# - `wasm`: wasm-bindgen wrapper — uses microlp, runs in Web Worker.
+#
+# `default = ["highs"]` keeps `cargo build` / `cargo test` working without
+# extra flags; CI's existing rust.yml workflow doesn't need to change.
+[features]
+default = ["highs"]
+highs = ["good_lp/highs"]
+microlp = ["good_lp/microlp"]
+python = ["dep:pyo3", "highs"]
+wasm = [
+  "microlp",
+  "dep:wasm-bindgen",
+  "dep:serde-wasm-bindgen",
+  "dep:console_error_panic_hook",
+]
+
+[dependencies]
+good_lp = { version = "=1.15.1", default-features = false }
+serde = { version = "=1.0.226", features = ["derive"] }
+thiserror = "=2.0.16"
+# Optional PyO3 binding. abi3-py310 = single wheel across Python 3.10+
+# (same pin as qf-quant).
+pyo3 = { version = "=0.28.3", features = ["extension-module", "abi3-py310"], optional = true }
+# Optional WASM glue. wasm-bindgen exposes Rust functions to JS;
+# serde-wasm-bindgen serializes the LpModel / LpSolution structs without a
+# JSON intermediate; console_error_panic_hook prints Rust panics to the
+# browser console rather than swallowing them.
+wasm-bindgen = { version = "=0.2.121", optional = true }
+serde-wasm-bindgen = { version = "=0.6.5", optional = true }
+console_error_panic_hook = { version = "=0.1.7", optional = true }
+
+[dev-dependencies]
+serde_json = "=1.0.143"
+
+# When built as a Python extension or WASM module, the crate type must be
+# cdylib. Pure-Rust callers get the default rlib via this entry.
+[lib]
+name = "qf_optimizer"
+crate-type = ["cdylib", "rlib"]
+
+[lints]
+workspace = true

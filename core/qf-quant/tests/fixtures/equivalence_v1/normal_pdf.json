@@ -1,0 +1,1861 @@
+{
+  "schema_version": 1,
+  "function": "normal::pdf",
+  "input_columns": ["x"],
+  "cases": [
+    {
+      "id": "pdf_0000",
+      "inputs": [0],
+      "expected": 0.3989422804014327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0001",
+      "inputs": [0.000001],
+      "expected": 0.39894228040123325,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0002",
+      "inputs": [-0.000001],
+      "expected": 0.39894228040123325,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0003",
+      "inputs": [4.5],
+      "expected": 0.000015983741106905478,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0004",
+      "inputs": [-4.5],
+      "expected": 0.000015983741106905478,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0005",
+      "inputs": [8],
+      "expected": 5.052271083536893e-15,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0006",
+      "inputs": [-8],
+      "expected": 5.052271083536893e-15,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0007",
+      "inputs": [-3],
+      "expected": 0.0044318484119380075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0008",
+      "inputs": [-2.975],
+      "expected": 0.004775526577091559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0009",
+      "inputs": [-2.95],
+      "expected": 0.005142640923053939,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0010",
+      "inputs": [-2.9250000000000003],
+      "expected": 0.005534516702780497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0011",
+      "inputs": [-2.9000000000000004],
+      "expected": 0.005952532419775849,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0012",
+      "inputs": [-2.875],
+      "expected": 0.006398120310723557,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0013",
+      "inputs": [-2.85],
+      "expected": 0.006872766690613971,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0014",
+      "inputs": [-2.825],
+      "expected": 0.00737801214864679,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0015",
+      "inputs": [-2.8000000000000003],
+      "expected": 0.007915451582979958,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0016",
+      "inputs": [-2.7750000000000004],
+      "expected": 0.00848673406223871,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0017",
+      "inputs": [-2.75],
+      "expected": 0.009093562501591055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0018",
+      "inputs": [-2.725],
+      "expected": 0.009737693141144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0019",
+      "inputs": [-2.7],
+      "expected": 0.010420934814422592,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0020",
+      "inputs": [-2.6750000000000003],
+      "expected": 0.011145147994764798,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0021",
+      "inputs": [-2.6500000000000004],
+      "expected": 0.01191224360760517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0022",
+      "inputs": [-2.625],
+      "expected": 0.012724181596831433,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0023",
+      "inputs": [-2.6],
+      "expected": 0.013582969233685615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0024",
+      "inputs": [-2.575],
+      "expected": 0.014490659157048438,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0025",
+      "inputs": [-2.5500000000000003],
+      "expected": 0.01544934713439516,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0026",
+      "inputs": [-2.5250000000000004],
+      "expected": 0.01646116953324725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0027",
+      "inputs": [-2.5],
+      "expected": 0.01752830049356854,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0028",
+      "inputs": [-2.475],
+      "expected": 0.018652948792269905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0029",
+      "inputs": [-2.45],
+      "expected": 0.019837354391795313,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0030",
+      "inputs": [-2.4250000000000003],
+      "expected": 0.021083784665664098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0031",
+      "inputs": [-2.4000000000000004],
+      "expected": 0.022394530294842882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0032",
+      "inputs": [-2.375],
+      "expected": 0.023771900829913806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0033",
+      "inputs": [-2.35],
+      "expected": 0.025218219915194382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0034",
+      "inputs": [-2.325],
+      "expected": 0.026735820172248227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0035",
+      "inputs": [-2.3000000000000003],
+      "expected": 0.028327037741601162,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0036",
+      "inputs": [-2.275],
+      "expected": 0.02999420648294531,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0037",
+      "inputs": [-2.25],
+      "expected": 0.03173965183566742,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0038",
+      "inputs": [-2.225],
+      "expected": 0.03356568434317755,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0039",
+      "inputs": [-2.2],
+      "expected": 0.035474592846231424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0040",
+      "inputs": [-2.1750000000000003],
+      "expected": 0.03746863735223377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0041",
+      "inputs": [-2.15],
+      "expected": 0.03955004158937023,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0042",
+      "inputs": [-2.125],
+      "expected": 0.04172098525633861,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0043",
+      "inputs": [-2.1],
+      "expected": 0.0439835959804272,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0044",
+      "inputs": [-2.075],
+      "expected": 0.046339940998709216,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0045",
+      "inputs": [-2.0500000000000003],
+      "expected": 0.04879201857918272,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0046",
+      "inputs": [-2.025],
+      "expected": 0.051341749200769456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0047",
+      "inputs": [-2],
+      "expected": 0.05399096651318806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0048",
+      "inputs": [-1.975],
+      "expected": 0.05674140809982402,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0049",
+      "inputs": [-1.9500000000000002],
+      "expected": 0.059594706068816054,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0050",
+      "inputs": [-1.925],
+      "expected": 0.06255237749965997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0051",
+      "inputs": [-1.9000000000000001],
+      "expected": 0.0656158147746766,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0052",
+      "inputs": [-1.875],
+      "expected": 0.0687862758266919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0053",
+      "inputs": [-1.85],
+      "expected": 0.072064874336218,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0054",
+      "inputs": [-1.8250000000000002],
+      "expected": 0.07545256991329019,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0055",
+      "inputs": [-1.8],
+      "expected": 0.07895015830089415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0056",
+      "inputs": [-1.7750000000000001],
+      "expected": 0.08255826163859159,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0057",
+      "inputs": [-1.75],
+      "expected": 0.08627731882651152,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0058",
+      "inputs": [-1.725],
+      "expected": 0.0901075760312981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0059",
+      "inputs": [-1.7000000000000002],
+      "expected": 0.0940490773768869,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0060",
+      "inputs": [-1.675],
+      "expected": 0.09810165586409782,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0061",
+      "inputs": [-1.6500000000000001],
+      "expected": 0.102264924563978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0062",
+      "inputs": [-1.625],
+      "expected": 0.10653826813058508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0063",
+      "inputs": [-1.6],
+      "expected": 0.11092083467945554,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0064",
+      "inputs": [-1.5750000000000002],
+      "expected": 0.11541152807834995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0065",
+      "inputs": [-1.55],
+      "expected": 0.12000900069698558,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0066",
+      "inputs": [-1.5250000000000001],
+      "expected": 0.12471164666235716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0067",
+      "inputs": [-1.5],
+      "expected": 0.12951759566589174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0068",
+      "inputs": [-1.475],
+      "expected": 0.13442470736807907,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0069",
+      "inputs": [-1.4500000000000002],
+      "expected": 0.13943056644536023,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0070",
+      "inputs": [-1.425],
+      "expected": 0.14453247832293287,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0071",
+      "inputs": [-1.4000000000000001],
+      "expected": 0.14972746563574485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0072",
+      "inputs": [-1.375],
+      "expected": 0.15501226545829322,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0073",
+      "inputs": [-1.35],
+      "expected": 0.1603833273419196,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0074",
+      "inputs": [-1.3250000000000002],
+      "expected": 0.1658368121961047,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0075",
+      "inputs": [-1.3],
+      "expected": 0.17136859204780736,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0076",
+      "inputs": [-1.2750000000000001],
+      "expected": 0.17697425071017966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0077",
+      "inputs": [-1.25],
+      "expected": 0.18264908538902191,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0078",
+      "inputs": [-1.225],
+      "expected": 0.18838810925212632,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0079",
+      "inputs": [-1.2000000000000002],
+      "expected": 0.19418605498321292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0080",
+      "inputs": [-1.175],
+      "expected": 0.20003737933848775,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0081",
+      "inputs": [-1.1500000000000001],
+      "expected": 0.20593626871997475,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0082",
+      "inputs": [-1.125],
+      "expected": 0.21187664577569948,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0083",
+      "inputs": [-1.1],
+      "expected": 0.21785217703255055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0084",
+      "inputs": [-1.075],
+      "expected": 0.2238562815632395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0085",
+      "inputs": [-1.05],
+      "expected": 0.22988214068423302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0086",
+      "inputs": [-1.0250000000000001],
+      "expected": 0.23592270867687254,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0087",
+      "inputs": [-1],
+      "expected": 0.24197072451914337,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0088",
+      "inputs": [-0.9750000000000001],
+      "expected": 0.2480187246107371,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0089",
+      "inputs": [-0.9500000000000001],
+      "expected": 0.25405905646918897,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0090",
+      "inputs": [-0.925],
+      "expected": 0.26008389336999566,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0091",
+      "inputs": [-0.9],
+      "expected": 0.2660852498987548,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0092",
+      "inputs": [-0.875],
+      "expected": 0.2720549983785435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0093",
+      "inputs": [-0.8500000000000001],
+      "expected": 0.2779848861309965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0094",
+      "inputs": [-0.8250000000000001],
+      "expected": 0.28386655352488727,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0095",
+      "inputs": [-0.8],
+      "expected": 0.2896915527614828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0096",
+      "inputs": [-0.775],
+      "expected": 0.29545136734156296,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0097",
+      "inputs": [-0.75],
+      "expected": 0.30113743215480443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0098",
+      "inputs": [-0.7250000000000001],
+      "expected": 0.30674115412824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0099",
+      "inputs": [-0.7000000000000001],
+      "expected": 0.31225393336676127,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0100",
+      "inputs": [-0.675],
+      "expected": 0.31766718471514827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0101",
+      "inputs": [-0.65],
+      "expected": 0.3229723596679143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0102",
+      "inputs": [-0.625],
+      "expected": 0.3281609685503751,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0103",
+      "inputs": [-0.6000000000000001],
+      "expected": 0.33322460289179967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0104",
+      "inputs": [-0.5750000000000001],
+      "expected": 0.33815495790931144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0105",
+      "inputs": [-0.55],
+      "expected": 0.34294385501938396,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0106",
+      "inputs": [-0.525],
+      "expected": 0.3475832642923481,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0107",
+      "inputs": [-0.5],
+      "expected": 0.3520653267642995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0108",
+      "inputs": [-0.47500000000000003],
+      "expected": 0.3563823765201833,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0109",
+      "inputs": [-0.45],
+      "expected": 0.36052696246164795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0110",
+      "inputs": [-0.42500000000000004],
+      "expected": 0.3644918696735065,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0111",
+      "inputs": [-0.4],
+      "expected": 0.36827014030332333,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0112",
+      "inputs": [-0.375],
+      "expected": 0.37185509386976895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0113",
+      "inputs": [-0.35000000000000003],
+      "expected": 0.3752403469169379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0114",
+      "inputs": [-0.325],
+      "expected": 0.37841983193381945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0115",
+      "inputs": [-0.30000000000000004],
+      "expected": 0.3813878154605241,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0116",
+      "inputs": [-0.275],
+      "expected": 0.3841389153057048,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0117",
+      "inputs": [-0.25],
+      "expected": 0.3866681168028493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0118",
+      "inputs": [-0.225],
+      "expected": 0.38897078803674945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0119",
+      "inputs": [-0.2],
+      "expected": 0.3910426939754559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0120",
+      "inputs": [-0.17500000000000002],
+      "expected": 0.39288000944737933,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0121",
+      "inputs": [-0.15000000000000002],
+      "expected": 0.39447933090788895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0122",
+      "inputs": [-0.125],
+      "expected": 0.3958376869447495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0123",
+      "inputs": [-0.1],
+      "expected": 0.3969525474770118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0124",
+      "inputs": [-0.07500000000000001],
+      "expected": 0.3978218316074972,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0125",
+      "inputs": [-0.05],
+      "expected": 0.39844391409476404,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0126",
+      "inputs": [-0.025],
+      "expected": 0.39881763041638185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0127",
+      "inputs": [0],
+      "expected": 0.3989422804014327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0128",
+      "inputs": [0.025],
+      "expected": 0.39881763041638185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0129",
+      "inputs": [0.05],
+      "expected": 0.39844391409476404,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0130",
+      "inputs": [0.07500000000000001],
+      "expected": 0.3978218316074972,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0131",
+      "inputs": [0.1],
+      "expected": 0.3969525474770118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0132",
+      "inputs": [0.125],
+      "expected": 0.3958376869447495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0133",
+      "inputs": [0.15000000000000002],
+      "expected": 0.39447933090788895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0134",
+      "inputs": [0.17500000000000002],
+      "expected": 0.39288000944737933,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0135",
+      "inputs": [0.2],
+      "expected": 0.3910426939754559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0136",
+      "inputs": [0.225],
+      "expected": 0.38897078803674945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0137",
+      "inputs": [0.25],
+      "expected": 0.3866681168028493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0138",
+      "inputs": [0.275],
+      "expected": 0.3841389153057048,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0139",
+      "inputs": [0.30000000000000004],
+      "expected": 0.3813878154605241,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0140",
+      "inputs": [0.325],
+      "expected": 0.37841983193381945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0141",
+      "inputs": [0.35000000000000003],
+      "expected": 0.3752403469169379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0142",
+      "inputs": [0.375],
+      "expected": 0.37185509386976895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0143",
+      "inputs": [0.4],
+      "expected": 0.36827014030332333,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0144",
+      "inputs": [0.42500000000000004],
+      "expected": 0.3644918696735065,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0145",
+      "inputs": [0.45],
+      "expected": 0.36052696246164795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0146",
+      "inputs": [0.47500000000000003],
+      "expected": 0.3563823765201833,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0147",
+      "inputs": [0.5],
+      "expected": 0.3520653267642995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0148",
+      "inputs": [0.525],
+      "expected": 0.3475832642923481,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0149",
+      "inputs": [0.55],
+      "expected": 0.34294385501938396,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0150",
+      "inputs": [0.5750000000000001],
+      "expected": 0.33815495790931144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0151",
+      "inputs": [0.6000000000000001],
+      "expected": 0.33322460289179967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0152",
+      "inputs": [0.625],
+      "expected": 0.3281609685503751,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0153",
+      "inputs": [0.65],
+      "expected": 0.3229723596679143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0154",
+      "inputs": [0.675],
+      "expected": 0.31766718471514827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0155",
+      "inputs": [0.7000000000000001],
+      "expected": 0.31225393336676127,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0156",
+      "inputs": [0.7250000000000001],
+      "expected": 0.30674115412824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0157",
+      "inputs": [0.75],
+      "expected": 0.30113743215480443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0158",
+      "inputs": [0.775],
+      "expected": 0.29545136734156296,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0159",
+      "inputs": [0.8],
+      "expected": 0.2896915527614828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0160",
+      "inputs": [0.8250000000000001],
+      "expected": 0.28386655352488727,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0161",
+      "inputs": [0.8500000000000001],
+      "expected": 0.2779848861309965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0162",
+      "inputs": [0.875],
+      "expected": 0.2720549983785435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0163",
+      "inputs": [0.9],
+      "expected": 0.2660852498987548,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0164",
+      "inputs": [0.925],
+      "expected": 0.26008389336999566,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0165",
+      "inputs": [0.9500000000000001],
+      "expected": 0.25405905646918897,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0166",
+      "inputs": [0.9750000000000001],
+      "expected": 0.2480187246107371,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0167",
+      "inputs": [1],
+      "expected": 0.24197072451914337,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0168",
+      "inputs": [1.0250000000000001],
+      "expected": 0.23592270867687254,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0169",
+      "inputs": [1.05],
+      "expected": 0.22988214068423302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0170",
+      "inputs": [1.075],
+      "expected": 0.2238562815632395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0171",
+      "inputs": [1.1],
+      "expected": 0.21785217703255055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0172",
+      "inputs": [1.125],
+      "expected": 0.21187664577569948,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0173",
+      "inputs": [1.1500000000000001],
+      "expected": 0.20593626871997475,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0174",
+      "inputs": [1.175],
+      "expected": 0.20003737933848775,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0175",
+      "inputs": [1.2000000000000002],
+      "expected": 0.19418605498321292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0176",
+      "inputs": [1.225],
+      "expected": 0.18838810925212632,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0177",
+      "inputs": [1.25],
+      "expected": 0.18264908538902191,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0178",
+      "inputs": [1.2750000000000001],
+      "expected": 0.17697425071017966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0179",
+      "inputs": [1.3],
+      "expected": 0.17136859204780736,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0180",
+      "inputs": [1.3250000000000002],
+      "expected": 0.1658368121961047,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0181",
+      "inputs": [1.35],
+      "expected": 0.1603833273419196,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0182",
+      "inputs": [1.375],
+      "expected": 0.15501226545829322,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0183",
+      "inputs": [1.4000000000000001],
+      "expected": 0.14972746563574485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0184",
+      "inputs": [1.425],
+      "expected": 0.14453247832293287,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0185",
+      "inputs": [1.4500000000000002],
+      "expected": 0.13943056644536023,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0186",
+      "inputs": [1.475],
+      "expected": 0.13442470736807907,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0187",
+      "inputs": [1.5],
+      "expected": 0.12951759566589174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0188",
+      "inputs": [1.5250000000000001],
+      "expected": 0.12471164666235716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0189",
+      "inputs": [1.55],
+      "expected": 0.12000900069698558,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0190",
+      "inputs": [1.5750000000000002],
+      "expected": 0.11541152807834995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0191",
+      "inputs": [1.6],
+      "expected": 0.11092083467945554,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0192",
+      "inputs": [1.625],
+      "expected": 0.10653826813058508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0193",
+      "inputs": [1.6500000000000001],
+      "expected": 0.102264924563978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0194",
+      "inputs": [1.675],
+      "expected": 0.09810165586409782,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0195",
+      "inputs": [1.7000000000000002],
+      "expected": 0.0940490773768869,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0196",
+      "inputs": [1.725],
+      "expected": 0.0901075760312981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0197",
+      "inputs": [1.75],
+      "expected": 0.08627731882651152,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0198",
+      "inputs": [1.7750000000000001],
+      "expected": 0.08255826163859159,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0199",
+      "inputs": [1.8],
+      "expected": 0.07895015830089415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0200",
+      "inputs": [1.8250000000000002],
+      "expected": 0.07545256991329019,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0201",
+      "inputs": [1.85],
+      "expected": 0.072064874336218,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0202",
+      "inputs": [1.875],
+      "expected": 0.0687862758266919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0203",
+      "inputs": [1.9000000000000001],
+      "expected": 0.0656158147746766,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0204",
+      "inputs": [1.925],
+      "expected": 0.06255237749965997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0205",
+      "inputs": [1.9500000000000002],
+      "expected": 0.059594706068816054,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0206",
+      "inputs": [1.975],
+      "expected": 0.05674140809982402,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0207",
+      "inputs": [2],
+      "expected": 0.05399096651318806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0208",
+      "inputs": [2.025],
+      "expected": 0.051341749200769456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0209",
+      "inputs": [2.0500000000000003],
+      "expected": 0.04879201857918272,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0210",
+      "inputs": [2.075],
+      "expected": 0.046339940998709216,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0211",
+      "inputs": [2.1],
+      "expected": 0.0439835959804272,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0212",
+      "inputs": [2.125],
+      "expected": 0.04172098525633861,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0213",
+      "inputs": [2.15],
+      "expected": 0.03955004158937023,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0214",
+      "inputs": [2.1750000000000003],
+      "expected": 0.03746863735223377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0215",
+      "inputs": [2.2],
+      "expected": 0.035474592846231424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0216",
+      "inputs": [2.225],
+      "expected": 0.03356568434317755,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0217",
+      "inputs": [2.25],
+      "expected": 0.03173965183566742,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0218",
+      "inputs": [2.275],
+      "expected": 0.02999420648294531,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0219",
+      "inputs": [2.3000000000000003],
+      "expected": 0.028327037741601162,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0220",
+      "inputs": [2.325],
+      "expected": 0.026735820172248227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0221",
+      "inputs": [2.35],
+      "expected": 0.025218219915194382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0222",
+      "inputs": [2.375],
+      "expected": 0.023771900829913806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0223",
+      "inputs": [2.4000000000000004],
+      "expected": 0.022394530294842882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0224",
+      "inputs": [2.4250000000000003],
+      "expected": 0.021083784665664098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0225",
+      "inputs": [2.45],
+      "expected": 0.019837354391795313,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0226",
+      "inputs": [2.475],
+      "expected": 0.018652948792269905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0227",
+      "inputs": [2.5],
+      "expected": 0.01752830049356854,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0228",
+      "inputs": [2.5250000000000004],
+      "expected": 0.01646116953324725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0229",
+      "inputs": [2.5500000000000003],
+      "expected": 0.01544934713439516,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0230",
+      "inputs": [2.575],
+      "expected": 0.014490659157048438,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0231",
+      "inputs": [2.6],
+      "expected": 0.013582969233685615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0232",
+      "inputs": [2.625],
+      "expected": 0.012724181596831433,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0233",
+      "inputs": [2.6500000000000004],
+      "expected": 0.01191224360760517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0234",
+      "inputs": [2.6750000000000003],
+      "expected": 0.011145147994764798,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0235",
+      "inputs": [2.7],
+      "expected": 0.010420934814422592,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0236",
+      "inputs": [2.725],
+      "expected": 0.009737693141144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0237",
+      "inputs": [2.75],
+      "expected": 0.009093562501591055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0238",
+      "inputs": [2.7750000000000004],
+      "expected": 0.00848673406223871,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0239",
+      "inputs": [2.8000000000000003],
+      "expected": 0.007915451582979958,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0240",
+      "inputs": [2.825],
+      "expected": 0.00737801214864679,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0241",
+      "inputs": [2.85],
+      "expected": 0.006872766690613971,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0242",
+      "inputs": [2.875],
+      "expected": 0.006398120310723557,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0243",
+      "inputs": [2.9000000000000004],
+      "expected": 0.005952532419775849,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0244",
+      "inputs": [2.9250000000000003],
+      "expected": 0.005534516702780497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0245",
+      "inputs": [2.95],
+      "expected": 0.005142640923053939,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0246",
+      "inputs": [2.975],
+      "expected": 0.004775526577091559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0247",
+      "inputs": [3],
+      "expected": 0.0044318484119380075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0248",
+      "inputs": [-6],
+      "expected": 6.075882849823286e-9,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0249",
+      "inputs": [-5.800000000000001],
+      "expected": 1.9773196406244602e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0250",
+      "inputs": [-5.6000000000000005],
+      "expected": 6.182620500165824e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0251",
+      "inputs": [-5.4],
+      "expected": 1.8573618445552897e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0252",
+      "inputs": [-5.2],
+      "expected": 5.361035344697615e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0253",
+      "inputs": [-5],
+      "expected": 0.0000014867195147342979,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0254",
+      "inputs": [-4.800000000000001],
+      "expected": 0.000003961299091032062,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0255",
+      "inputs": [-4.6000000000000005],
+      "expected": 0.000010140852065486724,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0256",
+      "inputs": [-4.4],
+      "expected": 0.000024942471290053535,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0257",
+      "inputs": [-4.2],
+      "expected": 0.000058943067756539855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0258",
+      "inputs": [-4],
+      "expected": 0.00013383022576488537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0259",
+      "inputs": [-3.8000000000000003],
+      "expected": 0.00029194692579146005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0260",
+      "inputs": [-3.6],
+      "expected": 0.0006119019301137719,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0261",
+      "inputs": [-3.4000000000000004],
+      "expected": 0.0012322191684730178,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0262",
+      "inputs": [-3.2],
+      "expected": 0.0023840882014648404,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0263",
+      "inputs": [-3],
+      "expected": 0.0044318484119380075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0264",
+      "inputs": [-2.8000000000000003],
+      "expected": 0.007915451582979958,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0265",
+      "inputs": [-2.6],
+      "expected": 0.013582969233685615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0266",
+      "inputs": [-2.4000000000000004],
+      "expected": 0.022394530294842882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0267",
+      "inputs": [-2.2],
+      "expected": 0.035474592846231424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0268",
+      "inputs": [-2],
+      "expected": 0.05399096651318806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0269",
+      "inputs": [-1.8],
+      "expected": 0.07895015830089415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0270",
+      "inputs": [-1.6],
+      "expected": 0.11092083467945554,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0271",
+      "inputs": [-1.4000000000000001],
+      "expected": 0.14972746563574485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0272",
+      "inputs": [-1.2000000000000002],
+      "expected": 0.19418605498321292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0273",
+      "inputs": [-1],
+      "expected": 0.24197072451914337,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0274",
+      "inputs": [-0.8],
+      "expected": 0.2896915527614828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0275",
+      "inputs": [-0.6000000000000001],
+      "expected": 0.33322460289179967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0276",
+      "inputs": [-0.4],
+      "expected": 0.36827014030332333,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0277",
+      "inputs": [-0.2],
+      "expected": 0.3910426939754559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0278",
+      "inputs": [0],
+      "expected": 0.3989422804014327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0279",
+      "inputs": [0.2],
+      "expected": 0.3910426939754559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0280",
+      "inputs": [0.4],
+      "expected": 0.36827014030332333,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0281",
+      "inputs": [0.6000000000000001],
+      "expected": 0.33322460289179967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0282",
+      "inputs": [0.8],
+      "expected": 0.2896915527614828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0283",
+      "inputs": [1],
+      "expected": 0.24197072451914337,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0284",
+      "inputs": [1.2000000000000002],
+      "expected": 0.19418605498321292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0285",
+      "inputs": [1.4000000000000001],
+      "expected": 0.14972746563574485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0286",
+      "inputs": [1.6],
+      "expected": 0.11092083467945554,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0287",
+      "inputs": [1.8],
+      "expected": 0.07895015830089415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0288",
+      "inputs": [2],
+      "expected": 0.05399096651318806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0289",
+      "inputs": [2.2],
+      "expected": 0.035474592846231424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0290",
+      "inputs": [2.4000000000000004],
+      "expected": 0.022394530294842882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0291",
+      "inputs": [2.6],
+      "expected": 0.013582969233685615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0292",
+      "inputs": [2.8000000000000003],
+      "expected": 0.007915451582979958,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0293",
+      "inputs": [3],
+      "expected": 0.0044318484119380075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0294",
+      "inputs": [3.2],
+      "expected": 0.0023840882014648404,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0295",
+      "inputs": [3.4000000000000004],
+      "expected": 0.0012322191684730178,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0296",
+      "inputs": [3.6],
+      "expected": 0.0006119019301137719,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0297",
+      "inputs": [3.8000000000000003],
+      "expected": 0.00029194692579146005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0298",
+      "inputs": [4],
+      "expected": 0.00013383022576488537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0299",
+      "inputs": [4.2],
+      "expected": 0.000058943067756539855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0300",
+      "inputs": [4.4],
+      "expected": 0.000024942471290053535,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0301",
+      "inputs": [4.6000000000000005],
+      "expected": 0.000010140852065486724,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0302",
+      "inputs": [4.800000000000001],
+      "expected": 0.000003961299091032062,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0303",
+      "inputs": [5],
+      "expected": 0.0000014867195147342979,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0304",
+      "inputs": [5.2],
+      "expected": 5.361035344697615e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0305",
+      "inputs": [5.4],
+      "expected": 1.8573618445552897e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0306",
+      "inputs": [5.6000000000000005],
+      "expected": 6.182620500165824e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0307",
+      "inputs": [5.800000000000001],
+      "expected": 1.9773196406244602e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "pdf_0308",
+      "inputs": [6],
+      "expected": 6.075882849823286e-9,
+      "tolerance": 1e-9
+    }
+  ]
+}

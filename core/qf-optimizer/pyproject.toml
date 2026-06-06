@@ -1,0 +1,37 @@
+# Maturin build config for the qf-optimizer Python wheel.
+#
+# Build a wheel:    maturin build --release --features python
+# Develop in env:   maturin develop --release --features python
+# Smoke-test:       python -m pytest python_smoke/
+#
+# The wheel name on disk is qf_optimizer-*.whl; the importable module is
+# `qf_optimizer`. Acceptance for QF-134: wheel installs, Python-side
+# `solve(model)` returns numerically identical results to a Rust direct
+# call on the same model (within HiGHS's optimality tolerance).
+
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[project]
+name = "qf-optimizer"
+version = "0.0.1"
+description = "PyO3-wrapped Magpie LP/MIP optimizer (good_lp + HiGHS). Replaces javascript-lp-solver for automated strategies."
+requires-python = ">=3.10"
+readme = "../../docs/polyglot-migration-tdd.md"
+license = { text = "MIT" }
+authors = [{ name = "Magpie contributors" }]
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Intended Audience :: Financial and Insurance Industry",
+  "Topic :: Office/Business :: Financial",
+  "Operating System :: POSIX :: Linux",
+]
+
+[tool.maturin]
+features = ["python"]
+# Use the stable ABI (abi3) so a single wheel covers Python 3.10+. Configured
+# at the PyO3 side via the `abi3-py310` feature in Cargo.toml.
+module-name = "qf_optimizer"

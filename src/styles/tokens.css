@@ -1,0 +1,187 @@
+/* ──────────────────────────────────────────────────────────────
+   Magpie — Engineered design tokens.
+
+   Three themes, attached to `<body data-theme="...">`:
+     dark     — canonical dark canvas (default)
+     dark-hc  — higher-contrast dark; brighter text tiers + accent
+     light    — light canvas
+   ────────────────────────────────────────────────────────────── */
+
+/* ===== ENGINEERED · DARK (default) ===== */
+:root,
+[data-theme="dark"] {
+  /* Surface scale — neutral-cool, near-black, very low saturation */
+  --bg-app:        oklch(0.18 0.005 240);   /* canvas */
+  --bg-pane:       oklch(0.205 0.005 240);  /* pane fill */
+  --bg-elev:       oklch(0.235 0.006 240);  /* elevated row, hover */
+  --bg-input:      oklch(0.155 0.005 240);  /* input wells */
+  --bg-row-alt:    oklch(0.215 0.005 240);  /* zebra */
+  --bg-selected:   oklch(0.27 0.04 230);
+
+  /* Borders — hairlines */
+  --border-1:      oklch(0.30 0.005 240);
+  --border-2:      oklch(0.38 0.006 240);
+  --border-focus:  oklch(0.72 0.13 230);
+
+  /* Text */
+  --text-1:        oklch(0.96 0.005 240);
+  --text-2:        oklch(0.78 0.005 240);
+  --text-3:        oklch(0.62 0.005 240);
+  --text-4:        oklch(0.48 0.005 240);
+
+  /* Direction colors */
+  --pos:           oklch(0.78 0.16 145);
+  --pos-bg:        oklch(0.30 0.06 145);
+  --pos-dim:       oklch(0.55 0.10 145);
+  --neg:           oklch(0.70 0.18 25);
+  --neg-bg:        oklch(0.30 0.08 25);
+  --neg-dim:       oklch(0.55 0.12 25);
+  --neutral:       oklch(0.78 0.005 240);
+
+  /* Accent + warn */
+  --accent:        oklch(0.78 0.16 230);
+  --accent-dim:    oklch(0.40 0.08 230);
+  --warn:          oklch(0.82 0.15 75);
+  --warn-bg:       oklch(0.32 0.07 75);
+
+  /* Typography */
+  --font-display:  "IBM Plex Sans", -apple-system, sans-serif;
+  --font-ui:       "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono:     "IBM Plex Mono", ui-monospace, monospace;
+  --font-num:      "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Type scale */
+  --fs-12: 11px;
+  --fs-13: 12px;
+  --fs-14: 13px;
+  --fs-16: 15px;
+  --fs-20: 19px;
+  --fs-28: 26px;
+  --fs-40: 38px;
+
+  /* Spacing — 4pt grid */
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 6px;
+  --sp-4: 8px;
+  --sp-5: 12px;
+  --sp-6: 16px;
+  --sp-7: 24px;
+  --sp-8: 32px;
+
+  /* Radii — sharp */
+  --r-0: 0;
+  --r-1: 1px;
+  --r-2: 2px;
+  --r-pill: 2px;
+
+  /* Row + control sizing */
+  --row-h: 26px;
+  --row-h-tight: 22px;
+  --control-h: 26px;
+
+  --shadow-pop: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--border-2);
+}
+
+/* ===== ENGINEERED · HIGHER-CONTRAST DARK =====
+   Same surface scale, brighter text tiers + accent for legibility. */
+[data-theme="dark-hc"] {
+  --bg-app:        oklch(0.16 0.005 240);
+  --bg-pane:       oklch(0.195 0.005 240);
+  --bg-elev:       oklch(0.245 0.006 240);
+  --bg-input:      oklch(0.135 0.005 240);
+  --bg-row-alt:    oklch(0.215 0.005 240);
+  --bg-selected:   oklch(0.30 0.06 230);
+
+  --border-1:      oklch(0.40 0.006 240);
+  --border-2:      oklch(0.52 0.007 240);
+  --border-focus:  oklch(0.82 0.16 230);
+
+  --text-1:        oklch(0.99 0.002 240);
+  --text-2:        oklch(0.86 0.004 240);
+  --text-3:        oklch(0.72 0.005 240);
+  --text-4:        oklch(0.58 0.005 240);
+
+  --pos:           oklch(0.84 0.20 145);
+  --pos-bg:        oklch(0.34 0.07 145);
+  --pos-dim:       oklch(0.62 0.12 145);
+  --neg:           oklch(0.76 0.22 25);
+  --neg-bg:        oklch(0.34 0.10 25);
+  --neg-dim:       oklch(0.62 0.14 25);
+  --neutral:       oklch(0.86 0.004 240);
+
+  --accent:        oklch(0.84 0.18 230);
+  --accent-dim:    oklch(0.46 0.10 230);
+  --warn:          oklch(0.88 0.17 75);
+  --warn-bg:       oklch(0.36 0.09 75);
+
+  --font-display:  "IBM Plex Sans", -apple-system, sans-serif;
+  --font-ui:       "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono:     "IBM Plex Mono", ui-monospace, monospace;
+  --font-num:      "IBM Plex Mono", ui-monospace, monospace;
+
+  --fs-12: 11px; --fs-13: 12px; --fs-14: 13px; --fs-16: 15px;
+  --fs-20: 19px; --fs-28: 26px; --fs-40: 38px;
+
+  --sp-1: 2px; --sp-2: 4px; --sp-3: 6px; --sp-4: 8px;
+  --sp-5: 12px; --sp-6: 16px; --sp-7: 24px; --sp-8: 32px;
+
+  --r-0: 0; --r-1: 1px; --r-2: 2px; --r-pill: 2px;
+
+  --row-h: 26px;
+  --row-h-tight: 22px;
+  --control-h: 26px;
+
+  --shadow-pop: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--border-2);
+}
+
+/* ===== ENGINEERED · LIGHT ===== */
+[data-theme="light"] {
+  --bg-app:        oklch(0.985 0.003 90);
+  --bg-pane:       oklch(0.998 0.002 90);
+  --bg-elev:       oklch(0.965 0.004 90);
+  --bg-input:      oklch(0.998 0.002 90);
+  --bg-row-alt:    oklch(0.975 0.003 90);
+  --bg-selected:   oklch(0.92 0.04 230);
+
+  --border-1:      oklch(0.88 0.005 240);
+  --border-2:      oklch(0.78 0.006 240);
+  --border-focus:  oklch(0.55 0.16 240);
+
+  --text-1:        oklch(0.18 0.005 240);
+  --text-2:        oklch(0.36 0.005 240);
+  --text-3:        oklch(0.50 0.005 240);
+  --text-4:        oklch(0.65 0.005 240);
+
+  --pos:           oklch(0.50 0.18 145);
+  --pos-bg:        oklch(0.92 0.06 145);
+  --pos-dim:       oklch(0.65 0.12 145);
+  --neg:           oklch(0.52 0.22 25);
+  --neg-bg:        oklch(0.93 0.05 25);
+  --neg-dim:       oklch(0.65 0.16 25);
+  --neutral:       oklch(0.40 0.005 240);
+
+  --accent:        oklch(0.50 0.18 240);
+  --accent-dim:    oklch(0.85 0.06 240);
+  --warn:          oklch(0.62 0.16 70);
+  --warn-bg:       oklch(0.96 0.05 70);
+
+  --font-display:  "IBM Plex Sans", -apple-system, sans-serif;
+  --font-ui:       "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono:     "IBM Plex Mono", ui-monospace, monospace;
+  --font-num:      "IBM Plex Mono", ui-monospace, monospace;
+
+  --fs-12: 11px; --fs-13: 12px; --fs-14: 13px; --fs-16: 15px;
+  --fs-20: 19px; --fs-28: 26px; --fs-40: 38px;
+
+  --sp-1: 2px; --sp-2: 4px; --sp-3: 6px; --sp-4: 8px;
+  --sp-5: 12px; --sp-6: 16px; --sp-7: 24px; --sp-8: 32px;
+
+  --r-0: 0; --r-1: 1px; --r-2: 2px; --r-pill: 2px;
+
+  --row-h: 26px;
+  --row-h-tight: 22px;
+  --control-h: 26px;
+
+  --shadow-pop: 0 4px 16px rgba(0, 0, 0, 0.10), 0 0 0 1px var(--border-1);
+}

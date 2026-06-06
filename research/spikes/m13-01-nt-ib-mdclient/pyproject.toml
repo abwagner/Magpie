@@ -1,0 +1,18 @@
+[project]
+name = "m13-01-nt-ib-mdclient-spike"
+version = "0.0.1"
+description = "M13-01 NT IB DataClient validation spike — exercises NT's InteractiveBrokersDataClient against a live paper IB Gateway to determine the M13-06 implementation path."
+requires-python = ">=3.13"
+dependencies = [
+  # The spike's sole purpose is to validate NT's IB integration; pin
+  # whatever the latest stable nautilus-trader release is when the spike
+  # runs. M13-02 will pin this for the workspace.
+  "nautilus-trader>=1.200.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]

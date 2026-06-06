@@ -1,0 +1,75 @@
+{
+  "model": {
+    "optimize": "expectedPnL",
+    "opType": "max",
+    "constraints": {
+      "deltaLower": {
+        "min": -50
+      },
+      "deltaUpper": {
+        "max": 50
+      },
+      "vegaLower": {
+        "min": -50
+      },
+      "vegaUpper": {
+        "max": 50
+      },
+      "budget": {
+        "max": 5000
+      },
+      "posCount": {
+        "max": 8
+      }
+    },
+    "variables": {
+      "long_call_100": {
+        "expectedPnL": 120,
+        "deltaLower": 55,
+        "deltaUpper": 55,
+        "vegaLower": 18,
+        "vegaUpper": 18,
+        "budget": 350,
+        "posCount": 1
+      },
+      "short_call_110": {
+        "expectedPnL": 80,
+        "deltaLower": -35,
+        "deltaUpper": -35,
+        "vegaLower": -12,
+        "vegaUpper": -12,
+        "budget": 200,
+        "posCount": 1
+      },
+      "long_put_95": {
+        "expectedPnL": 70,
+        "deltaLower": -45,
+        "deltaUpper": -45,
+        "vegaLower": 16,
+        "vegaUpper": 16,
+        "budget": 280,
+        "posCount": 1
+      },
+      "short_put_90": {
+        "expectedPnL": 60,
+        "deltaLower": 30,
+        "deltaUpper": 30,
+        "vegaLower": -10,
+        "vegaUpper": -10,
+        "budget": 150,
+        "posCount": 1
+      }
+    },
+    "ints": {}
+  },
+  "expected": {
+    "feasible": true,
+    "objectiveValue": 786.66666667,
+    "values": {
+      "long_call_100": 3.66666667,
+      "short_call_110": 4.33333333,
+      "long_put_95": 0,
+      "short_put_90": 0
+    }
+  }
+}

@@ -1,0 +1,115 @@
+name: rust
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "core/**"
+      - "src/lib/wasm/**"
+      - ".github/workflows/rust.yml"
+  pull_request:
+    paths:
+      - "core/**"
+      - "src/lib/wasm/**"
+      - ".github/workflows/rust.yml"
+
+# Avoid duplicate runs when a branch is pushed to and a PR is opened from it.
+concurrency:
+  group: rust-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test-lint:
+    name: build + test + fmt + clippy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: core
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # rust-toolchain.toml in core/ pins the version; rustup reads it.
+      - name: Install Rust toolchain
+        run: rustup show active-toolchain
+
+      - name: Cache Cargo registry + workspace target
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: core
+
+      - name: cargo fmt --check
+        run: cargo fmt --all -- --check
+
+      - name: cargo clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: cargo build
+        run: cargo build --workspace --all-targets --locked
+
+      - name: cargo test
+        run: cargo test --workspace --locked
+
+      # cargo-deny: license + advisory + ban + source validation per
+      # core/deny.toml. Config covers all four gates; failing any one
+      # blocks the build. Advisory db overlaps with osv-scanner but
+      # uses RUSTSEC's native db directly, which sometimes catches
+      # advisories before they propagate to OSV. Cadence for the
+      # cargo-deny-action pin: opportunistic — see
+      # docs/dependency-pins.md §5 "CI tooling pins".
+      - name: cargo deny check
+        uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          manifest-path: core/Cargo.toml
+          command: check
+          arguments: --all-features
+
+  build-wasm:
+    # QF-133: qf-optimizer's `wasm` feature compiles to wasm32-unknown-unknown
+    # for the Greek Builder Web Worker. Built artifact lives under
+    # src/lib/wasm/qf_optimizer/ so frontend devs don't need wasm-pack
+    # installed for `npm run dev` to work. This job rebuilds and fails the
+    # PR if the committed artifact is stale.
+    name: build wasm + verify artifact fresh
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # rust-toolchain.toml pins the channel + wasm32 target.
+      - name: Install Rust toolchain
+        working-directory: core
+        run: rustup show active-toolchain
+
+      - name: Cache Cargo registry + workspace target
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: core
+          # Distinguish from the build-test-lint cache so the two jobs
+          # don't clobber each other's target/ dirs.
+          key: wasm
+
+      - name: Install wasm-pack
+        # Pin to match what local dev uses. wasm-pack bumps embed a
+        # different wasm-bindgen version into the JS glue, so the
+        # committed artifact won't match a CI rebuild unless both run
+        # the same wasm-pack. Bumped through the same admission workflow
+        # as other CI tooling.
+        run: cargo install wasm-pack --version 0.15.0 --locked
+
+      - name: Rebuild WASM artifact
+        # Verifies the `wasm` feature compiles end-to-end. The committed
+        # artifact under src/lib/wasm/ is for dev convenience (no
+        # wasm-pack required for `npm run dev`); CI does not enforce
+        # byte-for-byte equivalence with the committed bytes because
+        # wasm-pack output isn't reproducible across runner OSes /
+        # rustup channel revisions. PR authors are expected to run
+        # `npm run build:wasm` locally and commit when touching
+        # core/qf-optimizer/src/.
+        run: |
+          wasm-pack build core/qf-optimizer \
+            --target web \
+            --out-dir ../../src/lib/wasm/qf_optimizer \
+            --no-default-features --features wasm

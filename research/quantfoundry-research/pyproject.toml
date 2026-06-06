@@ -1,0 +1,30 @@
+[project]
+name = "quantfoundry-research"
+version = "0.0.1"
+description = "Magpie research-pipeline orchestrator — FastAPI service that accepts BacktestRunConfig submissions, decomposes parameter grids, and dispatches to a NautilusTrader worker pool."
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi>=0.115.0",
+  "nats-py>=2.9.0",
+  "uvicorn[standard]>=0.32.0",
+  "pydantic>=2.9.0",
+  "quantfoundry-logging",
+]
+
+[tool.uv.sources]
+quantfoundry-logging = { workspace = true }
+
+[project.optional-dependencies]
+test = [
+  "httpx>=0.27.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantfoundry_research"]
+
+[tool.mypy]
+strict = true

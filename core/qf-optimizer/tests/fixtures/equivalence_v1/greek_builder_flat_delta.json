@@ -1,0 +1,75 @@
+{
+  "model": {
+    "optimize": "objValue",
+    "opType": "max",
+    "constraints": {
+      "deltaLB": {
+        "min": -0.45
+      },
+      "deltaUB": {
+        "max": 0.45
+      },
+      "thetaLB": {
+        "min": -0.18
+      },
+      "thetaUB": {
+        "max": 0.18
+      },
+      "marginBudget": {
+        "max": 2000
+      },
+      "posCount": {
+        "max": 6
+      }
+    },
+    "variables": {
+      "LC100": {
+        "objValue": 0.045,
+        "deltaLB": 0.52,
+        "deltaUB": 0.52,
+        "thetaLB": -0.04,
+        "thetaUB": -0.04,
+        "marginBudget": 380,
+        "posCount": 1
+      },
+      "LP100": {
+        "objValue": 0.045,
+        "deltaLB": -0.48,
+        "deltaUB": -0.48,
+        "thetaLB": -0.04,
+        "thetaUB": -0.04,
+        "marginBudget": 360,
+        "posCount": 1
+      },
+      "LC105": {
+        "objValue": 0.038,
+        "deltaLB": 0.35,
+        "deltaUB": 0.35,
+        "thetaLB": -0.035,
+        "thetaUB": -0.035,
+        "marginBudget": 240,
+        "posCount": 1
+      },
+      "LP95": {
+        "objValue": 0.038,
+        "deltaLB": -0.31,
+        "deltaUB": -0.31,
+        "thetaLB": -0.035,
+        "thetaUB": -0.035,
+        "marginBudget": 220,
+        "posCount": 1
+      }
+    },
+    "ints": {}
+  },
+  "expected": {
+    "feasible": true,
+    "objectiveValue": 0.2025,
+    "values": {
+      "LC100": 2.61,
+      "LP100": 1.89,
+      "LC105": 0,
+      "LP95": 0
+    }
+  }
+}

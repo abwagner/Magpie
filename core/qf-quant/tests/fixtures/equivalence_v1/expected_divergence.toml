@@ -1,0 +1,67 @@
+# Expected-divergence configuration for the cross-language equivalence
+# harness. Two section forms:
+#
+#   [<label>]               — per-case overrides: <case_id> = <tol>
+#   [<label>-functions]     — per-function overrides: "<fn>" = <tol>
+#
+# Per-case wins over per-function when both are present. Tolerances are
+# absolute; the harness checks `|actual - expected| <= tol`. A tolerance
+# of 0 means "any finite value passes" (used for documented divergences
+# whose exact magnitude isn't worth pinning).
+#
+# Phase 1.5 (CDF correction, see polyglot-migration-tdd.md §8.1.1.1)
+# flipped the bs / black76 surface from the bug-for-bug `cdf` to the
+# textbook `cdf_correct`. Every case in those fixtures diverges from
+# the pre-cutover JS reference; the `[cdf-correction-functions]`
+# section below documents the bound per function.
+#
+# QF-185 (2026-05) brought the JS side along — src/lib/bs.ts now uses
+# the same A&S 7.1.26 erf-based form as Rust's `cdf_correct`. QF-140
+# (Phase 6) then retired the deprecated `normal::cdf` Rust function +
+# its `normal_cdf.json` bug-for-bug fixture. The bs/black76 fixtures
+# below still pin the original pre-cutover JS values as `expected`
+# (deliberately — they document the JS-vs-Rust gap that the cutover
+# was meant to close), so the per-function divergence bounds below
+# stay relevant.
+#
+# To regenerate the divergence bounds (only if the bs/black76 fixtures
+# themselves change; the static numbers below are correct for the
+# committed fixture):
+#
+#   .scipy-venv/bin/python \
+#     core/qf-quant/tests/fixtures/equivalence_v1/gen_cdf_correction_divergence.py
+#
+# Per-function tolerances bound |Rust (post-cutover, cdf_correct)
+# − JS (pre-cutover, bug-for-bug cdf)|. Computed as the max
+# |scipy textbook − JS| over each fixture's cases, plus a small headroom
+# (1e-4) for the residual A&S 7.1.26 vs scipy-erf gap in Rust's
+# `cdf_correct` impl.
+
+[cdf-correction-functions]
+"bs::call" = 7.865587e+00
+"bs::put" = 7.865587e+00
+"bs::delta_call" = 3.728938e-02
+"bs::delta_put" = 3.728938e-02
+"bs::gamma" = 1.000000e-04
+"bs::theta_call" = 1.341816e-03
+"bs::theta_put" = 1.341816e-03
+"bs::vega" = 1.000000e-04
+"black76::call" = 7.865587e+00
+"black76::put" = 7.865587e+00
+"black76::delta_call" = 3.728920e-02
+"black76::delta_put" = 3.728920e-02
+"black76::gamma" = 1.000000e-04
+"black76::theta_call" = 1.985053e-03
+"black76::theta_put" = 1.985053e-03
+"black76::vega" = 1.000000e-04
+# implied_vol functions: the JS-recovered vol is for a *different*
+# pricing function (buggy `cdf`) than the Rust-recovered vol
+# (`cdf_correct`). They don't round-trip to the same value. Bisection
+# bracket is [0.001, 5.0]; any value the solver returns is by
+# construction within that range, so 5.0 absolute is the documented
+# bound. The unit tests in `bs.rs` and `black76.rs` separately verify
+# that IV round-trips correctly under the post-cutover math.
+"bs::implied_vol_call" = 5.0
+"bs::implied_vol_put" = 5.0
+"black76::implied_vol_call" = 5.0
+"black76::implied_vol_put" = 5.0

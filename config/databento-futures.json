@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "_doc": "Approved-only whitelist of Databento historical pulls. Only entries that preflight to $0.00 USD belong here. Uncovered venues (e.g. VX on XCBF.PITCH) live as prose in docs/UNIVERSES.md, not in this file. The cost preflight in pipelines/databento_fetch.py is the enforcement; this list is the source of truth for what we *intend* to pull. See docs/UNIVERSES.md.",
+  "tiers": {
+    "pull_now": [
+      {
+        "symbol": "CL",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1s", "ohlcv-1m", "ohlcv-1d", "trades", "mbp-1"],
+        "notes": "Crude Oil — backfilled (2.1GB)"
+      },
+      {
+        "symbol": "NG",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1s", "ohlcv-1m", "ohlcv-1d", "trades"],
+        "notes": "Natural Gas"
+      },
+      {
+        "symbol": "ES",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1s", "ohlcv-1m", "ohlcv-1d", "trades"],
+        "notes": "E-mini S&P 500"
+      },
+      {
+        "symbol": "NQ",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1s", "ohlcv-1m", "ohlcv-1d", "trades"],
+        "notes": "E-mini Nasdaq 100"
+      },
+      {
+        "symbol": "YM",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1s", "ohlcv-1m", "ohlcv-1d", "trades"],
+        "notes": "E-mini Dow"
+      },
+      {
+        "symbol": "RTY",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1s", "ohlcv-1m", "ohlcv-1d", "trades"],
+        "notes": "E-mini Russell 2000"
+      }
+    ],
+    "candidates": [
+      {
+        "symbol": "RB",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "RBOB Gasoline"
+      },
+      {
+        "symbol": "HO",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Heating Oil"
+      },
+      {
+        "symbol": "BZ",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Brent Crude"
+      },
+      {
+        "symbol": "GC",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Gold"
+      },
+      {
+        "symbol": "SI",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Silver"
+      },
+      {
+        "symbol": "HG",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Copper"
+      },
+      {
+        "symbol": "PL",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Platinum"
+      },
+      {
+        "symbol": "PA",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Palladium"
+      },
+      {
+        "symbol": "ZB",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "30-Year T-Bond"
+      },
+      {
+        "symbol": "ZN",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "10-Year T-Note"
+      },
+      {
+        "symbol": "ZF",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "5-Year T-Note"
+      },
+      {
+        "symbol": "ZT",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "2-Year T-Note"
+      },
+      {
+        "symbol": "UB",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Ultra T-Bond"
+      },
+      {
+        "symbol": "ZC",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Corn"
+      },
+      {
+        "symbol": "ZS",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Soybeans"
+      },
+      {
+        "symbol": "ZW",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Wheat"
+      },
+      {
+        "symbol": "ZM",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Soybean Meal"
+      },
+      {
+        "symbol": "ZL",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Soybean Oil"
+      },
+      {
+        "symbol": "6E",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Euro FX"
+      },
+      {
+        "symbol": "6J",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Japanese Yen"
+      },
+      {
+        "symbol": "6B",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "British Pound"
+      },
+      {
+        "symbol": "MES",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Micro E-mini S&P 500"
+      },
+      {
+        "symbol": "MNQ",
+        "dataset": "GLBX.MDP3",
+        "schemas": ["ohlcv-1m", "ohlcv-1d"],
+        "notes": "Micro E-mini Nasdaq 100"
+      }
+    ]
+  }
+}

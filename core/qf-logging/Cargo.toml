@@ -1,0 +1,25 @@
+[package]
+name = "qf-logging"
+version = "0.0.1"
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Magpie structured-logging helper — tracing-subscriber Layer emitting the common JSON schema from docs/tdd/observability.md."
+
+[dependencies]
+tracing = "=0.1.41"
+tracing-subscriber = { version = "=0.3.20", features = ["fmt", "registry", "env-filter"] }
+serde = { version = "=1.0.226", features = ["derive"] }
+serde_json = "=1.0.143"
+# RFC 3339 timestamps with microsecond precision.
+time = { version = "=0.3.47", features = ["formatting", "macros"] }
+
+[dev-dependencies]
+ulid = "=1.2.1"
+
+[[bin]]
+name = "parity-harness"
+path = "src/bin/parity_harness.rs"
+
+[lints]
+workspace = true

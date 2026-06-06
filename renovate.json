@@ -1,0 +1,87 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Renovate config for Magpie. Defaults to quarterly cadence per docs/dependency-pins.md §1; load-bearing deps move to continuous and stable low-velocity deps move to opportunistic via packageRules below. Security advisories always fire ASAP via vulnerabilityAlerts. Every PR goes through admission-workflow review (automerge disabled globally) per docs/dependency-admission.md §4.",
+  "extends": ["config:best-practices", ":dependencyDashboard"],
+  "timezone": "America/New_York",
+
+  "schedule": ["before 5am on the first day of march, june, september, december"],
+
+  "automerge": false,
+
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on monday"]
+  },
+
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"],
+    "labels": ["security"]
+  },
+
+  "packageRules": [
+    {
+      "description": "Continuous cadence — load-bearing primary deps per dependency-pins.md. PR on every upstream release.",
+      "matchPackageNames": ["nats", "@stoqey/ib", "ws", "async-nats", "nautilus-trader", "nats-py"],
+      "schedule": ["at any time"],
+      "groupName": "continuous"
+    },
+    {
+      "description": "Opportunistic cadence — stable, low-velocity. Renovate fires on security advisories via the top-level vulnerabilityAlerts; otherwise quiet.",
+      "matchPackageNames": [
+        "prettier",
+        "ruff",
+        "ulid",
+        "yahoo-finance2",
+        "concurrently",
+        "globals"
+      ],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "opportunistic"
+    },
+    {
+      "description": "Font assets — only bump on operator-visible issues (manual). No auto-PRs.",
+      "matchPackagePatterns": ["^@fontsource/"],
+      "enabled": false
+    },
+    {
+      "description": "Pinned indefinitely per dependency-pins.md §2.1 — unmaintained upstream or replaced in a future phase. Manual review only.",
+      "matchPackageNames": ["@bokuweb/zstd-wasm", "javascript-lp-solver", "unzipper"],
+      "enabled": false
+    },
+    {
+      "description": "GitHub Actions pins (osv-scanner-action, cargo-deny-action, setup-uv, rust-cache, actions/checkout) — opportunistic per dependency-pins.md §5.",
+      "matchManagers": ["github-actions"],
+      "schedule": ["at any time"],
+      "groupName": "ci-actions"
+    },
+    {
+      "description": "Type-only @types/* packages — bump opportunistically when the typed library moves.",
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "types"
+    },
+    {
+      "description": "Test framework cluster — group vitest + jsdom + @testing-library/* into one quarterly PR since they tend to need to bump together.",
+      "matchPackageNames": ["vitest", "jsdom"],
+      "matchPackagePatterns": ["^@testing-library/"],
+      "groupName": "test-framework"
+    },
+    {
+      "description": "Vite + plugins — group so vite's plugin ecosystem moves in lockstep.",
+      "matchPackageNames": ["vite", "@vitejs/plugin-react"],
+      "groupName": "vite"
+    },
+    {
+      "description": "ESLint + plugins — same logic as vite group.",
+      "matchPackageNames": [
+        "eslint",
+        "@eslint/js",
+        "eslint-config-prettier",
+        "typescript-eslint",
+        "@typescript-eslint/parser",
+        "@typescript-eslint/eslint-plugin"
+      ],
+      "groupName": "eslint"
+    }
+  ]
+}

@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "black76::delta_call",
+  "input_columns": ["F", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "black76_delta_call_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 0.9999999999466148,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.9995706959653204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.9661322369276413,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 0.9999999999997031,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.9986907910787799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.9529973031490725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 0.8623639570556175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.9998910783265476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.9529973031490725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 0.8623639570556175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 0.8371243753527122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.9964585127584111,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 0.9054880658933855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 0.83744915226781,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 0.8614652620484008,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 0.9975031223974601,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 0.9975031223442082,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.9970748902824094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.9637199229841649,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 0.9875778004935882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.986284854827076,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.9411589805205618,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 0.8516514999341868,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.9511258149999602,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.9065190762252248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 0.8203059705801735,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 0.7962973378022802,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.901632947864273,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 0.8193194836053457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 0.7577553286744083,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 0.7794860034395462,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 0.9950124791926823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 0.9950124791395634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.9945853163208084,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.9613136322933443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 0.9753099120280431,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.9740330275905508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.9294677158975602,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 0.8410721150923192,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 0.9047388616301847,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.8623076191766393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 0.780299176309478,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 0.7574614583691136,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.8158312285616597,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 0.7413509260920167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 0.6856453751007415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 0.7053081027474082,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 0.9999999999998777,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.998769936954741,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.9487885697887521,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 0.8325372765593118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.9996129869605997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.9317155888104663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 0.8156588423768852,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 0.7545521957126791,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.9637293069632482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 0.8156588423768852,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 0.7545521957126791,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 0.7828079547648997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.9110926784145794,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 0.7746427490754494,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 0.7573560368107664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 0.8282439677878666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 0.9975031223973381,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.9962761306690685,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.9464195608593007,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 0.8304585328801912,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.9871955950076681,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.920141631883302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 0.8055265655079499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 0.7451789977997564,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.9167276740371225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 0.7758786912230832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 0.7177522508835218,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 0.7446299603055966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.8243907467281149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 0.7009257449737073,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 0.6852840808818009,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 0.7494261333170316,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 0.9950124791925605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.9937885511124559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.9440564670551855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 0.8283849795696046,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.9749324543749214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.908711448958162,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 0.7955201538037315,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 0.7359222356213182,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.8720183377982101,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 0.7380386409345006,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 0.6827470605420245,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 0.7083139286074821,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.7459395947222042,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 0.6342238413169408,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 0.6200706783662344,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 0.6781088074792557,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.9920581324891489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.858359295927495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 0.7336072286176466,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 0.6664197963658327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.8808071937130545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 0.7183706286341569,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 0.661785219234545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 0.6711631807782976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 0.750448004627482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 0.661785219234545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 0.6711631807782976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 0.7464561515681719,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 0.7034557162972515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 0.6582574697476354,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 0.7006289824689894,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 0.8067948031179931,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.9895810847577191,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.8562160778265617,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 0.7317755011594498,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 0.6647558277023976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.8698656310263265,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 0.7094468853659276,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 0.6535643912110131,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 0.6628258578455085,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 0.7138482235595088,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 0.6295095732355551,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 0.6384301661978087,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 0.71005105547121,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 0.6365130540370415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 0.5956159893293341,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 0.6339553194984019,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 0.7300181265381152,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.9871102219112905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.8540782110789021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 0.7299483473005174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 0.6630960137650497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.8590599866142017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 0.7006339946169176,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 0.6454456839532949,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 0.6545921028015373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 0.6790334348773686,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 0.5988080290665472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 0.6072935595762368,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 0.6754214568620035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 0.5759408283610599,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 0.5389356339256884,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 0.5736264944450958,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 0.6605477167361966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 0.5062767455151498,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 0.5155763431481322,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 0.5307738077445878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 0.5600755259137515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 0.5139499931072382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 0.5343073841120451,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 0.5667868044043537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 0.6266771954856365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 0.5275959218610984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 0.5667868044043537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 0.6266771954856365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 0.7283276676150778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 0.5386760248962185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 0.5923868139771828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 0.6715635012015289,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 0.7962826087479457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 0.5050126344485862,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 0.5142890121245262,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 0.5294485305120156,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 0.5586770858773668,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 0.5075656037566918,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 0.527670111189013,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 0.5597460656426074,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 0.618892486337379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 0.5018647651208563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 0.5391442857681521,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 0.5961137880095234,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 0.6928067081134378,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 0.48741422352496855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 0.5360137552376624,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 0.6076557844743804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 0.7205062997264293,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 0.5037516797126319,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 0.5130048954089201,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 0.5281265623344824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 0.5572821375745873,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 0.5012605225643827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 0.5211152877944073,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 0.55279278834243,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 0.6112044803992583,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 0.4773885317030981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 0.5128499086740878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 0.5670409755052396,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 0.6590181262489796,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 0.4410306275283346,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 0.48500530232100525,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 0.5498296910784138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 0.6519410599231055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 0.01129447830226249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 0.16587183396152338,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 0.31742073564683837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 0.44269843689401284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 0.14044412199236977,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 0.33920969681907454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 0.46161564432063523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 0.5804874294384468,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 0.2948177898523574,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 0.46161564432063523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 0.5804874294384468,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 0.7102549629606298,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 0.36242452424968075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 0.5215072265846707,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 0.642112519592354,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 0.7859104824269189,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 0.011266277372357197,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 0.16545767229441263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 0.31662817492142004,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 0.44159307308225276,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 0.1386994970895189,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 0.334995966290778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 0.45588136269173885,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 0.5732764987791684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 0.2804393565738304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 0.43910238368764415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 0.5521767234346325,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 0.6756154196658158,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 0.3279352707549921,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 0.4718792523899676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 0.5810074343165101,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 0.7111212117265686,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 0.011238146856722158,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 0.16504454473829233,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 0.3158375931231257,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 0.44049046922863694,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 0.13697654426527459,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 0.33083457956376894,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 0.4502183134532608,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 0.5661551437391644,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 0.2667621677610752,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 0.41768710773208945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 0.5252467468554154,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 0.6426652668325223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 0.2967281036728704,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 0.42697400435727717,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 0.5257172667266484,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 0.6434490811292712,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 1.5955808896350732e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 0.005012730750915018,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 0.09308773757937705,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 0.2669115760334579,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 0.002074411425343703,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 0.1182517977102342,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 0.2962983890103202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 0.4835584104329585,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 0.07025936167972013,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 0.2962983890103202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 0.4835584104329585,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 0.674321961154249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 0.14808979059064187,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 0.3877925575062039,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 0.5822032553623229,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 0.7655777512329119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 1.5915969194487027e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 0.005000214575775495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 0.09285530889234399,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 0.26624513049740134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 0.0020486426727603117,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 0.11678285028712049,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 0.29261771130869246,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 0.4775515513856987,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 0.06683277217638771,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 0.28184774605877555,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 0.45997498846862317,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 0.6414348910369492,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 0.13399718375552233,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 0.3508892164674749,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 0.5267992903541746,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 0.6927233957313642,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 1.58762289674826e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 0.004987729651993348,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 0.09262346055129378,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 0.26558034899427707,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 0.0020231940247625348,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 0.1153321504219607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 0.28898275571979204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 0.47161931073992913,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 0.0635732994151326,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 0.26810186928031243,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 0.43754174356573095,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 0.6101517422557553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 0.12124566577343684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 0.31749769264509087,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 0.47666770970724714,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 0.6268020488066698,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 0.000001116775285192606,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 0.008252140802098462,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 0.11707992285394919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 6.400394658712116e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 0.015816949786196632,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 0.14647810274428663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 0.3622289353968022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 0.003745496666172299,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 0.14647810274428663,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 0.3622289353968022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 0.6210395779628091,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 0.028540141161803145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 0.24874515017290477,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 0.49021063784748664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 0.7360647019314314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 0.0000011139868339959384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 0.008231536216556697,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 0.11678758861686807,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 6.320887679343698e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 0.015620468480374239,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 0.14465852252871936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 0.3577292552944142,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 0.0035628266382324186,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 0.13933428137540424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 0.34456282175500647,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 0.5907511203377291,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 0.025824187639227766,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 0.22507391943141816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 0.4435609278436806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 0.6660188844030445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 0.0000011112053452206098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 0.00821098307814308,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 0.11649598430259597,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 6.242368351535124e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 0.015426427904531992,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 0.14286154550160726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 0.3532854711159717,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 0.003389065532681637,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 0.1325388682859463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 0.32775829464235684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 0.5619398482220102,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 0.023366691266354996,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 0.20365530412555802,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 0.40135052469171056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_delta_call_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 0.6026388077264411,
+      "tolerance": 1e-9
+    }
+  ]
+}

@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "bs::gamma",
+  "input_columns": ["S", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "bs_gamma_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 8.400382206362901e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 8.628211170733024e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.00018379749093935517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.004156839576108007,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 5.948723534794097e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.0004546865512517505,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.004787722477247143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 0.005016699448612444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.000057601503979218994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.004787722477247143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 0.005016699448612444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 0.00276405990785536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.0009786269116926574,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 0.005587527022251522,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 0.0039046402847458263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 0.0017805659151447538,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 1.4013029549019087e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 6.471754511149267e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.00017088649599536392,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.004078008763267752,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 9.630036710258108e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.00033799068233697174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.004424776793685024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 0.004895791653711742,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.000008332586885245953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.003440837388733993,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 0.004533241508200803,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 0.0026448565589164297,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.00012184816969379531,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 0.0038389421273403307,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 0.0034240726422968765,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 0.0016596346643576736,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 2.3085343881647893e-58,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 4.844564200382256e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.00015880302237430077,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.004000172854719775,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 1.464497702048918e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.00024874502426942965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.004079134551947541,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 0.004774812674627625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 9.387549891200684e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.0023758966749201477,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 0.004055614670919345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 0.0025244749123819504,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.000009201817687670328,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 0.002434781174650903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 0.00294319487907886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 0.0015392014596370299,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 5.56348277005424e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.0009609552633515264,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.011419721473541661,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 0.012551989857181282,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.00037356112976465113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.012612377000943285,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 0.011817361179630108,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 0.006762951929560969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.00980705540352035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 0.011817361179630108,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 0.006762951929560969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 0.0032032979671392067,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.013404474064325829,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 0.009215006127776206,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 0.004759051020257929,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 0.002012163284271756,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 2.450102014252954e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.0008419012373928902,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.011037935578627912,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 0.012434075910354024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.00015965049362361963,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.010950810698107615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 0.011353952835030894,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 0.006664340668194276,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.0037453213397338966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 0.009920016583323024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 0.006353181333257262,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 0.0030950527429834747,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.0044061173807431395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 0.007395103651553382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 0.0043385686821414225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 0.0018937982295006268,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 1.0655967966700286e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.0007361232533555118,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.010663580485402056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 0.012315730089866701,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.00006409666686433634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.009413533108259911,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 0.010881478946803849,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 0.006563064070083277,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.0011139505721329424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 0.008000783300131167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 0.005908853970014098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 0.0029829984945863113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.0008784460731794328,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 0.005478344566423452,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 0.0038769187869567693,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 0.0017735062355800687,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.01252074155109586,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.04564113793979067,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 0.03125597781495705,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 0.01683240721015714,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.04593462896615594,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 0.028539704659751856,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 0.015111163228254097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 0.007497990783040929,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 0.03404846337648334,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 0.015111163228254097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 0.007497990783040929,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 0.0034269971510626166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 0.02568061338079477,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 0.010714218329761974,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 0.005152296310470284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 0.002139920271012157,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.009615920605901806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.04370772334730784,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 0.030890601809766785,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 0.016767271547222334,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.03423514693054112,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 0.027085854791263055,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 0.01484517799602005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 0.007429866748664132,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 0.02267625702787211,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 0.013865435960508895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 0.007202127224115881,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 0.0033296585022332984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 0.014720924133576537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 0.00939837723434716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 0.0048027268096054836,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 0.002025271786451412,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.007293281991930272,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.041772581804243536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 0.03051423604261269,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 0.016700300269030903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.0239695993208818,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 0.02545028630613765,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 0.0145474604602216,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 0.007357761626264043,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 0.011761740806249294,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 0.012223550823660152,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 0.006849103524009816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 0.00322700699957213,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 0.005118203098902832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 0.007610298564004597,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 0.004388226605060195,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 0.0019072058064328835,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 0.17840126118800564,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 0.07133709315080179,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 0.03562677197946588,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 0.017730081141180538,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 0.07976352608327637,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 0.03185310853495093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 0.01583350747778998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 0.007733362336056985,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 0.03984439140947641,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 0.01583350747778998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 0.007733362336056985,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 0.0035206532676429953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 0.028139043560650483,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 0.011108852695966625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 0.005300070646880571,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 0.0021969564473386122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 0.1770682567442123,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 0.07117676512787666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 0.035573371881582605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 0.01770682567442123,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 0.07682778306114096,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 0.031496769230776885,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 0.015715200377895172,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 0.007682778306114096,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 0.0342943855019384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 0.015136793277352777,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 0.007504806938338758,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 0.003429438550193839,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 0.020845916182286442,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 0.010152726911428257,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 0.004991418560723049,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 0.002084591618228644,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 0.17356207034541682,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 0.07087490578155518,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 0.03550229623715575,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 0.017681390398498784,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 0.06951665285846963,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 0.030834524158745685,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 0.015558831521469977,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 0.007627756309210483,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 0.0229882140684233,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 0.013903330571693923,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 0.007210539249232959,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 0.0033322460289179965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 0.009366673924261193,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 0.008565498487683289,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 0.004607660065061101,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 0.0019681085792857184,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 0.016910762473101224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 0.04994561410941739,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 0.03319081743635168,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 0.01774054995868683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 0.050773034234453625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 0.030245720237759528,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 0.015918463501546565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 0.007886700518777575,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 0.03624685898599005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 0.015918463501546565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 0.007886700518777575,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 0.0036033047187688577,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 0.027168036173325572,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 0.011275311271491381,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 0.005418043389530409,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 0.0022498711132243544,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 0.02142162814879177,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 0.051816924668764544,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 0.033466043143904035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 0.01776055497490437,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 0.062415660431351494,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 0.031097792192168024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 0.01595444852719303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 0.00785425065849828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 0.03981738196467981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 0.015823747110633883,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 0.007728663076303503,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 0.003518521630390944,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 0.025687178142441525,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 0.010715032087672346,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 0.005152555395267317,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 0.002140014147028024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 0.026798660198110433,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 0.05365093830467234,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 0.03372668352649384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 0.01777836011573514,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 0.0720793094687116,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 0.031655723116059666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 0.015950588541509728,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 0.007817047131754143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 0.03406445177432021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 0.015112828077298102,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 0.007498431968838998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 0.0034271548193827773,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 0.014730833046534145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 0.009399718621137414,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 0.004803048486623236,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 0.002025369084662183,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 6.287800799958081e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 0.003360041476305573,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 0.01749022803303344,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 0.015639654786344166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 0.0017199018018287165,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 0.01828255141643243,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 0.01452312472666441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 0.00797536894633345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 0.016089913695769866,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 0.01452312472666441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 0.00797536894633345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 0.0037387855173466517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 0.0185172738911096,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 0.011017552685116387,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 0.005573748014412661,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 0.002344496321518389,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 1.2552515542241424e-9,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 0.003749088980511149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 0.017959059862713032,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 0.01572867153864586,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 0.003332013943805113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 0.020216653276519683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 0.014823215642842119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 0.007978763962781403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 0.027854716592141292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 0.0155265543458786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 0.007959055196773774,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 0.0036674585457206746,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 0.027591664939143893,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 0.01126048003371052,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 0.0053979546278396864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 0.0022401855285476596,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 2.4747656532611993e-9,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 0.00417482493562877,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 0.018431240972807614,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 0.015816217799814104,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 0.006064102923004977,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 0.022132923216990567,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 0.015091730801160356,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 0.007977173132871778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 0.037555206393862145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 0.01594844441453427,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 0.007863742887334955,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 0.003588509821946936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 0.02493627184292273,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 0.010623927913611912,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 0.005124190173799984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 0.002129839840840014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 2.5924224722868167e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 0.000001340111314146597,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 0.0025879840629864314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 0.010156305621611336,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 9.54647977540264e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 0.004013231897070344,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 0.01040858030148021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 0.007683351598708121,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 0.0014541381982567704,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 0.01040858030148021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 0.007683351598708121,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 0.003878355363501227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 0.005740033307402507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 0.009617500751515838,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 0.005641033396373994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 0.0024621780636054132,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 9.553562087442162e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 0.0000016493711471797475,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 0.0027233209456454474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 0.01027691861352074,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 3.4140822155893607e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 0.004895117538527528,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 0.010887369412856554,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 0.0077338869149144816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 0.004647059917751273,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 0.012274475044825981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 0.007857973202703199,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 0.003827758568078268,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 0.01578857118125223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 0.010842524380813092,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 0.0055987319126383165,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 0.002367097599617236,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 3.476932041708242e-30,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 0.0000020259434715246986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 0.0028643026699537743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 0.010397664176950455,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 0.0000011469943764716878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 0.005911382320371833,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 0.011359747668580491,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 0.007779890662985235,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 0.01156584162180511,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 0.01390729215629014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 0.007956598336286683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 0.0037683890966881553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 0.026340499446898945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 0.011283790839378763,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 0.0054467166676053945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_gamma_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 0.002264338756036502,
+      "tolerance": 1e-9
+    }
+  ]
+}

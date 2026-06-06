@@ -1,0 +1,31 @@
+{
+  "live": {
+    "nats_url": "nats://localhost:4222",
+    "rpc_timeout_ms": 5000,
+    "bridge_heartbeat_timeout_ms": 30000,
+    "cache": {
+      "quote_ttl_ms": 5000,
+      "expirations_ttl_ms": 3600000,
+      "chain_ttl_ms": 30000,
+      "candles_ttl_ms": 60000,
+      "max_entries": 10000
+    },
+    "quality_gate": {
+      "portfolio_risk_engine": { "max_quote_age_ms": 120000 },
+      "order_plane": { "max_quote_age_ms": 30000 }
+    }
+  },
+  "ingestion": {
+    "fred": { "enabled": true, "expected_cadence_hours": 24 },
+    "eia": { "enabled": true, "expected_cadence_hours": 168 },
+    "cftc": { "enabled": true, "expected_cadence_hours": 168 },
+    "fmp": { "enabled": true, "expected_cadence_hours": 168 },
+    "yfinancial": { "enabled": true, "expected_cadence_hours": 24 },
+    "databento": { "enabled": true, "expected_cadence_hours": 24 },
+    "ofac": { "enabled": true, "expected_cadence_hours": 168 },
+    "aisstream": { "enabled": false, "expected_cadence_hours": 4 },
+    "portwatch": { "enabled": true, "expected_cadence_hours": 24 },
+    "gfw": { "enabled": false, "expected_cadence_hours": 24 },
+    "marinecadastre": { "enabled": true, "expected_cadence_hours": 24 }
+  }
+}

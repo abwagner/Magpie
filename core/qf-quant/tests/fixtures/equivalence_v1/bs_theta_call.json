@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "bs::theta_call",
+  "input_columns": ["S", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "bs_theta_call_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": -1.1507372885428635e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": -7.38716709823033e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": -0.0006294434621210794,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": -0.05694300789189052,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": -8.148936349033011e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": -0.0003892864308662248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": -0.01639630985358611,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": -0.068721910254965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": -0.000007890616983454657,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": -0.004099077463396527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": -0.01718047756374125,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": -0.037863834354183015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": -0.00013405848105378868,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": -0.004783841628640002,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": -0.013372055769677486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": -0.024391313906092518,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": -0.009565098433948246,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": -0.009565098488807681,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": -0.010144716781562393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": -0.06492335335099299,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": -0.00946992411433744,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": -0.009745864126853132,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": -0.023963036810885994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": -0.07392268368426032,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": -0.009122323720623302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": -0.011592773845845401,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": -0.02237121637462897,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": -0.04033053718132486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": -0.008688158120417117,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": -0.011035574599073075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": -0.017326984159928064,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": -0.025475887984664623,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": -0.019082431107804866,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": -0.01908243114846507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": -0.01961591864425178,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": -0.07289445317775585,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": -0.0187045736553397,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": -0.018898363654161872,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": -0.03148911805477024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": -0.07912129429376857,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": -0.017353135446412007,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": -0.01879281626271959,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": -0.027477649615153477,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": -0.04284221433259754,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": -0.015702312433905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": -0.016783783028287078,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": -0.021126657481945713,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": -0.026507095642647565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": -7.621209274046905e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": -0.0008227356706776769,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": -0.03910863518336186,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": -0.17194506653672995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": -0.00005117275750200701,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": -0.010798267980259662,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": -0.040470414998733245,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": -0.09264317711727353,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": -0.0013434322470575822,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": -0.010117603749683311,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": -0.023160794279318383,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": -0.043880794070400096,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": -0.0018362293238802507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": -0.007889560040904285,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": -0.01629811993239017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": -0.027563880606462407,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": -0.011614762384112848,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": -0.01232075461095192,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": -0.04870577783374706,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": -0.17928906802219566,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": -0.011518918058708706,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": -0.02005161899312129,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": -0.04756028861551816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": -0.097663197588775,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": -0.011429800693991833,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": -0.01737099334581336,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": -0.02830940571609553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": -0.04634768286833119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": -0.010839398465766627,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": -0.014248046705623102,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": -0.020230419645223808,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": -0.028723614050157796,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": -0.02317152348806274,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": -0.023776214627968688,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": -0.05833451744965902,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": -0.18666500425959814,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": -0.022719861589394715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": -0.02943043444171988,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": -0.05477712413265434,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": -0.10277867876404312,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": -0.021145584253489613,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": -0.024838051352922816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": -0.03367752236872583,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": -0.048849773081497606,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": -0.019096491937732378,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": -0.020612290742963467,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": -0.024407830907843594,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": -0.029822179225939223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": -0.0017151700754925842,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": -0.039076316729272836,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": -0.1070410199142365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": -0.23058092068708416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": -0.006292414926870676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": -0.024434678647047823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": -0.051750559000870194,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": -0.10271220250740999,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": -0.00466417306527169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": -0.012937639750217549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": -0.025678050626852498,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": -0.04694516645291255,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": -0.003517892243944489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": -0.009173132131645527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": -0.017644850378322887,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": -0.029313976315235035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": -0.014217620701595142,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": -0.048530384622977214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": -0.1148804468065864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": -0.23707091621129778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": -0.01646133747447549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": -0.03230176718281151,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": -0.058157560067953966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": -0.10736349791601138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": -0.013780404420837517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": -0.01979590794157253,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": -0.030530021285556267,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": -0.04945075527833819,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": -0.012262662248090691,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": -0.015431969505333258,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": -0.021462566254369986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": -0.030535292904634102,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": -0.02677885523252972,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": -0.058186842415471514,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": -0.12285922892980829,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": -0.2436441214085017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": -0.02734546343375659,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": -0.04070802655235853,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": -0.0648992936494379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": -0.11214665628795728,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": -0.023838062428588668,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": -0.02744726045467678,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": -0.035913863842289014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": -0.05198778415394418,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": -0.02128775080811645,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": -0.022293987084879608,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": -0.025704860115848594,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": -0.031691454763240486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": -0.024438528929863795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": -0.061076278382535786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": -0.12200949308036262,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": -0.24287782385178822,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": -0.010926510422366626,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": -0.027271497033348403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": -0.05422434067736295,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": -0.105936470356945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": -0.005458135809517316,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": -0.013556085169340738,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": -0.02648411758923625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": -0.04822812695401364,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": -0.0038546635014589706,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": -0.009511004020519373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": -0.01815092687287867,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": -0.030095293799159074,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": -0.03183051306402169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": -0.06789955958891994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": -0.1284040453049704,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": -0.24864909466557855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": -0.018847266418391993,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": -0.034012176962075175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": -0.06002947727525185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": -0.11044908888598318,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": -0.01394689096878984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": -0.02000839907845599,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": -0.031183452522741954,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": -0.0507601203971545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": -0.01245711689812895,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": -0.015598092345645726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": -0.021937668479216174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": -0.03134957074690486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": -0.040387016037263905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": -0.07523143685281997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": -0.1350424062773841,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": -0.25451828244288743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": -0.02873962975795641,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": -0.041712405288591804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": -0.06627132409993691,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": -0.11508461731078436,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": -0.024453025254293083,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": -0.02771690958538286,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": -0.036404555958547434,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": -0.05332239749434868,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": -0.022125793278667746,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": -0.02272039563082962,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": -0.026127606402254377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": -0.03253705922159486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": -0.0023165428045344143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": -0.04276165591559708,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": -0.11366718300120442,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": -0.2430212323107785,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": -0.006955210169103236,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": -0.025895308422739318,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": -0.05451528596420057,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": -0.10803699340791198,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": -0.00496532314876576,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": -0.013628821491050143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": -0.027009248351977995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": -0.04936033861327203,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": -0.0037216487908665165,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": -0.009653519924222075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": -0.018554943114830167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": -0.030820152235950058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": -0.0031375883869739665,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": -0.04670307028961122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": -0.11866599630886797,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": -0.2482170486145546,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": -0.011264667203523562,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": -0.031294530621240366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": -0.0598127961591237,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": -0.11244250993401086,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": -0.012007740479205166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": -0.019508531235927603,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": -0.031590881429727505,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": -0.05192196210615037,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": -0.011914818516720717,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": -0.015450018487462486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": -0.022323189924157966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": -0.03210841062520756,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": -0.00420334343013482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": -0.0509310325055666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": -0.12383540623824119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": -0.2534954358747851,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": -0.01748799385525976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": -0.037540914908314384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": -0.0654842309809017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": -0.11696415258711491,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": -0.023260831864694097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": -0.027086042834000252,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": -0.0366616175263657,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": -0.054513152514398304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": -0.02250886893691903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": -0.022817245334022185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": -0.026477988864893,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": -0.03332847838317807,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": -8.613425753367235e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": -0.0028767478393027165,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": -0.05989804120901864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": -0.21424184638827634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": -0.00023560298655187897,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": -0.01565286936338393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": -0.049736728515974,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": -0.10925162940182806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": -0.0022040977665438175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": -0.0124341821289935,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": -0.027312907350457015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": -0.05121623996365276,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": -0.002536612861795836,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": -0.009432836203010607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": -0.019088178131550212,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": -0.03211638796600533,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": -1.7637503551998527e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": -0.003286151602810135,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": -0.06274782853747428,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": -0.21857721716208134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": -0.0005152929598496827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": -0.019072563222109686,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": -0.05428235673529378,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": -0.1134993137176234,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": -0.005931065109025473,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": -0.01745152386378104,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": -0.03172324984034762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": -0.05384338043201329,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": -0.008471247124833804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": -0.014712921006455331,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": -0.02284425556548812,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": -0.033474668371513444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": -3.5675032407131433e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": -0.0037470308988007796,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": -0.06570680641806403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": -0.22297901758584135,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": -0.001065006849676577,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": -0.02306231636596994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": -0.05913344470176045,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": -0.1178545545992934,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": -0.013443609440136789,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": -0.023863699524442155,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": -0.03658047277119393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": -0.05649984527754597,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": -0.02075728736158888,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": -0.021900794419879955,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": -0.026965582269429758,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": -0.03476261612905769,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": -3.5512636606668727e-32,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": -0.000001147355577180306,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": -0.008862959119816547,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": -0.13912747426864847,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": -1.3077369555346085e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": -0.003435986213245158,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": -0.03564582295027469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": -0.10525139176312495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": -0.00019919701345983158,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": -0.008911455737568673,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": -0.026312847940781238,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": -0.05312815566440038,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": -0.0007863059325208915,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": -0.008234161602325204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": -0.01931860752182875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": -0.03372846662473169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": -1.3087071352660497e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": -0.0000014309192697994539,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": -0.009441506752627886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": -0.14221139909158043,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": -5.002098024708587e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": -0.004452608833793487,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": -0.03913523123539902,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": -0.10930989677769576,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": -0.0008265098708383096,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": -0.012798961910880934,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": -0.03052649507594137,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": -0.055859729174364166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": -0.0035982451904629947,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": -0.012916524257808506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": -0.023084771915026083,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": -0.035194053142937914,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": -4.762920605079784e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": -0.0000017811101048206815,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": -0.010053296712228188,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": -0.1453490761964977,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": -1.8005215713620246e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": -0.005719751616738486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": -0.0428825349136539,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": -0.11347124599846724,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": -0.002757150342698549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": -0.01785318980465373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": -0.03516205266296195,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": -0.058622776094786805,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": -0.011407554821324845,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": -0.019242712261932464,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": -0.027207148029138355,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_theta_call_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": -0.036587610477238464,
+      "tolerance": 1e-9
+    }
+  ]
+}

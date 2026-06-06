@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "upstream_unavailable",
+    "message": "Schwab REST 503 — quote endpoint temporarily unreachable"
+  }
+}

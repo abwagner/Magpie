@@ -1,0 +1,21 @@
+{
+  "symbol": "OPT:SPY:2026-06-20:C:515",
+  "underlying": "SPY",
+  "expiration": "2026-06-20",
+  "side": "call",
+  "strike": 515,
+  "dte": 31,
+  "bid": 8.55,
+  "ask": 8.7,
+  "mid": 8.625,
+  "last": 8.6,
+  "volume": 4321,
+  "openInterest": 15234,
+  "underlyingPrice": 512.36,
+  "iv": 0.187,
+  "delta": 0.42,
+  "gamma": 0.018,
+  "theta": -0.21,
+  "vega": 0.53,
+  "tickSize": 0.05
+}

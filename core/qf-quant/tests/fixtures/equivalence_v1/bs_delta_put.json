@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "bs::delta_put",
+  "input_columns": ["S", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "bs_delta_put_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": -5.3385185161403115e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": -0.00042930403467955625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": -0.033867763072358725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": -2.9687363678476686e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": -0.0013092089212201063,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": -0.047002696850927506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": -0.13763604294438248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": -0.00010892167345244452,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": -0.047002696850927506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": -0.13763604294438248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": -0.16287562464728778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": -0.00354148724158887,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": -0.09451193410661451,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": -0.16255084773218997,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": -0.1385347379515992,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": -3.978328777520801e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": -0.0003966424623105258,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": -0.03305268107080095,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": -4.6629367034256575e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": -0.0009439186116833032,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": -0.04238230006433974,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": -0.13216497063927302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": -0.000013966822254407596,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": -0.03069927572308251,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": -0.11672109015889176,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": -0.1506570786599124,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": -0.0003546137215890699,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": -0.05559555316823894,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": -0.1298012003522303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": -0.12340642530862622,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": -2.958921996309982e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": -0.0003662965331907575,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": -0.032253926880296824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": -6.8833827526759706e-15,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": -0.0006743589100350889,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": -0.038139725694148474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": -0.12685718579172378,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": -0.0000014132626120488823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": -0.01940435306819155,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": -0.09829249931980844,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": -0.13912475401102098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": -0.000022370184154851813,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": -0.030727017661036582,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": -0.10223797913221078,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": -0.10954961439798405,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": -1.2234657731369225e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": -0.0012300630452589667,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": -0.051211430211247855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": -0.16746272344068824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": -0.00038701303940025245,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": -0.06828441118953366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": -0.18434115762311476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": -0.24544780428732094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": -0.03627069303675179,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": -0.18434115762311476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": -0.24544780428732094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": -0.21719204523510027,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": -0.08890732158542058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": -0.2253572509245506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": -0.24264396318923365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": -0.17175603221213342,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": -5.306866057708248e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": -0.001063011786603063,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": -0.04894417696975262,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": -0.16461284010433952,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": -0.00015456358551690919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": -0.05623796694654293,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": -0.17096039215956138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": -0.23712267268534648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": -0.011167476404406518,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": -0.13504943226848487,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": -0.21334662996252685,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": -0.2021234351844433,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": -0.020572550394913014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": -0.147682968464786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": -0.19853629840381437,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": -0.15399358509965966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": -2.275957200481571e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": -0.0009169725488735736,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": -0.04675882689883515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": -0.16179839199151558,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": -0.0000582344775017507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": -0.04595721640656114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": -0.15829795243453992,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": -0.22899910884797414,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": -0.0027723105161042705,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": -0.09628649859939353,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": -0.18435156632876104,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": -0.18781668309913702,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": -0.003134645536825742,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": -0.09177712538558336,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": -0.16048604173498138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": -0.1376146103523035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": -0.00794186751085113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": -0.14164070407250495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": -0.2663927713823534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": -0.3335802036341673,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": -0.11919280628694551,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": -0.2816293713658431,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": -0.33821478076545497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": -0.3288368192217024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": -0.24955199537251804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": -0.33821478076545497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": -0.3288368192217024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": -0.2535438484318281,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": -0.29654428370274855,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": -0.34174253025236456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": -0.2993710175310106,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": -0.19320519688200688,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": -0.005853149365692145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": -0.13175917597050057,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": -0.2584918522515163,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": -0.3289247569019046,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": -0.07669057672949253,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": -0.2461872807006531,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": -0.31754907731241533,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": -0.318595620714893,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": -0.11680301373066893,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": -0.26090161649061216,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": -0.2892237862403819,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": -0.23670994259773281,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": -0.10229037548390807,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": -0.2355929395387093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": -0.24799299089686622,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": -0.17383879896485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": -0.004266516660019981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": -0.12239952973019674,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": -0.25075746287012635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": -0.324315531690735,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": -0.047083086553516784,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": -0.21401626683392994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": -0.297792220556935,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": -0.3085819496551081,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": -0.045930593896984506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": -0.19698592250817715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": -0.2530981021822891,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": -0.22068184443554872,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": -0.024738708616448668,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": -0.1552506068767484,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": -0.20317772581076032,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": -0.15591756191201367,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": -0.4937232544848502,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": -0.48442365685186783,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": -0.4692261922554122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": -0.43992447408624846,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": -0.4860500068927618,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": -0.46569261588795485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": -0.4332131955956463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": -0.3733228045143635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": -0.4724040781389016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": -0.4332131955956463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": -0.3733228045143635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": -0.27167233238492217,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": -0.46132397510378154,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": -0.40761318602281715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": -0.32843649879847114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": -0.20371739125205435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": -0.43423360523980126,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": -0.4602849421948161,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": -0.45733355652506,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": -0.43423360523980126,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": -0.3621084760686798,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": -0.4145573442736743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": -0.40847267850992564,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": -0.3621084760686798,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": -0.25399014765985184,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": -0.34040594703998006,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": -0.32990953910660137,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": -0.25399014765985184,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": -0.18358848498741964,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": -0.2865713930734466,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": -0.2734960645511393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": -0.18358848498741964,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": -0.3802679243523599,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": -0.4370721163037625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": -0.44567102215933097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": -0.4285978373121163,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": -0.2627265031272559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": -0.3676849355719942,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": -0.38478505933673024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": -0.351137597132394,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": -0.11936568988158947,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": -0.2627265031272559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": -0.290203637196499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": -0.2371351268957853,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": -0.053801834237863666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": -0.1934653680207714,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": -0.2253742409747539,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": -0.1649328359498613,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": -0.9887055216977375,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": -0.8341281660384766,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": -0.6825792643531616,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": -0.5573015631059872,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": -0.8595558780076302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": -0.6607903031809255,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": -0.5383843556793648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": -0.4195125705615532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": -0.7051822101476426,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": -0.5383843556793648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": -0.4195125705615532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": -0.28974503703937016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": -0.6375754757503193,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": -0.47849277341532925,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": -0.35788748040764595,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": -0.21408951757308115,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": -0.9850366042561437,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": -0.8224501473703149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": -0.6734538869007025,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": -0.551527857159701,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": -0.7944148523264882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": -0.6165210431766599,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": -0.5112736313672692,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": -0.4073024674493714,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": -0.4659071231490435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": -0.43077134450690846,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": -0.372226641635955,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": -0.2712345483755537,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": -0.296771601189322,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": -0.341843034665114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": -0.2994167760269474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": -0.19322197860892654,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": -0.9803859855224288,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": -0.8101897162227375,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": -0.6641442849847978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": -0.5456975816760321,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": -0.7101009122259416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": -0.5682116411440863,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": -0.4833850369952999,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": -0.3953549623621473,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": -0.24983673406747475,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": -0.33835587722594473,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": -0.3289059690138687,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": -0.25357263220953186,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": -0.10239531730851192,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": -0.23567024649890222,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": -0.24803306762307675,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": -0.1738543516928347,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": -0.9999999998404419,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": -0.994987269249085,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": -0.906912262420623,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": -0.7330884239665421,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": -0.9979255885746563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": -0.8817482022897658,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": -0.7037016109896799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": -0.5164415895670416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": -0.9297406383202799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": -0.7037016109896799,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": -0.5164415895670416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": -0.325678038845751,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": -0.8519102094093581,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": -0.6122074424937961,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": -0.41779674463767713,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": -0.23442224876708806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": -0.9999999996760355,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": -0.9943166299876623,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": -0.9031573889243285,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": -0.7290694178671159,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": -0.9956285566285393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": -0.8606333927422758,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": -0.684014048773772,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": -0.5025472365363035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": -0.8348365323067173,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": -0.6193921748454734,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": -0.46144834358408837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": -0.30556212779485037,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": -0.6084272958894303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": -0.4647253064966832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": -0.352301496789414,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": -0.21214252529466715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": -0.9999999993501876,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": -0.9935676226502959,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": -0.8992876067025832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": -0.7250080081000331,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": -0.991285146172517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": -0.8368528857142896,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": -0.6634197763629242,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": -0.48855155841198883,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": -0.6691009899107456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": -0.5189232796860974,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": -0.4106671529619672,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": -0.28633889484241903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": -0.27288420779899614,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": -0.33109201855359727,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": -0.2944952974943903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": -0.19141264626380528,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": -1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": -0.9999988832247149,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": -0.9917478591979015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": -0.8829200771460508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": -0.9999999359960534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": -0.9841830502138034,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": -0.8535218972557134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": -0.6377710646031978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": -0.9962545033338277,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": -0.8535218972557134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": -0.6377710646031978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": -0.37896042203719094,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": -0.9714598588381969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": -0.7512548498270952,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": -0.5097893621525134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": -0.26393529806856864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": -1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": -0.999998613019349,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": -0.9912424683491319,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": -0.880703199898656,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": -0.9999997603079661,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": -0.9798795586407284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": -0.8415496826846163,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": -0.6265540684913634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": -0.9855698030287808,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": -0.8013609912651536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": -0.5913958779132924,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": -0.35653331392873056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": -0.8860101243656797,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": -0.6411899908400013,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": -0.4337516315449994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": -0.23967845567003032,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": -1,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": -0.9999982807310768,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": -0.9907101689159655,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": -0.8784549597009077,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": -0.9999991547485982,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": -0.9746193790771212,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": -0.8288784740246817,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": -0.6150890958980179,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": -0.9550729642510782,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": -0.7370814493225556,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": -0.5408023891634637,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": -0.33507159328587544,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": -0.6784313753737411,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": -0.49978343239978973,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": -0.3664049853950426,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_delta_put_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": -0.21704071970733496,
+      "tolerance": 1e-9
+    }
+  ]
+}

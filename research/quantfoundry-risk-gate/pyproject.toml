@@ -1,0 +1,33 @@
+[project]
+name = "quantfoundry-risk-gate"
+version = "0.0.1"
+description = "QF risk-gate plugin: NT RiskEngine subclass that consults the QF server over NATS-RPC before any strategy order reaches NT's ExecutionEngine."
+requires-python = ">=3.13"
+dependencies = [
+  # NATS-RPC client. Same pin as the broker bridges (Schwab / IBKR) so
+  # the plugin runtime co-exists in a TradingNode without version
+  # conflicts. QF-237 brought this dep in originally.
+  "nats-py>=2.7.0",
+  # NautilusTrader exposes RiskEngine + RiskEngineConfig. The plugin
+  # loads via RiskEngineConfig.risk_module_path; runtime resolution
+  # happens inside NT, so we depend on the version each TradingNode
+  # bundle ships with. Pinned loosely to avoid double-version on the
+  # in-tree workspace.
+  "nautilus-trader>=1.215.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantfoundry_risk_gate"]
+
+[tool.mypy]
+strict = true
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+]

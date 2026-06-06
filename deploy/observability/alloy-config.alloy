@@ -1,0 +1,100 @@
+// Alloy config for Magpie — Phase 1 / docker-compose / single-host.
+//
+// QF processes run on the host (not in Docker) in Phase 1, so Alloy
+// tails log files written by `server/logger.ts` when the LOG_FILE env
+// var is set. See docs/RUNBOOK.md §12 + docs/tdd/observability.md §5.1.
+//
+// The expected file paths (mapped into the container at /var/qf-logs/):
+//   /var/qf-logs/server.log      ← npm run server with LOG_FILE=./data/logs/server.log
+//   /var/qf-logs/supervisor.log  ← npm run supervisor with LOG_FILE=./data/logs/supervisor.log
+//
+// JSON schema per observability.md §3: {ts, level, service,
+// correlation_id, event, payload, ...}. Three fields surface as
+// indexed Loki labels (service, level, container/file); the rest
+// stay in the body for query-time projection.
+
+logging {
+  level  = "info"
+  format = "json"
+}
+
+// ── File discovery ────────────────────────────────────────────────
+
+local.file_match "qf_logs" {
+  path_targets = [
+    {
+      __path__ = "/var/qf-logs/server.log",
+      service  = "qf-server",
+    },
+    {
+      __path__ = "/var/qf-logs/supervisor.log",
+      service  = "qf-supervisor",
+    },
+  ]
+  sync_period = "5s"
+}
+
+// ── Source: tail files ────────────────────────────────────────────
+
+loki.source.file "qf_logs" {
+  targets               = local.file_match.qf_logs.targets
+  forward_to            = [loki.process.qf_json.receiver]
+  legacy_positions_file = "/var/lib/alloy/data/positions.yaml"
+}
+
+// ── JSON parse + label extraction ─────────────────────────────────
+
+loki.process "qf_json" {
+  // Extract the fields we care about from the JSON body. The full
+  // body remains intact for query-time access.
+  stage.json {
+    expressions = {
+      ts             = "ts",
+      level          = "level",
+      service_field  = "service",
+      correlation_id = "correlation_id",
+      event          = "event",
+    }
+  }
+
+  // service + level are low-cardinality and safe to index.
+  // service_field from JSON overrides the file-derived label so that
+  // if the JSON says "signal-ingress" it wins over "qf-server".
+  stage.labels {
+    values = {
+      service = "service_field",
+      level   = "",
+    }
+  }
+
+  // correlation_id + event go into structured metadata — queryable
+  // by Grafana but not indexed (cardinality protection per
+  // observability.md §3.1).
+  stage.structured_metadata {
+    values = {
+      correlation_id = "",
+      event          = "",
+    }
+  }
+
+  // Use the log's own timestamp rather than ingest wall clock.
+  stage.timestamp {
+    source           = "ts"
+    format           = "RFC3339Nano"
+    fallback_formats = ["RFC3339"]
+  }
+
+  forward_to = [loki.write.default.receiver]
+}
+
+// ── Sink ──────────────────────────────────────────────────────────
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
+
+// ── Self-metrics ──────────────────────────────────────────────────
+// Alloy exposes /metrics on its own port (12345); Prometheus scrapes
+// it via the alloy job in prometheus.yml. No extra config needed here.

@@ -1,0 +1,38 @@
+[package]
+name = "qf-quant"
+version = "0.0.1"
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Magpie math hot-path crate — Black-Scholes, Black-76, IV, normal CDF/PDF, BL PDF, futures specs. Bug-for-bug equivalent to src/lib/{bs,probability,...}.js per docs/polyglot-migration-tdd.md §8.1.1."
+
+# When built with `--features python` (or via `maturin develop` / `maturin build`),
+# this crate exposes a `qf_quant` Python module via PyO3. Pure-Rust consumers
+# don't pull in CPython linkage — see docs/polyglot-migration-tdd.md §8.1.1.
+[features]
+default = []
+python = ["dep:pyo3"]
+
+[dependencies]
+# Optional PyO3 binding. abi3-py310 = single wheel across Python 3.10+.
+pyo3 = { version = "=0.28.3", features = ["extension-module", "abi3-py310"], optional = true }
+
+[dev-dependencies]
+criterion = { version = "=0.7.0", default-features = false, features = ["plotters", "cargo_bench_support"] }
+# Equivalence-harness fixture parsing (tests/equivalence.rs).
+serde = { version = "=1.0.226", features = ["derive"] }
+serde_json = "=1.0.143"
+toml = "=0.9.7"
+
+# When built as a Python extension (maturin build / develop), the crate type
+# must be cdylib. Pure-Rust callers get the default rlib via this entry.
+[lib]
+name = "qf_quant"
+crate-type = ["cdylib", "rlib"]
+
+[[bench]]
+name = "qf_quant_bench"
+harness = false
+
+[lints]
+workspace = true

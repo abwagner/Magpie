@@ -1,0 +1,29 @@
+{
+  "model": {
+    "optimize": "obj",
+    "opType": "max",
+    "constraints": {
+      "lo": {
+        "min": 5
+      },
+      "hi": {
+        "max": 2
+      }
+    },
+    "variables": {
+      "x": {
+        "obj": 1,
+        "lo": 1,
+        "hi": 1
+      }
+    },
+    "ints": {}
+  },
+  "expected": {
+    "feasible": false,
+    "objectiveValue": 0,
+    "values": {
+      "x": 5
+    }
+  }
+}

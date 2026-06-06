@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "bs::vega",
+  "input_columns": ["S", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "bs_vega_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 4.200191103181451e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 1.0785263963416281e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.00045949372734838795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.020784197880540038,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 1.4871808836985241e-12,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.002841790945323441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.0598465309655893,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 0.12541748621531112,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.0005760150397921899,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.1196930619311786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 0.25083497243062225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 0.276405990785536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.01957253823385315,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 0.27937635111257614,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 0.39046402847458267,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 0.3561131830289508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 7.006514774509543e-58,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 8.089693138936584e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.0004272162399884098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.020390043816338764,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 2.407509177564527e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.002112441764606073,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.055309709921062794,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 0.12239479134279355,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.00008332586885245952,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.08602093471834982,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 0.22666207541004016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 0.264485655891643,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.0024369633938759066,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 0.19194710636701653,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 0.34240726422968765,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 0.33192693287153474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 1.1542671940823945e-58,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 6.055705250477819e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.0003970075559357519,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.020000864273598876,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 3.661244255122294e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.0015546564016839354,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.05098918189934427,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 0.11937031686569063,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 0.000009387549891200684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.05939741687300369,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 0.2027807335459673,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 0.25244749123819504,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.00018403635375340656,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 0.12173905873254517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 0.2943194879078861,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 0.30784029192740603,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 2.78174138502712e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.0012011940791894083,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.02854930368385416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 0.06275994928590642,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.000933902824411628,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.07882735625589553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 0.14771701474537635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 0.16907379823902421,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.0980705540352035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 0.2954340294907527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 0.33814759647804843,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 0.3203297967139207,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.26808948128651655,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 0.4607503063888103,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 0.47590510202579295,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 0.4024326568543512,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 1.225051007126477e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.001052376546741113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.02759483894656978,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 0.062170379551770134,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.000399126234059049,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.0684425668631726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 0.1419244104378862,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 0.1666085167048569,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.037453213397338966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 0.24800041458307562,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 0.31765906666286314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 0.3095052742983475,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.0881223476148628,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 0.3697551825776691,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 0.43385686821414227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 0.37875964590012534,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 5.327983983350143e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.0009201540666943899,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.026658951213505144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 0.061578650449333514,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.00016024166716084088,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.058834581926624455,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 0.1360184868350481,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 0.16407660175208194,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.011139505721329426,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 0.20001958250327917,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 0.29544269850070487,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 0.29829984945863114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.01756892146358866,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 0.2739172283211726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 0.387691878695677,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 0.3547012471160138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.006260370775547931,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.05705142242473833,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 0.07813994453739263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 0.08416203605078572,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.11483657241538986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 0.17837315412344912,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 0.1888895403531762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 0.18744976957602322,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 0.34048463376483334,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 0.3777790807063524,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 0.37489953915204643,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 0.3426997151062616,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 0.5136122676158954,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 0.5357109164880988,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 0.5152296310470283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 0.4279840542024315,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.004807960302950904,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.0546346541841348,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 0.07722650452441697,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 0.08383635773611166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.08558786732635278,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 0.1692865924453941,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 0.18556472495025061,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 0.1857466687166033,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 0.22676257027872104,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 0.3466358990127224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 0.36010636120579403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 0.33296585022332986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 0.29441848267153076,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 0.46991886171735797,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 0.4802726809605485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 0.40505435729028244,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.003646640995965136,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.05221572725530443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 0.07628559010653174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 0.08350150134515452,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.0599239983022045,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 0.1590642894133603,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 0.18184325575277,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 0.18394404065660108,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 0.11761740806249295,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 0.3055887705915038,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 0.34245517620049076,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 0.32270069995721307,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 0.10236406197805664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 0.38051492820022986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 0.43882266050601954,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 0.38144116128657674,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 0.08920063059400282,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 0.08917136643850224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 0.08906692994866469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 0.08865040570590271,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 0.1994088152081909,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 0.19908192834344335,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 0.19791884347237476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 0.19333405840142465,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 0.3984439140947641,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 0.3958376869447495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 0.3866681168028493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 0.3520653267642996,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 0.5627808712130097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 0.5554426347983314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 0.5300070646880573,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 0.43939128946772243,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 0.08853412837210616,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 0.08897095640984583,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 0.08893342970395653,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 0.08853412837210616,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 0.1920694576528524,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 0.19685480769235553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 0.19644000472368967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 0.1920694576528524,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 0.34294385501938396,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 0.37841983193381945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 0.3752403469169379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 0.34294385501938396,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 0.41691832364572884,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 0.5076363455714129,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 0.49914185607230493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 0.41691832364572884,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 0.08678103517270841,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 0.088593632226944,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 0.08875574059288939,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 0.08840695199249395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 0.17379163214617407,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 0.19271577599216053,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 0.19448539401837472,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 0.19069390773026207,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 0.22988214068423304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 0.34758326429234815,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 0.360526962461648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 0.33322460289179967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 0.18733347848522386,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 0.4282749243841645,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 0.4607660065061101,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 0.39362171585714373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 0.008455381236550612,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 0.062432017636771746,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 0.08297704359087923,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 0.08870274979343415,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 0.12693258558613404,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 0.18903575148599702,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 0.1989807937693321,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 0.19716751296943935,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 0.3624685898599005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 0.3979615875386642,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 0.3943350259388787,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 0.3603304718768858,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 0.5433607234665114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 0.5637655635745691,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 0.5418043389530409,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 0.4499742226448709,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 0.010710814074395886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 0.06477115583595569,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 0.0836651078597601,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 0.08880277487452187,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 0.15603915107837873,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 0.19436120120105016,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 0.19943060658991282,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 0.19635626646245702,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 0.3981738196467981,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 0.39559367776584714,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 0.3864331538151751,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 0.35185216303909445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 0.5137435628488305,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 0.5357516043836174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 0.5152555395267318,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 0.4280028294056048,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 0.013399330099055216,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 0.06706367288084043,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 0.08431670881623463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 0.0888918005786757,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 0.18019827367177904,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 0.1978482694753729,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 0.19938235676887162,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 0.19542617829385356,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 0.34064451774320204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 0.3778207019324526,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 0.3749215984419499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 0.3427154819382778,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 0.2946166609306829,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 0.4699859310568707,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 0.4803048486623237,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 0.40507381693243666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 3.1439003999790404e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 0.0042000518453819665,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 0.043725570082583605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 0.07819827393172085,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 0.004299754504571791,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 0.1142659463527027,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 0.18153905908330512,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 0.1993842236583362,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 0.1608991369576987,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 0.36307811816661023,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 0.3987684473166724,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 0.3738785517346651,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 0.37034547782219207,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 0.5508776342558195,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 0.5573748014412662,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 0.46889926430367784,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 6.276257771120713e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 0.004686361225638937,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 0.044897649656782584,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 0.07864335769322932,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 0.008330034859512782,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 0.12635408297824802,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 0.18529019553552648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 0.19946909906953508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 0.27854716592141293,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 0.388163858646965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 0.3979527598386887,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 0.36674585457206743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 0.5518332987828779,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 0.563024001685526,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 0.5397954627839687,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 0.448037105709532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 1.2373828266305996e-9,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 0.005218531169535964,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 0.046078102432019034,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 0.07908108899907053,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 0.01516025730751244,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 0.13833077010619105,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 0.1886466350145045,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 0.19942932832179444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 0.37555206393862145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 0.39871111036335677,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 0.39318714436674773,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 0.35885098219469364,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 0.49872543685845455,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 0.5311963956805956,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 0.5124190173799984,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 0.42596796816800286,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 1.2962112361434086e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 0.0000016751391426832466,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 0.00646996015746608,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 0.05078152810805669,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 2.38661994385066e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 0.025082699356689653,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 0.13010725376850263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 0.19208378996770303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 0.014541381982567703,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 0.26021450753700526,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 0.38416757993540607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 0.38783553635012274,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 0.11480066614805015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 0.4808750375757919,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 0.5641033396373994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 0.49243561272108266,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 4.776781043721081e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 0.0000020617139339746843,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 0.00680830236411362,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 0.05138459306760371,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 8.535205538973402e-7,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 0.030594484615797054,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 0.13609211766070692,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 0.19334717287286204,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 0.04647059917751273,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 0.3068618761206496,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 0.39289866013515995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 0.38277585680782683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 0.31577142362504457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 0.5421262190406546,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 0.5598731912638316,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 0.47341951992344716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 1.738466020854121e-30,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 0.0000025324293394058735,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 0.007160756674884436,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 0.05198832088475228,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 0.0000028674859411792193,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 0.036946139502323956,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 0.14199684585725614,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 0.19449726657463084,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 0.11565841621805109,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 0.3476823039072535,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 0.3978299168143341,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 0.3768389096688155,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 0.5268099889379789,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 0.5641895419689382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 0.5446716667605395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_vega_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 0.45286775120730044,
+      "tolerance": 1e-9
+    }
+  ]
+}

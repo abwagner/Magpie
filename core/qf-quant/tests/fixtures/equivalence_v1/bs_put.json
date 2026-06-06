@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "bs::put",
+  "input_columns": ["S", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "bs_put_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 4.387823437923544e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.0013986699635221145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.3916181328928672,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 1.965094753586527e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.005270111456035509,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.6597684540386011,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 6.198396073120582,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.00028636244738589056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.6597684540386011,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 6.198396073120582,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 24.0309910586139,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.017952238394048914,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 2.3893681398186217,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 13.164695923476081,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 35.962055557464936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 3.246091530936405e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.0012842160697848631,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.3803473252686054,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 2.8214908643467845e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.0036878119815850485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.5814671507955547,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 5.857523446718298,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.000032459159690162876,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.3941167476577516,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 4.93510886938941,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 21.593086317030295,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.0014517810071000836,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 1.2127576683369004,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 9.473330917241203,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 30.98746087937017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 0,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 2.3967074439821884e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.0011786183284540272,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.3693694926379445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 1.4126632775200017e-15,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.0025588141309111634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.5116222720013379,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 5.5338848219368835,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 0.000002934346710069301,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.22908170589696542,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 3.9111316217179546,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 19.275807166531553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.00007622213381882183,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 0.5863340668913093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 6.76499098162156,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 26.5653651618482,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 3.4139358007223564e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.002155323161412148,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.3059622546517904,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 2.9937617183174225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.0005496662814089004,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.49067201787763803,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 3.89536114152304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 14.473127740133283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.17953599065561487,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 3.89536114152304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 14.473127740133283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 34.794190763785366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.7804820436774591,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 7.946738957879848,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 23.85730442112319,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 47.44864664929288,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 1.082260235206872e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.0018382988803361255,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.2895589861531116,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 2.92387586672443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.00020534847831637712,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.3860645607128186,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 3.5067878085136037,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 13.72457019481553,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.04552971571354458,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 2.5414100770435812,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 11.690709690242212,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 31.80934692364615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.1324340742120258,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 4.351540557737939,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 17.839704336076892,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 41.20926240700137,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 5.771245450964043e-15,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.0015652511409002812,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.27394541776477777,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 2.8554604780285153,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.00007260679955078692,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.30182613278681636,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 3.1535310298140136,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 13.012457653017321,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.009542242275522639,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 1.626091047858841,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 9.413741879507405,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 28.977765204992156,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.015676921812425915,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 2.2993670313267653,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 12.916411861460816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 35.65501058072338,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.006721268946622061,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.5370614578457769,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 2.6649900765653136,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 8.154468972147669,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.38202537786736634,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 3.263499575943335,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 9.5296850852489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 22.027296236959607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 2.1509284842810814,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 9.5296850852489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 22.027296236959607,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 42.029643545293084,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 4.035178057077228,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 15.001084493833098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 30.915397964304983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 55.289480660235014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.004771175446789733,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.48834220364900993,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 2.551394958695962,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 7.979787317327968,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.21821674083952924,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 2.684854987723515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 8.644244720114468,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 21.19346905495955,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 0.7657987102591868,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 6.425480458207762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 18.62844192186593,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 38.67113775925561,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 0.934006887539832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 8.486741085282187,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 24.551692206965726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 48.195215258243394,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.0033532545344964193,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.4435758720751881,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 2.4422041751506605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 7.808602664745372,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.11999111456927292,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 2.200662749870137,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 7.836053519319776,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 20.349032539338886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 0.23843786249371757,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 4.277058126966171,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 15.17793552095505,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 35.48630808657157,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 0.16436178058978168,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 4.663491007437223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 18.491742101737284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 41.87414578702331,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 1.2553491030299497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 3.115268629626435,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 6.154761548917563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 12.015105182750304,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 2.789998621447644,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 6.861476822409031,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 13.357360880870743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 25.335439097127306,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 5.519184372219684,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 13.357360880870743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 25.335439097127306,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 45.66553352301557,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 7.73520497924369,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 18.477362795436562,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 34.312700240305816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 59.256521749589126,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 1.032463092619892,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 2.9098150703780377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 6.001722900521237,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 11.871128099165851,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 1.7896706493995893,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 5.867961491227469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 12.5753375364364,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 24.546414186252584,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 2.2060091138587907,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 9.625992456799523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 22.11295858186398,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 42.11890380424225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 2.0338561307990872,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 11.415071569464107,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 27.77461946828022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 51.73218867531294,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 0.842882120727424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 2.6833723434590837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 5.808065755330105,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 11.71925319645677,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 1.1170187028015945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 4.870106338354013,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 11.647546322765237,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 23.746193765755095,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 0.7877376714789026,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 6.4922795407664395,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 18.71848945065991,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 38.755779705544555,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 0.4170833790051436,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 6.36427722720321,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 21.56563865535808,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 45.02495451827676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 5.009848728126968,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 5.619610812060287,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 7.922472771211176,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 13.749591166269774,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 5.4468362584560595,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 8.561796428576287,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 15.20275718503953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 28.302638819343485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 7.371620560787804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 15.20275718503953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 28.302638819343485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 49.312640824897336,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 9.383811676878786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 20.950286357271303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 37.63296680816113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 63.25160565038975,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 4.7514003500007504,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 5.416179180318366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 7.781744704527938,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 13.656084739951908,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 4.437773664838218,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 7.954692400187014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 14.796107133353267,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 27.56016563846911,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 5.449253724152726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 13.288096541074388,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 25.259567879556258,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 45.57747439921633,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 4.039771745223838,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 15.007441016740366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 30.920849726410786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 55.29574817167028,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 4.494838342051878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 5.218252249740885,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 7.646193128344692,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 13.566216991419793,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 3.605926703038449,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 7.4861719709052466,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 14.433950752025325,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 26.805244171497854,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 2.154445068054926,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 9.535872568636947,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 22.03282763164154,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 42.03539996440762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 0.935242245849512,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 8.490879645171301,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 24.556869036811424,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 48.2008020384138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 15.000000000053305,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 15.009769495339683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 15.572592237591152,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 19.25799400762716,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 15.003305082176382,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 15.859570783950943,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 20.409779566816454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 33.32587158593832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 15.363813444150367,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 20.409779566816454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 33.32587158593832,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 56.63678477786499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 16.286993454573377,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 25.438060987023825,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 44.05934547899161,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 71.31809128109444,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 14.712859075818159,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 14.724095504622383,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 15.314468427538728,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 19.059385870389065,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 13.578966730844854,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 14.632479239416114,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 19.489229082827563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 32.648129542655454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 10.465671883165712,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 17.097006789174422,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 30.643205543980038,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 52.52434845646749,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 8.965134413049434,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 20.557449288033865,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 37.01195346312283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 62.4955242873865,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 14.426435107383853,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 14.439337985345944,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 15.058343171061594,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 18.86311009953961,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 12.176901726189541,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 13.463281629134528,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 18.628224100044676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 31.995016398227314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 6.8546328234925795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 14.900360636731342,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 27.7676482547677,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 48.623469424197474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 3.569652875730263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 14.306709846083578,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 30.33250874361007,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 54.62121514852752,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 30,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 30.000001242061046,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 30.033466097697996,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 31.443787924606625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 30.000000057036374,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 30.077775295555384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 32.116909296759445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 42.246131981958875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 30.01246888141479,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 32.116909296759445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 42.246131981958875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 67.68218596223022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 30.172682714035687,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 35.66241871589493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 53.203099236535635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 83.58387348066549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 29.6754059116698,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 29.67540746873523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 29.711183423709244,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 31.153733905341397,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 28.38511428847373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 28.48759832923635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 30.72719309874398,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 41.15615222933732,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 23.71638274284635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 26.80677313930903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 38.12615340697156,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 63.00632762718827,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 18.549233198979138,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 26.985015558754355,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 45.70316402644228,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 73.4541907959485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 29.351622295048713,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 29.35162424340696,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 29.389855778241454,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 30.86520705526418,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 26.790289395638112,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 26.92432700603763,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 29.378034583634488,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 40.105864228737715,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 17.84088997961976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 22.216864613839746,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 34.66461241210079,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 58.568027104523104,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 10.12453498837732,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 21.482601277163788,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 38.572367399345794,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "bs_put_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 64.40308548930884,
+      "tolerance": 1e-9
+    }
+  ]
+}

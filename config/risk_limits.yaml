@@ -1,0 +1,10 @@
+version: 1
+portfolios:
+  main:
+    max_net_delta: 50
+    max_net_vega: 100
+    max_daily_loss: 5000
+    max_symbol_concentration: 20
+    max_drawdown: 10000
+    max_order_size: 10
+    max_open_orders: 20

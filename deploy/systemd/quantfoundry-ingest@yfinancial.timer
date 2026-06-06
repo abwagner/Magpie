@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie yfinancial ingest — Sun 18:30 ET
+
+[Timer]
+OnCalendar=Sun *-*-* 18:30:00
+Unit=quantfoundry-ingest@yfinancial.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

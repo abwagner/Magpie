@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie CFTC COT ingest — Friday 20:00 ET
+
+[Timer]
+OnCalendar=Fri *-*-* 20:00:00
+Unit=quantfoundry-ingest@cftc.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

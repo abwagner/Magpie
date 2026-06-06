@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "black76::gamma",
+  "input_columns": ["F", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "black76_gamma_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": 8.400382206362901e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": 8.628211170733025e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": 0.00018379749093935517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": 0.004156839576108007,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": 5.948723534794097e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": 0.00045468655125175056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": 0.004787722477247144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": 0.005016699448612445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": 0.00005760150397921899,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": 0.004787722477247144,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": 0.005016699448612445,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": 0.00276405990785536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": 0.0009786269116926574,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": 0.005587527022251522,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": 0.0039046402847458263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": 0.0017805659151447538,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": 8.379407480179059e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": 8.606667583510837e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": 0.00018333857110082566,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": 0.0041464604564730705,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": 5.874827304238142e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": 0.0004490383441993523,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": 0.004728248433454852,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": 0.004954381007199546,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": 0.00005479224548052806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": 0.004554222496700934,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": 0.004772032129396666,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": 0.0026292551154347508,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": 0.000885498247996489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": 0.005055803524020221,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": 0.0035330646336086072,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": 0.0016111226653024145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": 8.358485125319245e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": 8.585177787989062e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": 0.00018288079712896235,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": 0.004136107252229486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": 5.801849027400903e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": 0.0004434603003018107,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": 0.004669513188099983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": 0.0048928366978987885,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": 0.000052119996135544555,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": 0.004332110444585033,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": 0.004539297376144906,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": 0.0025010248303205564,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": 0.000801231948392509,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": 0.004574680206771562,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": 0.003196849080828576,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": 0.00145780407261145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": 5.563482770054239e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": 0.0009609552633515266,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": 0.01141972147354166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": 0.012551989857181284,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": 0.00037356112976465113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": 0.012612377000943285,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": 0.011817361179630108,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": 0.006762951929560969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": 0.00980705540352035,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": 0.011817361179630108,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": 0.006762951929560969,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": 0.0032032979671392063,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": 0.013404474064325829,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": 0.009215006127776206,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": 0.004759051020257929,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": 0.002012163284271756,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": 5.549591434533574e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": 0.0009585558756774212,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": 0.01139120782676713,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": 0.012520649074839579,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": 0.0003689206788829836,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": 0.012455703537591185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": 0.011670563561420882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": 0.006678941191441673,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": 0.00932875966753728,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": 0.011241021674016628,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": 0.006433118871882274,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": 0.0030470712817861345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": 0.012128869702494568,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": 0.008338082351842567,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": 0.004306167437471584,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": 0.0018206806308072119,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": 5.53573478397744e-13,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": 0.0009561624789806595,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": 0.0113627653750786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": 0.01248938654659535,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": 0.0003643378726079664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": 0.01230097630325816,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": 0.011525589492512074,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": 0.00659597405147195,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": 0.00887379068985696,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": 0.01069279057777489,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": 0.006119371962245257,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": 0.0028984638617860774,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": 0.010974655145299762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": 0.0075446089066124305,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": 0.0038963814257523123,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": 0.0016474199610476796,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": 0.01252074155109586,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": 0.04564113793979066,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": 0.03125597781495705,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": 0.016832407210157142,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": 0.04593462896615594,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": 0.028539704659751853,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": 0.015111163228254097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": 0.00749799078304093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": 0.03404846337648333,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": 0.015111163228254097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": 0.00749799078304093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": 0.0034269971510626166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": 0.025680613380794765,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": 0.010714218329761974,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": 0.005152296310470283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": 0.002139920271012157,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": 0.012489478791949737,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": 0.04552717760471436,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": 0.031177935464005397,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": 0.016790378749597268,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": 0.045364019840898814,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": 0.028185178754622717,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": 0.014923449343863202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": 0.007404849245638957,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": 0.03238790022274588,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": 0.014374183101148496,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": 0.007132309457463681,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": 0.00325986052777088,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": 0.023236779905058052,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": 0.009694625649775376,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": 0.004661990490522132,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": 0.001936279932825451,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": 0.012458294092086724,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": 0.0454135018146463,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": 0.03110008797525189,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": 0.016748455228959236,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": 0.044800498936035646,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": 0.027835056841017173,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": 0.014738067278794278,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": 0.007312864730996897,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": 0.03080832368966911,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": 0.01367314591897337,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": 0.006784462620584178,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": 0.0031008752537840874,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": 0.0210255079327626,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": 0.008772060041767936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": 0.004218343438352242,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": 0.0017520185350126225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": 0.17840126118800564,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": 0.07133709315080179,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": 0.03562677197946588,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": 0.017730081141180538,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": 0.07976352608327637,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": 0.03185310853495093,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": 0.01583350747778998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": 0.007733362336056986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": 0.039844391409476404,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": 0.01583350747778998,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": 0.007733362336056986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": 0.0035206532676429953,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": 0.02813904356065048,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": 0.011108852695966625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": 0.005300070646880572,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": 0.0021969564473386122,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": 0.17795581507468045,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": 0.07115897316068324,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": 0.03553781629045955,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": 0.017685811298687907,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": 0.07877268764895842,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": 0.031457422865839725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": 0.015636820489019255,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": 0.007637296966265384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": 0.037901157510017436,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": 0.015061298205925914,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": 0.0073562018043829835,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": 0.0033489489816466043,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": 0.025461259521420376,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": 0.010051705590760249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": 0.004795702239531594,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": 0.0019878883993473245,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": 0.17751148118577875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": 0.0709812979143786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": 0.03544908271292073,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": 0.017641651992573466,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": 0.0777941576073499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": 0.031066652483051925,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": 0.015442576785263293,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": 0.007542424939662959,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": 0.03605269624616479,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": 0.014326750024656545,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": 0.006997435608894339,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": 0.0031856188124939518,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": 0.023038300325305502,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": 0.009095159333601124,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": 0.004339330832087037,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": 0.0017987158066090692,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": 0.016910762473101224,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": 0.04994561410941739,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": 0.03319081743635168,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": 0.01774054995868683,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": 0.05077303423445362,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": 0.030245720237759528,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": 0.015918463501546565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": 0.007886700518777575,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": 0.03624685898599005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": 0.015918463501546565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": 0.007886700518777575,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": 0.0036033047187688577,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": 0.02716803617332557,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": 0.011275311271491381,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": 0.005418043389530409,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": 0.0022498711132243544,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": 0.016868538369040263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": 0.04982090602420249,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": 0.03310794402768486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": 0.01769625397683824,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": 0.050142321473662245,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": 0.02987000186675983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": 0.01572072117209949,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": 0.007788730351488311,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": 0.03447907881320185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": 0.015142110875511762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": 0.0075020615956862755,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": 0.0034275694739352076,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": 0.024582655704179456,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": 0.010202323538448013,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": 0.004902448391389493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": 0.002035767569003615,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": 0.016826419693399024,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": 0.04969650931981241,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": 0.033025277543775995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": 0.01765206859663462,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": 0.04951944355261648,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": 0.029498950744322804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": 0.015525435237319606,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": 0.007691977189162762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": 0.03279751429679676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": 0.014403621413839053,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": 0.007136181734233563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": 0.0032604049381276022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": 0.022243306715836693,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": 0.009231444088496795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": 0.004435918744519413,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": 0.0018420386708585732,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": 6.28780079995808e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": 0.0033600414763055734,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": 0.01749022803303344,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": 0.015639654786344166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": 0.0017199018018287163,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": 0.01828255141643243,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": 0.01452312472666441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": 0.00797536894633345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": 0.016089913695769866,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": 0.01452312472666441,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": 0.00797536894633345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": 0.0037387855173466517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": 0.0185172738911096,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": 0.011017552685116387,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": 0.005573748014412661,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": 0.002344496321518389,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 6.272100930971432e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": 0.0033516518639997808,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": 0.017446557074394443,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": 0.015600604482596689,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 0.0016985368385154672,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": 0.018055441915256636,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": 0.01434271557385754,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": 0.007876297322147192,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": 0.015305199345093326,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": 0.013814823575697075,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": 0.007586405613001632,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": 0.00355644279599726,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": 0.016755122296696297,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": 0.009969093924675865,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": 0.005043335762144208,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": 0.002121387998157504,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 6.256440262636021e-10,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 0.003343283199529049,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": 0.017402995156793957,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": 0.015561651682678009,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 0.001677437275038936,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": 0.017831153613614183,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": 0.014164547499539569,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": 0.007778456385441972,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 0.014558755964901828,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": 0.013141066679489223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": 0.007216412245284529,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": 0.0033829930341061835,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 0.015160661597819413,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": 0.00902040920696168,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": 0.0045633989093069845,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": 0.0019195112389053088,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": 2.5924224722868167e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": 0.0000013401113141465971,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": 0.002587984062986432,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": 0.010156305621611336,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": 9.54647977540264e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": 0.004013231897070344,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": 0.01040858030148021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": 0.007683351598708121,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": 0.0014541381982567704,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": 0.01040858030148021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": 0.007683351598708121,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": 0.003878355363501227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": 0.005740033307402507,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": 0.009617500751515837,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": 0.0056410333963739945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": 0.0024621780636054132,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 2.5859495106794427e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 0.000001336765220221394,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": 0.0025815221835438305,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": 0.010130946569580183,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 9.427891499051464e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 0.003963378729780618,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": 0.010279282840399768,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": 0.007587907472273314,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 0.0013832190414722928,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": 0.009900947850046488,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": 0.007308630119475768,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": 0.0036892057404325296,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 0.005193796917310493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": 0.00870227454796049,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": 0.005104218093429664,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": 0.0022278708418175005,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 2.5794927112649285e-31,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 0.000001333427481083169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": 0.0025750764386232804,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": 0.010105650835998072,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 9.310776349928206e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 0.003914144848480976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": 0.010151591538176498,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": 0.007493648971818767,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 0.0013157586527781182,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": 0.009418072925411303,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": 0.006952184022437519,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": 0.0035092810533363657,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 0.004699541792462353,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 0.007874143633016617,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": 0.004618487520751327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_gamma_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": 0.002015860900227747,
+      "tolerance": 1e-9
+    }
+  ]
+}

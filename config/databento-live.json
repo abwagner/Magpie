@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "_doc": "Approved-only whitelist for Databento LIVE subscriptions. Only entries verified to preflight at $0.00 USD per day belong here. The sidecar (data-sources/pipelines/databento_live.py) calls metadata.get_cost(start=now, end=now+1day) at startup and refuses to subscribe to any entry that returns non-zero. Live = L0 (Status, Statistics, Definitions, Trades, OHLCV) + L1 (TBBO, BBO, MBP-1) on GLBX.MDP3 (CME Globex) only. See docs/UNIVERSES.md.",
+  "subscriptions": [
+    {
+      "dataset": "GLBX.MDP3",
+      "schema": "trades",
+      "symbols": ["ES.c.0", "NQ.c.0", "CL.c.0", "NG.c.0"],
+      "stype_in": "continuous"
+    },
+    {
+      "dataset": "GLBX.MDP3",
+      "schema": "mbp-1",
+      "symbols": ["ES.c.0", "NQ.c.0", "CL.c.0"],
+      "stype_in": "continuous"
+    },
+    {
+      "dataset": "GLBX.MDP3",
+      "schema": "ohlcv-1s",
+      "symbols": ["ES.c.0", "NQ.c.0", "CL.c.0", "NG.c.0", "YM.c.0", "RTY.c.0"],
+      "stype_in": "continuous"
+    }
+  ],
+  "heartbeat_interval_s": 30,
+  "nats_subject_prefix": "marketdata.live.databento"
+}

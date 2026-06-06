@@ -1,0 +1,15 @@
+# Cargo config for the Magpie Rust workspace.
+#
+# Phase 0 ships this file with public crates.io as the default. Once
+# QF-91 (panamax cargo mirror) is deployed, uncomment the source
+# replacement so resolution routes through the private mirror per
+# polyglot-migration-tdd.md §6.2.
+#
+# [source.crates-io]
+# replace-with = "panamax"
+#
+# [source.panamax]
+# registry = "https://crates.example.com/index"
+
+[build]
+incremental = true

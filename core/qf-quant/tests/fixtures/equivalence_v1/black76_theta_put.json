@@ -1,0 +1,2023 @@
+{
+  "schema_version": 1,
+  "function": "black76::theta_put",
+  "input_columns": ["F", "K", "r", "T", "v"],
+  "cases": [
+    {
+      "id": "black76_theta_put_0000",
+      "inputs": [100, 70, 0, 0.05, 0.1],
+      "expected": -1.1507372885428632e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0001",
+      "inputs": [100, 70, 0, 0.05, 0.25],
+      "expected": -7.387167098230331e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0002",
+      "inputs": [100, 70, 0, 0.05, 0.5],
+      "expected": -0.0006294434621210795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0003",
+      "inputs": [100, 70, 0, 0.05, 1],
+      "expected": -0.0569430078918905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0004",
+      "inputs": [100, 70, 0, 0.25, 0.1],
+      "expected": -8.14893634903301e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0005",
+      "inputs": [100, 70, 0, 0.25, 0.25],
+      "expected": -0.0003892864308662248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0006",
+      "inputs": [100, 70, 0, 0.25, 0.5],
+      "expected": -0.01639630985358611,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0007",
+      "inputs": [100, 70, 0, 0.25, 1],
+      "expected": -0.068721910254965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0008",
+      "inputs": [100, 70, 0, 1, 0.1],
+      "expected": -0.000007890616983454657,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0009",
+      "inputs": [100, 70, 0, 1, 0.25],
+      "expected": -0.004099077463396527,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0010",
+      "inputs": [100, 70, 0, 1, 0.5],
+      "expected": -0.01718047756374125,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0011",
+      "inputs": [100, 70, 0, 1, 1],
+      "expected": -0.037863834354183015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0012",
+      "inputs": [100, 70, 0, 2, 0.1],
+      "expected": -0.00013405848105378868,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0013",
+      "inputs": [100, 70, 0, 2, 0.25],
+      "expected": -0.004783841628640001,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0014",
+      "inputs": [100, 70, 0, 2, 0.5],
+      "expected": -0.013372055769677486,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0015",
+      "inputs": [100, 70, 0, 2, 1],
+      "expected": -0.024391313906092515,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0016",
+      "inputs": [100, 70, 0.05, 0.05, 0.1],
+      "expected": -1.1478640383806931e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0017",
+      "inputs": [100, 70, 0.05, 0.05, 0.25],
+      "expected": -7.368122675255188e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0018",
+      "inputs": [100, 70, 0.05, 0.05, 0.5],
+      "expected": -0.0006276806986116199,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0019",
+      "inputs": [100, 70, 0.05, 0.05, 1],
+      "expected": -0.05674731579958343,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0020",
+      "inputs": [100, 70, 0.05, 0.25, 0.1],
+      "expected": -8.045050164772101e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0021",
+      "inputs": [100, 70, 0.05, 0.25, 0.25],
+      "expected": -0.00038373767207751266,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0022",
+      "inputs": [100, 70, 0.05, 0.25, 0.5],
+      "expected": -0.016103375090095427,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0023",
+      "inputs": [100, 70, 0.05, 0.25, 1],
+      "expected": -0.06702968525472223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0024",
+      "inputs": [100, 70, 0.05, 1, 0.1],
+      "expected": -0.000007468472478698983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0025",
+      "inputs": [100, 70, 0.05, 1, 0.25],
+      "expected": -0.0038131917037728725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0026",
+      "inputs": [100, 70, 0.05, 1, 0.5],
+      "expected": -0.015534891302117076,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0027",
+      "inputs": [100, 70, 0.05, 1, 1],
+      "expected": -0.032885825445014796,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0028",
+      "inputs": [100, 70, 0.05, 2, 0.1],
+      "expected": -0.00011907594396713038,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0029",
+      "inputs": [100, 70, 0.05, 2, 0.25],
+      "expected": -0.004032435935171987,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0030",
+      "inputs": [100, 70, 0.05, 2, 0.5],
+      "expected": -0.010467767996108022,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0031",
+      "inputs": [100, 70, 0.05, 2, 1],
+      "expected": -0.017612664798953306,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0032",
+      "inputs": [100, 70, 0.1, 0.05, 0.1],
+      "expected": -1.1449979623724994e-57,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0033",
+      "inputs": [100, 70, 0.1, 0.05, 0.25],
+      "expected": -7.349127300928384e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0034",
+      "inputs": [100, 70, 0.1, 0.05, 0.5],
+      "expected": -0.0006259228137106995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0035",
+      "inputs": [100, 70, 0.1, 0.05, 1],
+      "expected": -0.05655224594031994,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0036",
+      "inputs": [100, 70, 0.1, 0.25, 0.1],
+      "expected": -7.942487499477271e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0037",
+      "inputs": [100, 70, 0.1, 0.25, 0.25],
+      "expected": -0.00037826669767194326,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0038",
+      "inputs": [100, 70, 0.1, 0.25, 0.5],
+      "expected": -0.015815187983118442,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0039",
+      "inputs": [100, 70, 0.1, 0.25, 1],
+      "expected": -0.0653688980181226,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0040",
+      "inputs": [100, 70, 0.1, 1, 0.1],
+      "expected": -0.000007068736057604703,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0041",
+      "inputs": [100, 70, 0.1, 1, 0.25],
+      "expected": -0.003545441631472429,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0042",
+      "inputs": [100, 70, 0.1, 1, 0.5],
+      "expected": -0.014008952466587581,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0043",
+      "inputs": [100, 70, 0.1, 1, 1],
+      "expected": -0.028303315510604485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0044",
+      "inputs": [100, 70, 0.1, 2, 0.1],
+      "expected": -0.00010573093822916696,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0045",
+      "inputs": [100, 70, 0.1, 2, 0.25],
+      "expected": -0.003380719580730657,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0046",
+      "inputs": [100, 70, 0.1, 2, 0.5],
+      "expected": -0.007995143041886846,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0047",
+      "inputs": [100, 70, 0.1, 2, 1],
+      "expected": -0.011903277479938908,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0048",
+      "inputs": [100, 85, 0, 0.05, 0.1],
+      "expected": -7.621209274046905e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0049",
+      "inputs": [100, 85, 0, 0.05, 0.25],
+      "expected": -0.0008227356706776769,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0050",
+      "inputs": [100, 85, 0, 0.05, 0.5],
+      "expected": -0.03910863518336185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0051",
+      "inputs": [100, 85, 0, 0.05, 1],
+      "expected": -0.17194506653672992,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0052",
+      "inputs": [100, 85, 0, 0.25, 0.1],
+      "expected": -0.000051172757502007014,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0053",
+      "inputs": [100, 85, 0, 0.25, 0.25],
+      "expected": -0.010798267980259662,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0054",
+      "inputs": [100, 85, 0, 0.25, 0.5],
+      "expected": -0.04047041499873325,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0055",
+      "inputs": [100, 85, 0, 0.25, 1],
+      "expected": -0.09264317711727353,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0056",
+      "inputs": [100, 85, 0, 1, 0.1],
+      "expected": -0.0013434322470575822,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0057",
+      "inputs": [100, 85, 0, 1, 0.25],
+      "expected": -0.010117603749683313,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0058",
+      "inputs": [100, 85, 0, 1, 0.5],
+      "expected": -0.023160794279318383,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0059",
+      "inputs": [100, 85, 0, 1, 1],
+      "expected": -0.04388079407040009,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0060",
+      "inputs": [100, 85, 0, 2, 0.1],
+      "expected": -0.0018362293238802505,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0061",
+      "inputs": [100, 85, 0, 2, 0.25],
+      "expected": -0.007889560040904285,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0062",
+      "inputs": [100, 85, 0, 2, 0.5],
+      "expected": -0.01629811993239017,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0063",
+      "inputs": [100, 85, 0, 2, 1],
+      "expected": -0.027563880606462407,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0064",
+      "inputs": [100, 85, 0.05, 0.05, 0.1],
+      "expected": -7.601713552563681e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0065",
+      "inputs": [100, 85, 0.05, 0.05, 0.25],
+      "expected": -0.0008203868878630959,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0066",
+      "inputs": [100, 85, 0.05, 0.05, 0.5],
+      "expected": -0.038969177721209225,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0067",
+      "inputs": [100, 85, 0.05, 0.05, 1],
+      "expected": -0.1711066603866058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0068",
+      "inputs": [100, 85, 0.05, 0.25, 0.1],
+      "expected": -0.00005046271789942248,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0069",
+      "inputs": [100, 85, 0.05, 0.25, 0.25],
+      "expected": -0.010597749358598004,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0070",
+      "inputs": [100, 85, 0.05, 0.25, 0.5],
+      "expected": -0.0394407009379791,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0071",
+      "inputs": [100, 85, 0.05, 0.25, 1],
+      "expected": -0.08953435335401362,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0072",
+      "inputs": [100, 85, 0.05, 1, 0.1],
+      "expected": -0.0012545177740368185,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0073",
+      "inputs": [100, 85, 0.05, 1, 0.25],
+      "expected": -0.009116575798045276,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0074",
+      "inputs": [100, 85, 0.05, 1, 0.5],
+      "expected": -0.020145302304943092,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0075",
+      "inputs": [100, 85, 0.05, 1, 1],
+      "expected": -0.037206831523617784,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0076",
+      "inputs": [100, 85, 0.05, 2, 0.1],
+      "expected": -0.001564747992502743,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0077",
+      "inputs": [100, 85, 0.05, 2, 0.25],
+      "expected": -0.006153768210761955,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0078",
+      "inputs": [100, 85, 0.05, 2, 0.5],
+      "expected": -0.011790027973025015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0079",
+      "inputs": [100, 85, 0.05, 2, 1],
+      "expected": -0.01905955509003759,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0080",
+      "inputs": [100, 85, 0.1, 0.05, 0.1],
+      "expected": -7.582267674291047e-14,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0081",
+      "inputs": [100, 85, 0.1, 0.05, 0.25],
+      "expected": -0.0008180447050334967,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0082",
+      "inputs": [100, 85, 0.1, 0.05, 0.5],
+      "expected": -0.03883017285669645,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0083",
+      "inputs": [100, 85, 0.1, 0.05, 1],
+      "expected": -0.17027136905761986,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0084",
+      "inputs": [100, 85, 0.1, 0.25, 0.1],
+      "expected": -0.000049762422282580115,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0085",
+      "inputs": [100, 85, 0.1, 0.25, 0.25],
+      "expected": -0.010400546209613903,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0086",
+      "inputs": [100, 85, 0.1, 0.25, 0.5],
+      "expected": -0.03843032447236809,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0087",
+      "inputs": [100, 85, 0.1, 0.25, 1],
+      "expected": -0.0864884705837242,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0088",
+      "inputs": [100, 85, 0.1, 1, 0.1],
+      "expected": -0.0011710806747120888,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0089",
+      "inputs": [100, 85, 0.1, 1, 0.25],
+      "expected": -0.008189123846009097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0090",
+      "inputs": [100, 85, 0.1, 1, 0.5],
+      "expected": -0.017368855340487366,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0091",
+      "inputs": [100, 85, 0.1, 1, 1],
+      "expected": -0.03107948146738347,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0092",
+      "inputs": [100, 85, 0.1, 2, 0.1],
+      "expected": -0.0013283076496619158,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0093",
+      "inputs": [100, 85, 0.1, 2, 0.25],
+      "expected": -0.004676894044291711,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0094",
+      "inputs": [100, 85, 0.1, 2, 0.5],
+      "expected": -0.007992344933366313,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0095",
+      "inputs": [100, 85, 0.1, 2, 1],
+      "expected": -0.011924200506486952,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0096",
+      "inputs": [100, 95, 0, 0.05, 0.1],
+      "expected": -0.0017151700754925842,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0097",
+      "inputs": [100, 95, 0, 0.05, 0.25],
+      "expected": -0.03907631672927283,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0098",
+      "inputs": [100, 95, 0, 0.05, 0.5],
+      "expected": -0.10704101991423647,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0099",
+      "inputs": [100, 95, 0, 0.05, 1],
+      "expected": -0.23058092068708416,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0100",
+      "inputs": [100, 95, 0, 0.25, 0.1],
+      "expected": -0.006292414926870676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0101",
+      "inputs": [100, 95, 0, 0.25, 0.25],
+      "expected": -0.024434678647047823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0102",
+      "inputs": [100, 95, 0, 0.25, 0.5],
+      "expected": -0.051750559000870194,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0103",
+      "inputs": [100, 95, 0, 0.25, 1],
+      "expected": -0.10271220250741,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0104",
+      "inputs": [100, 95, 0, 1, 0.1],
+      "expected": -0.00466417306527169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0105",
+      "inputs": [100, 95, 0, 1, 0.25],
+      "expected": -0.012937639750217549,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0106",
+      "inputs": [100, 95, 0, 1, 0.5],
+      "expected": -0.0256780506268525,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0107",
+      "inputs": [100, 95, 0, 1, 1],
+      "expected": -0.046945166452912565,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0108",
+      "inputs": [100, 95, 0, 2, 0.1],
+      "expected": -0.0035178922439444886,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0109",
+      "inputs": [100, 95, 0, 2, 0.25],
+      "expected": -0.009173132131645525,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0110",
+      "inputs": [100, 95, 0, 2, 0.5],
+      "expected": -0.017644850378322887,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0111",
+      "inputs": [100, 95, 0, 2, 1],
+      "expected": -0.029313976315235028,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0112",
+      "inputs": [100, 95, 0.05, 0.05, 0.1],
+      "expected": -0.0017099690829026045,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0113",
+      "inputs": [100, 95, 0.05, 0.05, 0.25],
+      "expected": -0.03890536158196497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0114",
+      "inputs": [100, 95, 0.05, 0.05, 0.5],
+      "expected": -0.10640959598323327,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0115",
+      "inputs": [100, 95, 0.05, 0.05, 1],
+      "expected": -0.22889092694500227,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0116",
+      "inputs": [100, 95, 0.05, 0.25, 0.1],
+      "expected": -0.006162567131300237,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0117",
+      "inputs": [100, 95, 0.05, 0.25, 0.25],
+      "expected": -0.023689644860721802,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0118",
+      "inputs": [100, 95, 0.05, 0.25, 0.5],
+      "expected": -0.049818483309683644,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0119",
+      "inputs": [100, 95, 0.05, 0.25, 1],
+      "expected": -0.09845633641032493,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0120",
+      "inputs": [100, 95, 0.05, 1, 0.1],
+      "expected": -0.004156421062808356,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0121",
+      "inputs": [100, 95, 0.05, 1, 0.25],
+      "expected": -0.011064894181214214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0122",
+      "inputs": [100, 95, 0.05, 1, 0.5],
+      "expected": -0.021555441659424968,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0123",
+      "inputs": [100, 95, 0.05, 1, 1],
+      "expected": -0.03917893412815461,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0124",
+      "inputs": [100, 95, 0.05, 2, 0.1],
+      "expected": -0.0026829588781612235,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0125",
+      "inputs": [100, 95, 0.05, 2, 0.25],
+      "expected": -0.006440803801363959,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0126",
+      "inputs": [100, 95, 0.05, 2, 0.5],
+      "expected": -0.01213374703992841,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0127",
+      "inputs": [100, 95, 0.05, 2, 1],
+      "expected": -0.01967123319964232,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0128",
+      "inputs": [100, 95, 0.1, 0.05, 0.1],
+      "expected": -0.0017047833697439623,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0129",
+      "inputs": [100, 95, 0.1, 0.05, 0.25],
+      "expected": -0.038735016525512256,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0130",
+      "inputs": [100, 95, 0.1, 0.05, 0.5],
+      "expected": -0.10578065789247713,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0131",
+      "inputs": [100, 95, 0.1, 0.05, 1],
+      "expected": -0.22720793508479056,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0132",
+      "inputs": [100, 95, 0.1, 0.25, 0.1],
+      "expected": -0.006034974337078744,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0133",
+      "inputs": [100, 95, 0.1, 0.25, 0.25],
+      "expected": -0.022959350450372847,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0134",
+      "inputs": [100, 95, 0.1, 0.25, 0.5],
+      "expected": -0.04792642319528129,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0135",
+      "inputs": [100, 95, 0.1, 0.25, 1],
+      "expected": -0.09429035512185036,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0136",
+      "inputs": [100, 95, 0.1, 1, 0.1],
+      "expected": -0.003687101717462373,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0137",
+      "inputs": [100, 95, 0.1, 1, 0.25],
+      "expected": -0.009344045301249146,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0138",
+      "inputs": [100, 95, 0.1, 1, 0.5],
+      "expected": -0.01777387969970917,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0139",
+      "inputs": [100, 95, 0.1, 1, 1],
+      "expected": -0.03205856672403004,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0140",
+      "inputs": [100, 95, 0.1, 2, 0.1],
+      "expected": -0.0019750766018922497,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0141",
+      "inputs": [100, 95, 0.1, 2, 0.25],
+      "expected": -0.004145435185178741,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0142",
+      "inputs": [100, 95, 0.1, 2, 0.5],
+      "expected": -0.007511755047227976,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0143",
+      "inputs": [100, 95, 0.1, 2, 1],
+      "expected": -0.01159828181161271,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0144",
+      "inputs": [100, 100, 0, 0.05, 0.1],
+      "expected": -0.024438528929863795,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0145",
+      "inputs": [100, 100, 0, 0.05, 0.25],
+      "expected": -0.061076278382535786,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0146",
+      "inputs": [100, 100, 0, 0.05, 0.5],
+      "expected": -0.12200949308036262,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0147",
+      "inputs": [100, 100, 0, 0.05, 1],
+      "expected": -0.2428778238517882,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0148",
+      "inputs": [100, 100, 0, 0.25, 0.1],
+      "expected": -0.010926510422366626,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0149",
+      "inputs": [100, 100, 0, 0.25, 0.25],
+      "expected": -0.027271497033348403,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0150",
+      "inputs": [100, 100, 0, 0.25, 0.5],
+      "expected": -0.05422434067736295,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0151",
+      "inputs": [100, 100, 0, 0.25, 1],
+      "expected": -0.105936470356945,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0152",
+      "inputs": [100, 100, 0, 1, 0.1],
+      "expected": -0.005458135809517315,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0153",
+      "inputs": [100, 100, 0, 1, 0.25],
+      "expected": -0.013556085169340738,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0154",
+      "inputs": [100, 100, 0, 1, 0.5],
+      "expected": -0.02648411758923625,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0155",
+      "inputs": [100, 100, 0, 1, 1],
+      "expected": -0.048228126954013635,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0156",
+      "inputs": [100, 100, 0, 2, 0.1],
+      "expected": -0.0038546635014589698,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0157",
+      "inputs": [100, 100, 0, 2, 0.25],
+      "expected": -0.009511004020519371,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0158",
+      "inputs": [100, 100, 0, 2, 0.5],
+      "expected": -0.01815092687287867,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0159",
+      "inputs": [100, 100, 0, 2, 1],
+      "expected": -0.03009529379915907,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0160",
+      "inputs": [100, 100, 0.05, 0.05, 0.1],
+      "expected": -0.024205972660919072,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0161",
+      "inputs": [100, 100, 0.05, 0.05, 0.25],
+      "expected": -0.06049809480398782,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0162",
+      "inputs": [100, 100, 0.05, 0.05, 0.5],
+      "expected": -0.12086383745189476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0163",
+      "inputs": [100, 100, 0.05, 0.05, 1],
+      "expected": -0.24062959245658405,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0164",
+      "inputs": [100, 100, 0.05, 0.25, 0.1],
+      "expected": -0.010413335198220302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0165",
+      "inputs": [100, 100, 0.05, 0.25, 0.25],
+      "expected": -0.026004472701792302,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0166",
+      "inputs": [100, 100, 0.05, 0.25, 0.5],
+      "expected": -0.051743709472102474,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0167",
+      "inputs": [100, 100, 0.05, 0.25, 1],
+      "expected": -0.10119301087786996,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0168",
+      "inputs": [100, 100, 0.05, 1, 0.1],
+      "expected": -0.004472759854235285,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0169",
+      "inputs": [100, 100, 0.05, 1, 0.25],
+      "expected": -0.011154410833353143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0170",
+      "inputs": [100, 100, 0.05, 1, 0.5],
+      "expected": -0.02189112739147141,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0171",
+      "inputs": [100, 100, 0.05, 1, 1],
+      "expected": -0.039925547807129355,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0172",
+      "inputs": [100, 100, 0.05, 2, 0.1],
+      "expected": -0.00252906255068803,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0173",
+      "inputs": [100, 100, 0.05, 2, 0.25],
+      "expected": -0.006315637081960966,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0174",
+      "inputs": [100, 100, 0.05, 2, 0.5],
+      "expected": -0.01217056724616571,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0175",
+      "inputs": [100, 100, 0.05, 2, 1],
+      "expected": -0.019886482437403083,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0176",
+      "inputs": [100, 100, 0.1, 0.05, 0.1],
+      "expected": -0.02397442536154281,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0177",
+      "inputs": [100, 100, 0.1, 0.05, 0.25],
+      "expected": -0.05992241775888147,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0178",
+      "inputs": [100, 100, 0.1, 0.05, 0.5],
+      "expected": -0.11972314229147422,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0179",
+      "inputs": [100, 100, 0.1, 0.05, 1],
+      "expected": -0.23839107398165046,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0180",
+      "inputs": [100, 100, 0.1, 0.25, 0.1],
+      "expected": -0.009911223422912785,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0181",
+      "inputs": [100, 100, 0.1, 0.25, 0.25],
+      "expected": -0.024764718535202485,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0182",
+      "inputs": [100, 100, 0.1, 0.25, 0.5],
+      "expected": -0.04931634064387354,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0183",
+      "inputs": [100, 100, 0.1, 0.25, 1],
+      "expected": -0.09655105263181633,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0184",
+      "inputs": [100, 100, 0.1, 1, 0.1],
+      "expected": -0.003570516050974993,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0185",
+      "inputs": [100, 100, 0.1, 1, 0.25],
+      "expected": -0.008954754492008242,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0186",
+      "inputs": [100, 100, 0.1, 1, 0.5],
+      "expected": -0.017683148442117064,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0187",
+      "inputs": [100, 100, 0.1, 1, 1],
+      "expected": -0.03231809785712263,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0188",
+      "inputs": [100, 100, 0.1, 2, 0.1],
+      "expected": -0.0014208493054202762,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0189",
+      "inputs": [100, 100, 0.1, 2, 0.25],
+      "expected": -0.003642298016739906,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0190",
+      "inputs": [100, 100, 0.1, 2, 0.5],
+      "expected": -0.007164047258411874,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0191",
+      "inputs": [100, 100, 0.1, 2, 1],
+      "expected": -0.011348124288665905,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0192",
+      "inputs": [100, 105, 0, 0.05, 0.1],
+      "expected": -0.0023165428045344143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0193",
+      "inputs": [100, 105, 0, 0.05, 0.25],
+      "expected": -0.04276165591559709,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0194",
+      "inputs": [100, 105, 0, 0.05, 0.5],
+      "expected": -0.11366718300120442,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0195",
+      "inputs": [100, 105, 0, 0.05, 1],
+      "expected": -0.24302123231077846,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0196",
+      "inputs": [100, 105, 0, 0.25, 0.1],
+      "expected": -0.006955210169103236,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0197",
+      "inputs": [100, 105, 0, 0.25, 0.25],
+      "expected": -0.025895308422739325,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0198",
+      "inputs": [100, 105, 0, 0.25, 0.5],
+      "expected": -0.05451528596420057,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0199",
+      "inputs": [100, 105, 0, 0.25, 1],
+      "expected": -0.10803699340791198,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0200",
+      "inputs": [100, 105, 0, 1, 0.1],
+      "expected": -0.004965323148765761,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0201",
+      "inputs": [100, 105, 0, 1, 0.25],
+      "expected": -0.013628821491050143,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0202",
+      "inputs": [100, 105, 0, 1, 0.5],
+      "expected": -0.027009248351977995,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0203",
+      "inputs": [100, 105, 0, 1, 1],
+      "expected": -0.04936033861327202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0204",
+      "inputs": [100, 105, 0, 2, 0.1],
+      "expected": -0.0037216487908665165,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0205",
+      "inputs": [100, 105, 0, 2, 0.25],
+      "expected": -0.009653519924222073,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0206",
+      "inputs": [100, 105, 0, 2, 0.5],
+      "expected": -0.018554943114830167,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0207",
+      "inputs": [100, 105, 0, 2, 1],
+      "expected": -0.030820152235950058,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0208",
+      "inputs": [100, 105, 0.05, 0.05, 0.1],
+      "expected": -0.0016261915917800912,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0209",
+      "inputs": [100, 105, 0.05, 0.05, 0.25],
+      "expected": -0.04188699771501053,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0210",
+      "inputs": [100, 105, 0.05, 0.05, 0.5],
+      "expected": -0.11230080950215476,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0211",
+      "inputs": [100, 105, 0.05, 0.05, 1],
+      "expected": -0.24053563528270983,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0212",
+      "inputs": [100, 105, 0.05, 0.25, 0.1],
+      "expected": -0.006131937931765191,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0213",
+      "inputs": [100, 105, 0.05, 0.25, 0.25],
+      "expected": -0.02441535227151222,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0214",
+      "inputs": [100, 105, 0.05, 0.25, 0.5],
+      "expected": -0.05178138682195113,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0215",
+      "inputs": [100, 105, 0.05, 0.25, 1],
+      "expected": -0.10286602429526728,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0216",
+      "inputs": [100, 105, 0.05, 1, 0.1],
+      "expected": -0.0037625995108939783,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0217",
+      "inputs": [100, 105, 0.05, 1, 0.25],
+      "expected": -0.010983134658082089,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0218",
+      "inputs": [100, 105, 0.05, 1, 0.5],
+      "expected": -0.022004005076189208,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0219",
+      "inputs": [100, 105, 0.05, 1, 1],
+      "expected": -0.04052730307411551,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0220",
+      "inputs": [100, 105, 0.05, 2, 0.1],
+      "expected": -0.0022043605171420226,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0221",
+      "inputs": [100, 105, 0.05, 2, 0.25],
+      "expected": -0.006138071109681194,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0222",
+      "inputs": [100, 105, 0.05, 2, 0.5],
+      "expected": -0.012124588118494223,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0223",
+      "inputs": [100, 105, 0.05, 2, 1],
+      "expected": -0.020047169500963576,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0224",
+      "inputs": [100, 105, 0.1, 0.05, 0.1],
+      "expected": -0.00093927338173852,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0225",
+      "inputs": [100, 105, 0.1, 0.05, 0.25],
+      "expected": -0.041016440750193894,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0226",
+      "inputs": [100, 105, 0.1, 0.05, 0.5],
+      "expected": -0.11094055069144676,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0227",
+      "inputs": [100, 105, 0.1, 0.05, 1],
+      "expected": -0.23806093562671102,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0228",
+      "inputs": [100, 105, 0.1, 0.25, 0.1],
+      "expected": -0.005328046132668696,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0229",
+      "inputs": [100, 105, 0.1, 0.25, 0.25],
+      "expected": -0.02296816880943823,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0230",
+      "inputs": [100, 105, 0.1, 0.25, 0.5],
+      "expected": -0.04910699745034688,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0231",
+      "inputs": [100, 105, 0.1, 0.25, 1],
+      "expected": -0.09780685350166426,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0232",
+      "inputs": [100, 105, 0.1, 1, 0.1],
+      "expected": -0.0026653805571052965,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0233",
+      "inputs": [100, 105, 0.1, 1, 0.25],
+      "expected": -0.008563094071207734,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0234",
+      "inputs": [100, 105, 0.1, 1, 0.5],
+      "expected": -0.01742273562877273,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0235",
+      "inputs": [100, 105, 0.1, 1, 1],
+      "expected": -0.03243844501530009,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0236",
+      "inputs": [100, 105, 0.1, 2, 0.1],
+      "expected": -0.0009421474402644993,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0237",
+      "inputs": [100, 105, 0.1, 2, 0.25],
+      "expected": -0.0032042791917984616,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0238",
+      "inputs": [100, 105, 0.1, 2, 0.5],
+      "expected": -0.006750059466051563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0239",
+      "inputs": [100, 105, 0.1, 2, 1],
+      "expected": -0.011045451730244803,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0240",
+      "inputs": [100, 115, 0, 0.05, 0.1],
+      "expected": -8.613425753367233e-11,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0241",
+      "inputs": [100, 115, 0, 0.05, 0.25],
+      "expected": -0.0028767478393027174,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0242",
+      "inputs": [100, 115, 0, 0.05, 0.5],
+      "expected": -0.05989804120901864,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0243",
+      "inputs": [100, 115, 0, 0.05, 1],
+      "expected": -0.21424184638827629,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0244",
+      "inputs": [100, 115, 0, 0.25, 0.1],
+      "expected": -0.00023560298655187897,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0245",
+      "inputs": [100, 115, 0, 0.25, 0.25],
+      "expected": -0.01565286936338393,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0246",
+      "inputs": [100, 115, 0, 0.25, 0.5],
+      "expected": -0.049736728515974,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0247",
+      "inputs": [100, 115, 0, 0.25, 1],
+      "expected": -0.10925162940182806,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0248",
+      "inputs": [100, 115, 0, 1, 0.1],
+      "expected": -0.0022040977665438175,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0249",
+      "inputs": [100, 115, 0, 1, 0.25],
+      "expected": -0.0124341821289935,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0250",
+      "inputs": [100, 115, 0, 1, 0.5],
+      "expected": -0.027312907350457015,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0251",
+      "inputs": [100, 115, 0, 1, 1],
+      "expected": -0.051216239963652765,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0252",
+      "inputs": [100, 115, 0, 2, 0.1],
+      "expected": -0.002536612861795836,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0253",
+      "inputs": [100, 115, 0, 2, 0.25],
+      "expected": -0.009432836203010605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0254",
+      "inputs": [100, 115, 0, 2, 0.5],
+      "expected": -0.01908817813155021,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0255",
+      "inputs": [100, 115, 0, 2, 1],
+      "expected": -0.03211638796600532,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0256",
+      "inputs": [100, 115, 0.05, 0.05, 0.1],
+      "expected": 0.002049663864219862,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0257",
+      "inputs": [100, 115, 0.05, 0.05, 0.25],
+      "expected": -0.0008185660564289221,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0258",
+      "inputs": [100, 115, 0.05, 0.05, 0.5],
+      "expected": -0.05762057773685499,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0259",
+      "inputs": [100, 115, 0.05, 0.05, 1],
+      "expected": -0.21107541631588345,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0260",
+      "inputs": [100, 115, 0.05, 0.25, 0.1],
+      "expected": 0.0017970403006409559,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0261",
+      "inputs": [100, 115, 0.05, 0.25, 0.25],
+      "expected": -0.013312870128597627,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0262",
+      "inputs": [100, 115, 0.05, 0.25, 0.5],
+      "expected": -0.04635775947031191,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0263",
+      "inputs": [100, 115, 0.05, 0.25, 1],
+      "expected": -0.103386005651279,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0264",
+      "inputs": [100, 115, 0.05, 1, 0.1],
+      "expected": -0.00009461478417504835,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0265",
+      "inputs": [100, 115, 0.05, 1, 0.25],
+      "expected": -0.009168255407750339,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0266",
+      "inputs": [100, 115, 0.05, 1, 0.5],
+      "expected": -0.02163830009251562,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0267",
+      "inputs": [100, 115, 0.05, 1, 1],
+      "expected": -0.04133831553560365,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0268",
+      "inputs": [100, 115, 0.05, 2, 0.1],
+      "expected": -0.00027644399886185447,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0269",
+      "inputs": [100, 115, 0.05, 2, 0.25],
+      "expected": -0.00538212706929921,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0270",
+      "inputs": [100, 115, 0.05, 2, 0.5],
+      "expected": -0.011810527349320563,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0271",
+      "inputs": [100, 115, 0.05, 2, 1],
+      "expected": -0.020220208526261912,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0272",
+      "inputs": [100, 115, 0.1, 0.05, 0.1],
+      "expected": 0.004089092294553769,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0273",
+      "inputs": [100, 115, 0.1, 0.05, 0.25],
+      "expected": 0.0012293556052439339,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0274",
+      "inputs": [100, 115, 0.1, 0.05, 0.5],
+      "expected": -0.05535411393154581,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0275",
+      "inputs": [100, 115, 0.1, 0.05, 1],
+      "expected": -0.20792346295125858,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0276",
+      "inputs": [100, 115, 0.1, 0.25, 0.1],
+      "expected": 0.003779220143099233,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0277",
+      "inputs": [100, 115, 0.1, 0.25, 0.25],
+      "expected": -0.011028591357929319,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0278",
+      "inputs": [100, 115, 0.1, 0.25, 0.5],
+      "expected": -0.04305506395353841,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0279",
+      "inputs": [100, 115, 0.1, 0.25, 1],
+      "expected": -0.09764925106502728,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0280",
+      "inputs": [100, 115, 0.1, 1, 0.1],
+      "expected": 0.0018143493987781505,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0281",
+      "inputs": [100, 115, 0.1, 1, 0.25],
+      "expected": -0.0061913153773924725,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0282",
+      "inputs": [100, 115, 0.1, 1, 0.5],
+      "expected": -0.01645223492231184,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0283",
+      "inputs": [100, 115, 0.1, 1, 1],
+      "expected": -0.032302073863300675,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0284",
+      "inputs": [100, 115, 0.1, 2, 0.1],
+      "expected": 0.0015765292102820037,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0285",
+      "inputs": [100, 115, 0.1, 2, 0.25],
+      "expected": -0.002016946833700166,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0286",
+      "inputs": [100, 115, 0.1, 2, 0.5],
+      "expected": -0.005745135688273844,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0287",
+      "inputs": [100, 115, 0.1, 2, 1],
+      "expected": -0.010297328044550892,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0288",
+      "inputs": [100, 130, 0, 0.05, 0.1],
+      "expected": -3.5512636606668727e-32,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0289",
+      "inputs": [100, 130, 0, 0.05, 0.25],
+      "expected": -0.0000011473555771803057,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0290",
+      "inputs": [100, 130, 0, 0.05, 0.5],
+      "expected": -0.008862959119816547,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0291",
+      "inputs": [100, 130, 0, 0.05, 1],
+      "expected": -0.13912747426864847,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0292",
+      "inputs": [100, 130, 0, 0.25, 0.1],
+      "expected": -1.3077369555346083e-8,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0293",
+      "inputs": [100, 130, 0, 0.25, 0.25],
+      "expected": -0.003435986213245158,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0294",
+      "inputs": [100, 130, 0, 0.25, 0.5],
+      "expected": -0.03564582295027469,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0295",
+      "inputs": [100, 130, 0, 0.25, 1],
+      "expected": -0.10525139176312495,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0296",
+      "inputs": [100, 130, 0, 1, 0.1],
+      "expected": -0.00019919701345983155,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0297",
+      "inputs": [100, 130, 0, 1, 0.25],
+      "expected": -0.008911455737568673,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0298",
+      "inputs": [100, 130, 0, 1, 0.5],
+      "expected": -0.026312847940781238,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0299",
+      "inputs": [100, 130, 0, 1, 1],
+      "expected": -0.053128155664400364,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0300",
+      "inputs": [100, 130, 0, 2, 0.1],
+      "expected": -0.0007863059325208915,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0301",
+      "inputs": [100, 130, 0, 2, 0.25],
+      "expected": -0.008234161602325202,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0302",
+      "inputs": [100, 130, 0, 2, 0.5],
+      "expected": -0.01931860752182875,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0303",
+      "inputs": [100, 130, 0, 2, 1],
+      "expected": -0.03372846662473169,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0304",
+      "inputs": [100, 130, 0.05, 0.05, 0.1],
+      "expected": 0.004099327900263536,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0305",
+      "inputs": [100, 130, 0.05, 0.05, 0.25],
+      "expected": 0.004098183579213316,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0306",
+      "inputs": [100, 130, 0.05, 0.05, 0.5],
+      "expected": -0.004736928545167639,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0307",
+      "inputs": [100, 130, 0.05, 0.05, 1],
+      "expected": -0.13448347675660546,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0308",
+      "inputs": [100, 130, 0.05, 0.25, 0.1],
+      "expected": 0.0040585259989355214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0309",
+      "inputs": [100, 130, 0.05, 0.25, 0.25],
+      "expected": 0.0006757570012335517,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0310",
+      "inputs": [100, 130, 0.05, 0.25, 0.5],
+      "expected": -0.030858099228498494,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0311",
+      "inputs": [100, 130, 0.05, 0.25, 1],
+      "expected": -0.09822868563359098,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0312",
+      "inputs": [100, 130, 0.05, 1, 0.1],
+      "expected": 0.0037213047206084214,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0313",
+      "inputs": [100, 130, 0.05, 1, 0.25],
+      "expected": -0.0042918321802318405,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0314",
+      "inputs": [100, 130, 0.05, 1, 0.5],
+      "expected": -0.019524656051275926,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0315",
+      "inputs": [100, 130, 0.05, 1, 1],
+      "expected": -0.041717710581020605,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0316",
+      "inputs": [100, 130, 0.05, 2, 0.1],
+      "expected": 0.0030284349869692867,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0317",
+      "inputs": [100, 130, 0.05, 2, 0.25],
+      "expected": -0.003030208911362384,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0318",
+      "inputs": [100, 130, 0.05, 2, 0.5],
+      "expected": -0.010885657176855312,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0319",
+      "inputs": [100, 130, 0.05, 2, 1],
+      "expected": -0.020158529850967173,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0320",
+      "inputs": [100, 130, 0.1, 0.05, 0.1],
+      "expected": 0.0081781847604878,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0321",
+      "inputs": [100, 130, 0.1, 0.05, 0.25],
+      "expected": 0.00817704346596392,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0322",
+      "inputs": [100, 130, 0.1, 0.05, 0.5],
+      "expected": -0.0006314471019647031,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0323",
+      "inputs": [100, 130, 0.1, 0.05, 1],
+      "expected": -0.12986180285529642,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0324",
+      "inputs": [100, 130, 0.1, 0.25, 0.1],
+      "expected": 0.008016233113040097,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0325",
+      "inputs": [100, 130, 0.1, 0.25, 0.25],
+      "expected": 0.004685876637263845,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0326",
+      "inputs": [100, 130, 0.1, 0.25, 0.5],
+      "expected": -0.026183823081195025,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0327",
+      "inputs": [100, 130, 0.1, 0.25, 1],
+      "expected": -0.09136421296550047,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0328",
+      "inputs": [100, 130, 0.1, 1, 0.1],
+      "expected": 0.007259870006891749,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0329",
+      "inputs": [100, 130, 0.1, 1, 0.25],
+      "expected": -0.00010161550918777789,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0330",
+      "inputs": [100, 130, 0.1, 1, 0.5],
+      "expected": -0.01333600528654985,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0331",
+      "inputs": [100, 130, 0.1, 1, 1],
+      "expected": -0.03129388445855457,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0332",
+      "inputs": [100, 130, 0.1, 2, 0.1],
+      "expected": 0.0061242554368806145,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0333",
+      "inputs": [100, 130, 0.1, 2, 0.25],
+      "expected": 0.00125786851470412,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0334",
+      "inputs": [100, 130, 0.1, 2, 0.5],
+      "expected": -0.0038827617822959418,
+      "tolerance": 1e-9
+    },
+    {
+      "id": "black76_theta_put_0335",
+      "inputs": [100, 130, 0.1, 2, 1],
+      "expected": -0.00886585132366777,
+      "tolerance": 1e-9
+    }
+  ]
+}
