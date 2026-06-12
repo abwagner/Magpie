@@ -12,7 +12,7 @@ It is **architecture-agnostic** — it holds positions / cash / Greeks / per-str
 
 **Code surface:**
 
-- **Greek computation: `quantfoundry-quant` Rust crate** — source of truth for `delta` / `gamma` / `theta` / `vega` / `iv` across BS, Black-76, SABR, vol-surface, BL extraction, and edge-greeks. Exposed via PyO3 to Python (consumed by per-broker NT bundles' quote enrichment + research workers) and via WASM to TS-browser code (Greek Builder web worker). The TS server itself does not call into it; positions arrive with Greeks already populated. See [§2 Greek computation runtime](#greek-computation-runtime).
+- **Greek computation: `magpie-quant` Rust crate** — source of truth for `delta` / `gamma` / `theta` / `vega` / `iv` across BS, Black-76, SABR, vol-surface, BL extraction, and edge-greeks. Exposed via PyO3 to Python (consumed by per-broker NT bundles' quote enrichment + research workers) and via WASM to TS-browser code (Greek Builder web worker). The TS server itself does not call into it; positions arrive with Greeks already populated. See [§2 Greek computation runtime](#greek-computation-runtime).
 
 ---
 
@@ -89,8 +89,6 @@ Each portfolio is an isolated namespace with its own positions, cash, and limits
 
 The per-strategy `max_drawdown_pct` declared on a strategy's exit policy ([order-execution.md §5.1](order-execution.md#51-strategy-declared-exit-rules)) is a different lever — it auto-closes positions belonging to ONE strategy when that strategy's drawdown breaches its declared threshold.
 
-````
-
 #### Persistence: audit_fills replay
 
 Portfolio state is **derived, not stored independently**. The canonical source for fills is the `audit_fills` DuckDB table ([cross-cutting.md §5](cross-cutting.md#5-database-schema-consolidated)), written by OPL (`source='qf'`) and the audit observer (`source='nt-native'`) per [order-flow.md §4.2](order-flow.md#42-writer-mapping-model-a-writer-identity-sourcing). On startup:
@@ -112,13 +110,13 @@ Risk limits are defined in the top-level TDD. This section specifies the computa
 
 **Envelope revocation.** When the P&R engine's state changes in a way that invalidates a previously-approved envelope, it issues a revoke over `orders.gate.revoke.<broker>` (per [risk-gate-architecture.md §3.5](risk-gate-architecture.md#35-envelope-revocation)). The triggering conditions:
 
-| Condition                                  | Detected by                                                       | `RevokeReason`                          |
-| ------------------------------------------ | ----------------------------------------------------------------- | --------------------------------------- |
-| Portfolio enters `halted=true`             | `canExecute` halt action or operator-issued halt                  | `portfolio_halted`                      |
-| Strategy moved to `halted` lifecycle state | `server/strategy/lifecycle.ts` state transition                   | `strategy_halted`                       |
-| Hard drift trip on a fast-tier check       | `drift-detector.ts` (see [drift-detector.md §2.1](drift-detector.md#21-fast-tier--per-fill-hard-bound-checks)) | `drift_hard_trip`                       |
-| Concentration breach by a different strategy filling first | Aggregate-limit recompute on a fill, identifying envelopes that no longer fit | `concentration_breach_other_strategy`   |
-| Operator-initiated via GUI                 | Operator clicks "Revoke envelope" on a per-strategy view          | `operator_initiated`                    |
+| Condition                                                  | Detected by                                                                                                    | `RevokeReason`                        |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| Portfolio enters `halted=true`                             | `canExecute` halt action or operator-issued halt                                                               | `portfolio_halted`                    |
+| Strategy moved to `halted` lifecycle state                 | `server/strategy/lifecycle.ts` state transition                                                                | `strategy_halted`                     |
+| Hard drift trip on a fast-tier check                       | `drift-detector.ts` (see [drift-detector.md §2.1](drift-detector.md#21-fast-tier--per-fill-hard-bound-checks)) | `drift_hard_trip`                     |
+| Concentration breach by a different strategy filling first | Aggregate-limit recompute on a fill, identifying envelopes that no longer fit                                  | `concentration_breach_other_strategy` |
+| Operator-initiated via GUI                                 | Operator clicks "Revoke envelope" on a per-strategy view                                                       | `operator_initiated`                  |
 
 The engine iterates open envelopes for the affected strategy (or portfolio, fanning across its strategies) and calls revoke per envelope — per-envelope granularity at the wire keeps the protocol minimal (per [risk-gate-architecture.md §3.5](risk-gate-architecture.md#35-envelope-revocation)).
 
@@ -137,7 +135,7 @@ The Order Plane calls this synchronously before submitting any OrderIntent it or
  * A violation: { limit: "max_net_delta", current: 0.48, proposed: 0.96, threshold: 0.50, action: "reject" }
  */
 function canExecute(portfolioId, orderIntent)
-````
+```
 
 The check is **forward-looking**: it computes what the portfolio state would be _after_ the order fills and checks limits against that hypothetical state. For a sell-to-open order, this means increasing delta/vega exposure; for a buy-to-close, decreasing it.
 
@@ -204,7 +202,7 @@ This prevents over-allocation: without reservation, two concurrent 10-lot intent
 Greeks are computed **in the per-broker NT bundle (Python)** at quote-enrichment time, not in the TS server's risk engine. When a market data tick arrives at the bundle, quote enrichment:
 
 1. Uses broker-supplied Greeks when the broker returns them (Schwab returns delta / gamma / theta / vega / IV for equity options; IBKR returns them when modelGreeks is requested).
-2. Falls back to computing Greeks via the `quantfoundry_quant` Rust crate (exposed to Python via PyO3) for any leg the broker didn't price — futures options, equity options on Schwab-without-Greeks, or anywhere broker data is stale.
+2. Falls back to computing Greeks via the `magpie_quant` Rust crate (exposed to Python via PyO3) for any leg the broker didn't price — futures options, equity options on Schwab-without-Greeks, or anywhere broker data is stale.
 
 The enriched quote (including Greeks) is published on `marketdata.quote.<broker>.*`. The TS portfolio engine subscribes, updates each affected `Position`'s Greek fields directly, and re-aggregates via `recomputeAggregates(state)` — iterating positions and summing `delta × quantity × sign` etc. **No in-process math on the TS side.** The `GreeksCalculator` interface in [`server/portfolio/engine.ts`](../../server/portfolio/engine.ts) exists as an optional dep for offline / test paths; production wires it to `undefined` because positions already carry computed Greeks.
 
@@ -214,21 +212,21 @@ The enriched quote (including Greeks) is published on `marketdata.quote.<broker>
 
 | Function                                                 | Signature                                                       |
 | -------------------------------------------------------- | --------------------------------------------------------------- |
-| `quantfoundry_quant.bs.delta`                            | `delta(spot, strike, t_years, rfr, iv, is_call) -> f64`         |
-| `quantfoundry_quant.bs.gamma`                            | `gamma(spot, strike, t_years, rfr, iv) -> f64`                  |
-| `quantfoundry_quant.bs.theta`                            | `theta(spot, strike, t_years, rfr, iv, is_call) -> f64`         |
-| `quantfoundry_quant.bs.vega`                             | `vega(spot, strike, t_years, rfr, iv) -> f64`                   |
-| `quantfoundry_quant.bs.iv`                               | `iv(spot, strike, t_years, rfr, price, is_call) -> Option<f64>` |
-| `quantfoundry_quant.black76.{delta,gamma,theta,vega,iv}` | same shape, futures forward instead of spot                     |
-| `quantfoundry_quant.sabr.fit` / `.iv_smile`              | SABR calibration + smile evaluation                             |
-| `quantfoundry_quant.vol_surface.evaluate`                | term-structure-aware IV interpolation                           |
-| `quantfoundry_quant.edge_greeks.{aggregate,per_leg}`     | basket-level edge attribution                                   |
-| `quantfoundry_quant.bl.pdf`                              | Breeden-Litzenberger PDF extraction                             |
+| `magpie_quant.bs.delta`                            | `delta(spot, strike, t_years, rfr, iv, is_call) -> f64`         |
+| `magpie_quant.bs.gamma`                            | `gamma(spot, strike, t_years, rfr, iv) -> f64`                  |
+| `magpie_quant.bs.theta`                            | `theta(spot, strike, t_years, rfr, iv, is_call) -> f64`         |
+| `magpie_quant.bs.vega`                             | `vega(spot, strike, t_years, rfr, iv) -> f64`                   |
+| `magpie_quant.bs.iv`                               | `iv(spot, strike, t_years, rfr, price, is_call) -> Option<f64>` |
+| `magpie_quant.black76.{delta,gamma,theta,vega,iv}` | same shape, futures forward instead of spot                     |
+| `magpie_quant.sabr.fit` / `.iv_smile`              | SABR calibration + smile evaluation                             |
+| `magpie_quant.vol_surface.evaluate`                | term-structure-aware IV interpolation                           |
+| `magpie_quant.edge_greeks.{aggregate,per_leg}`     | basket-level edge attribution                                   |
+| `magpie_quant.bl.pdf`                              | Breeden-Litzenberger PDF extraction                             |
 
 Reference invocation, used inside the NT bundle's quote enrichment when broker-supplied Greeks are unavailable:
 
 ```python
-from quantfoundry_quant import bs
+from magpie_quant import bs
 
 # position.iv is updated on chain refresh (periodic, every ~60s)
 # spot is updated on every quote tick (every ~5s)
@@ -329,7 +327,7 @@ Every `reconciliation_interval_seconds` (default: 60), the engine:
 
 ### Strategy drift monitoring
 
-> **Status: design intent, not implemented.** Full spec lives in [drift-detector.md](drift-detector.md); this section names the architectural seam.
+> **Status: implemented.** The drift detector ships in `server/risk/drift-detector.ts`, `server/risk/fast-tier.ts`, `server/risk/slow-tier.ts`, and `server/risk/baseline-resolver.ts`. Full spec lives in [drift-detector.md](drift-detector.md); this section names the architectural seam.
 
 Position reconciliation answers "do my books match the broker's?". Strategy drift answers "is each strategy behaving the way its backtest or spec said it would?". A strategy whose live realized P&L curve has detached from its backtest distribution, or whose live hit rate has collapsed, is a risk event even when every fill reconciles cleanly.
 
@@ -498,7 +496,7 @@ Implementation files:
 - [`server/portfolio/replay.ts`](../../server/portfolio/replay.ts) — `audit_fills` replay on startup. Exports `replayFromAuditFills(db) → PortfolioState`.
 - [`server/risk/limits.ts`](../../server/risk/limits.ts) — Risk limits YAML store (see §8).
 
-Source of truth for Greek computation is the `quantfoundry-quant` Rust crate; FFI entry points are enumerated in [§2 Greek computation](#greek-computation). Backtest position tracking happens inside NautilusTrader's portfolio model.
+Source of truth for Greek computation is the `magpie-quant` Rust crate; FFI entry points are enumerated in [§2 Greek computation](#greek-computation). Backtest position tracking happens inside NautilusTrader's portfolio model.
 
 ---
 

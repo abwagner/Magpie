@@ -19,6 +19,9 @@ export default [
       "dist/**",
       "data/**",
       "models/**",
+      // Claude Code agent worktrees nest copies of the repo here; linting them
+      // trips tseslint's multi-tsconfigRootDir guard. Never our source.
+      ".claude/**",
       // Transitional — drop these globs once the JSX → TS migration lands.
       "**/*.js",
       "**/*.jsx",

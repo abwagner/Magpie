@@ -2,7 +2,7 @@
 
 Detailed guidelines for implementing the trading system. The short version is in `CLAUDE.md` at the repo root.
 
-As of the Phase 0 polyglot migration ([polyglot-migration-tdd.md](polyglot-migration-tdd.md)), this document covers **three** languages: TypeScript for the operator-facing edge, Python for the research / strategy half, and Rust for execution and math hot paths. Each language section below names its canonical toolchain, layout, and conventions; cross-cutting concerns (testing philosophy, error-handling principles, structured logging) are covered language-agnostically at the bottom with per-language deltas where they matter.
+This document covers **three** languages: TypeScript for the operator-facing edge, Python for the research / strategy half (the NT bundles), and Rust for the math hot paths. Each language section below names its canonical toolchain, layout, and conventions; cross-cutting concerns (testing philosophy, error-handling principles, structured logging) are covered language-agnostically at the bottom with per-language deltas where they matter.
 
 ---
 
@@ -141,13 +141,13 @@ Rust is used for the math hot path (Greeks / vol-surface / Black-Scholes / Black
 
 ### Toolchain
 
-| Tool              | Purpose                                  | Notes                                                                                                                                                       |
-| ----------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rustc` + `cargo` | Compiler + build/dep manager             | Version pinned in `rust-toolchain.toml` (committed). CI verifies match.                                                                                     |
-| `rustfmt`         | **Canonical formatter** — non-negotiable | `cargo fmt --all -- --check` in CI; pre-commit reformats staged files. Default config (no `rustfmt.toml` unless we hit a specific need).                    |
-| `clippy`          | **Canonical linter** — non-negotiable    | `cargo clippy --workspace --all-targets -- -D warnings` in CI. Warnings are errors.                                                                         |
-| `cargo-deny`      | License + advisory + ban-list            | Per [polyglot-migration-tdd.md §6.7](polyglot-migration-tdd.md#67-per-language-tooling-specifics). Allowed licenses: MIT, Apache-2.0, BSD-\*, ISC, MPL-2.0. |
-| `cargo-audit`     | RUSTSEC advisory scan                    | Runs in CI alongside `osv-scanner` (cross-ecosystem).                                                                                                       |
+| Tool              | Purpose                                  | Notes                                                                                                                                    |
+| ----------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `rustc` + `cargo` | Compiler + build/dep manager             | Version pinned in `rust-toolchain.toml` (committed). CI verifies match.                                                                  |
+| `rustfmt`         | **Canonical formatter** — non-negotiable | `cargo fmt --all -- --check` in CI; pre-commit reformats staged files. Default config (no `rustfmt.toml` unless we hit a specific need). |
+| `clippy`          | **Canonical linter** — non-negotiable    | `cargo clippy --workspace --all-targets -- -D warnings` in CI. Warnings are errors.                                                      |
+| `cargo-deny`      | License + advisory + ban-list            | Allowed licenses: MIT, Apache-2.0, BSD-\*, ISC, MPL-2.0. Config in `core/deny.toml`.                                                     |
+| `cargo-audit`     | RUSTSEC advisory scan                    | Runs in CI alongside `osv-scanner` (cross-ecosystem).                                                                                    |
 
 ### Project layout
 
@@ -176,14 +176,14 @@ Workspace conventions:
 - One crate per coherent responsibility; tight cohesion within a crate, low coupling between crates.
 - `[lib] crate-type = ["cdylib", "rlib"]` on any crate that's also a PyO3 extension module (`qf-quant`, eventually `qf-optimizer`'s WASM build).
 - All deps in `Cargo.toml` use exact `=` pins (e.g. `pyo3 = "=0.22.3"`, not `^0.22`). `Cargo.lock` is the source of truth for what shipped.
-- New external deps go through the admission workflow ([polyglot-migration-tdd.md §6.3](polyglot-migration-tdd.md#63-admission-workflow)).
+- New external deps are pinned, licence-checked (`cargo-deny`), and advisory-scanned (`cargo-audit`) before landing.
 
 ### Style
 
 - `snake_case` for functions, methods, variables, module names. `UpperCamelCase` for types, traits, enum variants. `SCREAMING_SNAKE_CASE` for constants.
 - Files match the primary type / module they expose: `vol_surface.rs` exports `VolSurface`.
 - Prefer `&str` over `String` in argument position; return `String` (or `Cow<'_, str>`) when ownership is required.
-- Newtypes around primitive trading types: `struct Delta(f64)`, `struct Strike(f64)`, etc. — match the fixed-point discipline we want from the math libs ([polyglot-migration-tdd.md §3](polyglot-migration-tdd.md#3-quantlib)).
+- Newtypes around primitive trading types: `struct Delta(f64)`, `struct Strike(f64)`, etc. — match the fixed-point discipline we want from the math libs.
 - No `unsafe` outside FFI boundaries; any `unsafe` block carries a `// SAFETY: …` comment explaining the invariant.
 - Re-exports go at the crate root (`pub use crate::module::Type;`) so consumers see a flat surface.
 
@@ -200,7 +200,7 @@ Workspace conventions:
 - Unit tests live in `#[cfg(test)] mod tests { … }` blocks at the bottom of the file under test (Rust convention).
 - Integration tests in `tests/` (sibling to `src/`). Cross-crate end-to-end tests sit in a top-level `qf-integration/` crate so they share fixtures.
 - Property-based testing with `proptest` for any pure-math function whose contract is "for all inputs in range R, property P holds." Required for `bs.rs`, `sabr.rs` invariants (positivity, monotonicity).
-- Equivalence harness: the Phase 1 acceptance test pipes the TS reference output through the Rust impl and asserts agreement to 1e-9 ([polyglot-migration-tdd.md Phase 1](polyglot-migration-tdd.md#phase-1--math-libraries-to-rust-3-weeks)).
+- Equivalence harness: the math-port acceptance test pipes the TS reference output through the Rust impl and asserts agreement to 1e-9.
 - `cargo test --workspace` runs all tests; `cargo test --release --workspace` runs the benchmark-adjacent ones (some assertions are tighter under release).
 
 ### Logging
@@ -234,9 +234,9 @@ Python is used for the research half — NautilusTrader strategies, backtest orc
 | `pyproject.toml`     | Project manifest (PEP 621)           | Dependency groups for `dev` / `test` / `prod`. No `setup.py`, no `requirements.txt`.                                                                                                               |
 | `uv.lock`            | Lockfile                             | Committed. Hash-pinned. `uv sync --frozen --check` in CI to detect drift.                                                                                                                          |
 | `ruff`               | **Canonical** linter + formatter     | One tool covers what black + isort + flake8 + pyupgrade + a dozen plugins used to. Default config in [pyproject.toml](../research/pyproject.toml); CI runs `ruff check` and `ruff format --check`. |
-| `mypy`               | Static type checker                  | Strict mode (`strict = true` in `[tool.mypy]`). Required on `research/quantfoundry_*`; advisory on scripts.                                                                                        |
+| `mypy`               | Static type checker                  | Strict mode (`strict = true` in `[tool.mypy]`). Required on `research/magpie_*`; advisory on scripts.                                                                                        |
 | `pytest`             | **Canonical** test runner            | Plus `pytest-asyncio` for NATS handlers, `pytest-cov` for coverage. No `unittest`.                                                                                                                 |
-| `quantfoundry-quant` | Rust math libs via PyO3              | Built with `maturin`; imported as a normal Python module post-install.                                                                                                                             |
+| `magpie-quant` | Rust math libs via PyO3              | Built with `maturin`; imported as a normal Python module post-install.                                                                                                                             |
 
 ### Project layout
 
@@ -245,11 +245,11 @@ research/
   pyproject.toml           # workspace root
   uv.lock                  # **committed**
   [tool.uv.workspace]
-    members = ["quantfoundry-*"]
-  quantfoundry-logging/    # qf_logging package (Phase 0)
-  quantfoundry-orchestrator/  # BacktestNode wrapper, walk-forward driver
-  quantfoundry-research/   # shared helpers across strategies/orchestrator
-strategies/                # gitignored symlink → ../quantfoundry-strategies
+    members = ["magpie-*"]
+  magpie-logging/    # qf_logging package (Phase 0)
+  magpie-orchestrator/  # BacktestNode wrapper, walk-forward driver
+  magpie-research/   # shared helpers across strategies/orchestrator
+strategies/                # gitignored symlink → ../magpie-strategies
                            # (created by scripts/setup-strategies-symlink.sh;
                            # strategies live in their own repo, not in QF —
                            # see docs/RUNBOOK.md "Operator setup")
@@ -257,9 +257,9 @@ strategies/                # gitignored symlink → ../quantfoundry-strategies
 
 Workspace conventions:
 
-- One package per top-level dir under `research/`; each has its own `pyproject.toml` with `quantfoundry-research` (and friends) declared as a path dep or workspace member.
-- Package names are kebab-case at the distribution level (`quantfoundry-logging`), snake_case at the import level (`quantfoundry_logging`).
-- Strategy packages live in the sibling `quantfoundry-strategies` repo, not in QF. New strategies start there, one top-level dir per strategy, each a standalone uv project.
+- One package per top-level dir under `research/`; each has its own `pyproject.toml` with `magpie-research` (and friends) declared as a path dep or workspace member.
+- Package names are kebab-case at the distribution level (`magpie-logging`), snake_case at the import level (`magpie_logging`).
+- Strategy packages live in the sibling `magpie-strategies` repo, not in QF. New strategies start there, one top-level dir per strategy, each a standalone uv project.
 - Every QF-hosted package adds an entry to the workspace `members` list. No nested workspaces.
 
 ### Style
@@ -283,19 +283,19 @@ Workspace conventions:
 
 ### Testing
 
-- Tests live in `tests/` at each package root, mirroring the package structure: `quantfoundry-logging/tests/test_qf_logging.py`.
+- Tests live in `tests/` at each package root, mirroring the package structure: `magpie-logging/tests/test_qf_logging.py`.
 - `pytest` discovers via `test_*.py` files and `test_*` functions; no class-based test scaffolding unless a fixture genuinely needs `self`.
 - Use `pytest.fixture` for shared setup; `pytest-asyncio` `@pytest.mark.asyncio` for coroutines.
 - NATS interactions use a fake (`tests/fakes/fake_nats.py`); integration tests against a real NATS run under `pytest -m integration` (opt-in, gated by env var).
-- Property-based tests with `hypothesis` for pure-math helpers in `quantfoundry-research` (same discipline as the Rust side).
-- Coverage target: 80% line coverage on `quantfoundry_*` packages; orchestrator-only glue is exempt.
+- Property-based tests with `hypothesis` for pure-math helpers in `magpie-research` (same discipline as the Rust side).
+- Coverage target: 80% line coverage on `magpie_*` packages; orchestrator-only glue is exempt.
 
 ### Logging
 
-Use the `quantfoundry_logging` package which configures `structlog` to emit the common JSON schema from [tdd/observability.md §3](tdd/observability.md#3-common-json-log-schema). The package owns a single `ContextVar` for `correlation_id`; readers / writers go through `with_correlation_id` / `current_correlation_id`. Never instantiate a new `ContextVar` in user code.
+Use the `magpie_logging` package which configures `structlog` to emit the common JSON schema from [tdd/observability.md §3](tdd/observability.md#3-common-json-log-schema). The package owns a single `ContextVar` for `correlation_id`; readers / writers go through `with_correlation_id` / `current_correlation_id`. Never instantiate a new `ContextVar` in user code.
 
 ```python
-from quantfoundry_logging import logger, with_correlation_id
+from magpie_logging import logger, with_correlation_id
 
 with with_correlation_id(correlation_id):
     logger.info("strategy.evaluated", payload={"strategy": "soxx-rotation", "intents": 3})
@@ -427,7 +427,7 @@ function handleRequest(req: IncomingMessage, res: ServerResponse) {
 
 ## Logging
 
-All log output is structured JSON conforming to the cross-runtime schema in [tdd/observability.md §3](tdd/observability.md#3-common-json-log-schema). Never `console.log` (TS), `print` (Python), or `println!` (Rust) in production code. The three runtime helper packages — `server/logging` (TS), `quantfoundry_logging` (Python), `qf-logging` (Rust crate) — all emit the same schema; a golden parity test verifies byte-level agreement modulo `ts`.
+All log output is structured JSON conforming to the cross-runtime schema in [tdd/observability.md §3](tdd/observability.md#3-common-json-log-schema). Never `console.log` (TS), `print` (Python), or `println!` (Rust) in production code. The three runtime helper packages — `server/logging` (TS), `magpie_logging` (Python), `qf-logging` (Rust crate) — all emit the same schema; a golden parity test verifies byte-level agreement modulo `ts`.
 
 **TypeScript helper** (the existing one, extended for `correlation_id` propagation):
 
@@ -447,11 +447,11 @@ For Rust and Python equivalents see the per-language conventions above.
 
 ## Writes go through dispatch
 
-Any code path that writes to the canonical data lake (`s3://quantfoundry-data` or its `file://` fallback) MUST go through the M10-1 write-dispatch API at `POST /api/write-jobs`. The QF server is the only process that holds S3 write credentials post-M10-6; clients (CLI scripts, cron container, ad-hoc tools) submit jobs via the dispatcher. See [docs/dispatch-architecture.md](dispatch-architecture.md) for the architecture, [docs/RUNBOOK.md §5](RUNBOOK.md#5-historical-data-collection) for the operator workflow.
+Any code path that writes to the canonical data lake (`s3://magpie-data` or its `file://` fallback) MUST go through the M10-1 write-dispatch API at `POST /api/write-jobs`. The QF server is the only process that holds S3 write credentials post-M10-6; clients (CLI scripts, cron container, ad-hoc tools) submit jobs via the dispatcher. See [tdd/write-jobs.md](tdd/write-jobs.md) for the queue + handler architecture, [RUNBOOK §5](RUNBOOK.md#5-historical-data-collection) for the operator workflow.
 
 The narrow exception is:
 
-- `Storage.storeChain` hot-path callers inside `server/index.js` — they run in the server process and write directly via the storage primitive `writeChainParquet`. Going through the dispatcher would serialize concurrent quote refreshes behind a single in-flight job.
+- `Storage.storeChain` hot-path callers inside `server/index.ts` — they run in the server process and write directly via the storage primitive `writeChainParquet`. Going through the dispatcher would serialize concurrent quote refreshes behind a single in-flight job.
 
 If you're adding a new writer surface and it doesn't fall into that exception, register it as a new kind in `server/writeJobs/handlers/`.
 
@@ -466,53 +466,24 @@ If you're adding a new writer surface and it doesn't fall into that exception, r
 
 ---
 
-## Implementation Order
+## Build dependency ordering
 
-Recommended order for building the system (dependencies flow top to bottom):
+The original linear phase plan in this section has been superseded: the
+foundational layers (types, symbols, calendar, DB, market data, portfolio,
+orders, write-jobs, GUI) are built, and execution / live broker connectivity
+moved out of TypeScript into the per-broker NautilusTrader bundles
+([broker-integration.md](tdd/broker-integration.md)) rather than the
+`server/order/adapters/{ibkr,schwab}.ts` adapters once planned here. The
+standalone `server/analytics/` service was likewise removed (QF-225).
 
-```
-Phase 0: Tooling setup
-  TypeScript, ESLint, Prettier, tsconfig
-  Migrate existing test infrastructure to TS
+For where a new component sits in the dependency graph, work from the current
+architecture rather than a fixed phase list:
 
-Phase 1: Pure functions (zero dependencies, fully testable)
-  src/types/*.ts (shared type definitions)
-  server/symbols/symbol.ts (canonical symbol parser/formatter)
-  server/symbols/convert.ts (OCC ↔ canonical conversion)
-  server/calendar/index.ts (market calendar)
+- System decomposition and component boundaries → [TRADING-SYSTEM-TDD.md](TRADING-SYSTEM-TDD.md).
+- Per-component contracts and build state → [tdd/](tdd/) (one TDD per component).
+- Runtime topology (what runs where, in which language) → [tdd/deployment-topology.md](tdd/deployment-topology.md).
 
-Phase 2: Infrastructure
-  server/db/init.ts (DuckDB table creation)
-  server/logger.ts (structured JSON logger)
-  server/risk/evaluator.ts (risk evaluator types)
-
-Phase 3: Market Data (evolve existing code)
-  server/market-data/cache.ts
-  server/market-data/adapters/marketdata.ts (refactor existing)
-  server/market-data/sources.ts
-  server/market-data/quality-gate.ts
-  server/market-data/service.ts
-
-Phase 4: Strategy + Portfolio + Orders
-  server/portfolio/engine.ts
-  server/portfolio/reconciliation.ts
-  server/portfolio/replay.ts
-  server/order/fill-log.ts
-  server/order/adapters/paper.ts
-  server/order/plane.ts
-
-Phase 5: Write jobs + analytics
-  server/writeJobs/handlers/ (job handler interface)
-  server/analytics/api.ts
-  server/analytics/scheduler.ts
-
-Phase 6: GUI
-  New React components (OrdersTab, RiskDashboardTab, TradeInspectorTab)
-  server/ws-state.ts
-
-Phase 7: Broker adapters (requires broker accounts)
-  server/market-data/adapters/ibkr.ts
-  server/market-data/adapters/schwab.ts
-  server/order/adapters/ibkr.ts
-  server/order/adapters/schwab.ts
-```
+The rule that survives the phase plan: **pure functions first**. Anything with
+zero dependencies (symbol parsing, calendar math, Greek computation, schema
+validation) is fully testable in isolation and should land — with its tests —
+before the stateful layers that consume it.

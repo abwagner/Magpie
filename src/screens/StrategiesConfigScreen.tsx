@@ -50,7 +50,6 @@ export function StrategiesConfigScreen() {
     return () => {
       mounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -199,7 +198,7 @@ function StrategyEditor({ summary }: { summary: StrategyConfigSummary }) {
       try {
         parsedConfig = JSON.parse(draft.configJson);
       } catch (e) {
-        throw new Error(`config: invalid JSON (${(e as Error).message})`);
+        throw new Error(`config: invalid JSON (${(e as Error).message})`, { cause: e });
       }
       if (
         typeof parsedConfig !== "object" ||

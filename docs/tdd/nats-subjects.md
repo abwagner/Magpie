@@ -20,12 +20,12 @@ the owning docs**, not here:
 The subject tables below use `<placeholder>` for slots whose value is bound
 at publish/subscribe time. Each placeholder has a fixed value space.
 
-| Placeholder     | Value space                                                                                                                                              | Notes                                                                                                                                       |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<broker>`      | `schwab` \| `ibkr`                                                                                                                                       | Bundle suffix. Bound to the enabled brokers in `config/brokers.json`. New broker = new bundle = same subjects with a new suffix.            |
-| `<symbol>`      | Canonical QF symbol token (NATS-safe). `EQ.SPY`, `OPT.SPY.2026-06-20.C.500`, `FUT.CLN6`. The on-the-wire form uses `.` separators, not `:` like logs do. | Per the canonical symbol grammar; QF symbols are tokenized to NATS form by `parseSymbol` + `toSubjectTokens` (`server/signals/publish.ts`). |
-| `<model_id>`    | kebab-case slug, e.g. `vol-forecast-spy-1d`                                                                                                              | Strategy/model identifier. Registered in `config/signals.json`; also persisted in the strategy/model DB tables.                             |
-| `<asset_class>` | `EQ` \| `OPT` \| `FUT`                                                                                                                                   | Falls out of the symbol tokenization above — appears as the first token after `<model_id>` in `signals.*` subjects.                         |
+| Placeholder     | Value space                                                                                                                                              | Notes                                                                                                                                                                                                                                                                                                                                                              |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `<broker>`      | `schwab` \| `ibkr`                                                                                                                                       | Bundle suffix. Bound to the enabled brokers in `config/brokers.json`. New broker = new bundle = same subjects with a new suffix.                                                                                                                                                                                                                                   |
+| `<symbol>`      | Canonical QF symbol token (NATS-safe). `EQ.SPY`, `OPT.SPY.2026-06-20.C.500`, `FUT.CLN6`. The on-the-wire form uses `.` separators, not `:` like logs do. | Per the canonical symbol grammar; QF symbols are tokenized to NATS form by `parseSymbol` + `toSubjectTokens` (`server/symbols/symbol.ts`).                                                                                                                                                                                                                         |
+| `<strategy_id>` | kebab-case slug matching `^[a-z0-9][a-z0-9-]{0,63}$`, e.g. `cl-scalp`                                                                                    | Strategy lifecycle identifier — the `id` key in `data/strategies.json` (`server/strategy/lifecycle.ts`). NATS-safe by construction (the `ID_RE` guard rejects `.` and `*`).                                                                                                                                                                                        |
+| `<action>`      | `start` \| `halt`                                                                                                                                        | The `LifecycleAction` token verbatim (`server/strategy/lifecycle.ts`). The full registry has nine actions, but only `start` (→ `running`) and `halt` (→ `halted`) change what runs in a live TradingNode, so only these two are published to bundles. See [strategy-deployment-topology.md §4.3](strategy-deployment-topology.md#43-lifecycle-event-subscription). |
 
 ---
 
@@ -40,13 +40,14 @@ Operator manual entry and framework-fired exits in OPL submit through these
 subjects. Strategy submissions do **not** use these — they go through the
 NT-side risk gate (§2.2), which is a different subject family.
 
-| Subject                        | Direction   | Pattern   | Producer                                   | Consumer                                  | Payload                                                                                  |
-| ------------------------------ | ----------- | --------- | ------------------------------------------ | ----------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `orders.submit.<broker>`       | TS → Python | req/reply | OPL (`server/order/adapters/nt-bridge.ts`) | Per-broker NT bundle (`broker_bridge.py`) | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`OrderIntent`)       |
-| `orders.cancel.<broker>`       | TS → Python | req/reply | OPL                                        | Per-broker NT bundle                      | [broker-integration.md §4.1](broker-integration.md#41-order-types)                       |
-| `orders.status.<broker>`       | TS → Python | req/reply | OPL restart recovery                       | Per-broker NT bundle                      | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`BrokerOrderStatus`) |
-| `orders.positions.<broker>`    | TS → Python | req/reply | OPL restart recovery                       | Per-broker NT bundle                      | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`BrokerPosition[]`)  |
-| `orders.exec_reports.<broker>` | Python → TS | pub/sub   | Per-broker NT bundle                       | OPL audit observer                        | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`BrokerExecReport`)  |
+| Subject                        | Direction   | Pattern   | Producer                                   | Consumer                                  | Payload                                                                                                                                                |
+| ------------------------------ | ----------- | --------- | ------------------------------------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `orders.submit.<broker>`       | TS → Python | req/reply | OPL (`server/order/adapters/nt-bridge.ts`) | Per-broker NT bundle (`broker_bridge.py`) | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`OrderIntent`)                                                                     |
+| `orders.cancel.<broker>`       | TS → Python | req/reply | OPL                                        | Per-broker NT bundle                      | [broker-integration.md §4.1](broker-integration.md#41-order-types)                                                                                     |
+| `orders.status.<broker>`       | TS → Python | req/reply | OPL restart recovery                       | Per-broker NT bundle                      | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`BrokerOrderStatus`)                                                               |
+| `orders.positions.<broker>`    | TS → Python | req/reply | OPL restart recovery + `/api/positions`    | Per-broker NT bundle                      | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`BrokerPosition[]`; each carries the raw Schwab row for QF-272's positions parser) |
+| `orders.accounts.<broker>`     | TS → Python | req/reply | `/api/accounts` (QF-272)                   | Per-broker NT bundle                      | `AccountInfo[]` (account number / hash / type)                                                                                                         |
+| `orders.exec_reports.<broker>` | Python → TS | pub/sub   | Per-broker NT bundle                       | OPL audit observer                        | [broker-integration.md §4.1](broker-integration.md#41-order-types) (`BrokerExecReport`)                                                                |
 
 Schwab and IBKR bundles are symmetric — every broker bundle owns every
 subject in this family. See [broker-integration.md §3.1](broker-integration.md#31-orders-opl--broker-bridge).
@@ -94,33 +95,79 @@ in [portfolio-risk-engine.md](portfolio-risk-engine.md).
 Every 10s; includes last upstream success timestamp. Drives the
 data-quality gate in `server/market-data/quality-gate.ts`.
 
-### 2.4 Signals (model workers ↔ strategy runners / monitors)
+> **Retired (QF-261 / QF-281 / QF-339).** The former `signals.<model_id>.<asset_class>.<symbol-tokens>`
+> family (model workers → strategy runners / monitors, JetStream `signals.>`)
+> is gone: `server/signals/`, `src/types/signal.ts`, and
+> `research/magpie-signals` were all removed with the signals
+> subsystem. No producer or consumer of a `signals.*` subject exists in the
+> codebase, so the family — along with its `<model_id>` / `<asset_class>`
+> grammar variables (§1) — is no longer part of the registry. Signal
+> ingestion is now the M10 ingest CLI + `/api/signals/*` HTTP surface, which
+> does not use NATS. This note is a tombstone; remove it once no reader
+> expects the old family.
 
-| Subject                                            | Direction       | Pattern                     | Producer                                                                                        | Consumer                                                                                                                                                   | Payload                                                                  |
-| -------------------------------------------------- | --------------- | --------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `signals.<model_id>.<asset_class>.<symbol-tokens>` | Python/TS → bus | pub/sub (JetStream durable) | Signal workers (`research/quantfoundry-signals`); TS-side publisher `server/signals/publish.ts` | Strategy runners (`server/strategy/`), working-order monitor (`server/execution/working-order-monitor.ts`), drift detector, exit monitor, WebSocket bridge | Signal schema in `research/quantfoundry-signals` + `src/types/signal.ts` |
+### 2.4 Strategy lifecycle (QF registry → prod bundle launchers)
 
-Subject is built by `buildSubject(signal)` in `server/signals/publish.ts:49`
-as `${SUBJECT_PREFIX}.${signal.model_id}.${tokens.join(".")}`. The token
-sequence after `<model_id>` is the asset-class-prefixed symbol path —
-e.g. `signals.vol-forecast-spy-1d.EQ.SPY` or
-`signals.iv-skew-1d.OPT.SPY.2026-06-20.C.500`.
+QF's lifecycle registry (`server/strategy/lifecycle.ts`) is the source of
+truth for which strategies are live. When an operator transitions a
+strategy, the registry broadcasts the change so the per-broker prod bundle
+launcher can hot-swap that one strategy in/out of its `TradingNode`
+without restarting co-tenants — see
+[strategy-deployment-topology.md §4.3](strategy-deployment-topology.md#43-lifecycle-event-subscription)
+and [RUNBOOK §12.6](../RUNBOOK.md#126-strategy-rollback-and-hot-swap).
 
-The JetStream stream is bound to `signals.>` (declared in
-`server/signals/publish.ts:35` and the test helper). Per-consumer filters
-narrow to `signals.<model_id>.>` (working-order monitor) or stay at
-`signals.>` (drift detector, exit monitor, WS bridge).
+| Subject                            | Direction   | Pattern | Producer                                                          | Consumer                                                                                                                                            | Status                    | Payload                                                                                                                                                                                                                             |
+| ---------------------------------- | ----------- | ------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lifecycle.<strategy_id>.<action>` | TS → Python | pub/sub | QF lifecycle registry (`server/strategy/lifecycle.ts` `onChange`) | Prod bundle launchers (all brokers; per [strategy-deployment-topology.md §4.2](strategy-deployment-topology.md#42-prod-bundle-launcher-per-broker)) | Designed; not implemented | `{ from, to, action, ts, actor, reason? }` — the serialized registry `TransitionEvent` (`server/strategy/lifecycle.ts`); `<strategy_id>` and `<action>` are already encoded in the subject, so they are not repeated in the payload |
+
+Notes on the scheme:
+
+- **`<action>` in the subject, not just the payload**, so a launcher can
+  subscribe with an interest filter (e.g. `lifecycle.*.halt` for an audit
+  side-car) without deserialising every transition. The bundle launcher
+  itself binds the wildcard `lifecycle.>` and dispatches on the action
+  token. Pause/resume and the registered/enabled/retired transitions never
+  change a live co-tenant (§4.3 of the topology doc), so the registry simply
+  doesn't publish them — keeping the subject's `<action>` space to the two
+  verbs a launcher acts on.
+- **Not per-broker.** Unlike `orders.*` / `marketdata.*`, the lifecycle
+  subject carries no `<broker>` suffix. The registry doesn't know which
+  broker a strategy is bound to — that's the strategy's
+  `tool.magpie.broker` pyproject tag, resolved launcher-side. Every
+  broker's launcher subscribes; each ignores `start`/`stop` for strategies
+  not tagged to its broker. (`halt` is honored by whichever launcher hosts
+  the strategy; a no-op everywhere else.)
+- **Pub/sub, not req/reply.** The registry transition has already been
+  persisted and is authoritative before the event fires; the launcher
+  applies it best-effort and the next full-bundle restart re-reads the
+  registry over the HTTP API as the reconciling source of truth. A launcher
+  that misses an event self-heals on restart — the same fail-safe the §6
+  state contract relies on.
 
 ---
 
 ## 3. Implementation references
 
-Where these subjects are literally constructed in code:
+Subject strings are no longer hand-built at each callsite. As of QF-335 the
+literals live in one module per language — the single source of truth:
 
-| Family              | TS                                                                                                                                                                                           | Python                                                                                                                                                               |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Orders              | `server/order/adapters/nt-bridge.ts:68-72`                                                                                                                                                   | `research/quantfoundry-schwab-nt/src/quantfoundry_schwab_nt/broker_bridge.py:91-97`, `research/quantfoundry-ibkr-nt/src/quantfoundry_ibkr_nt/broker_bridge.py:73-78` |
-| Risk gate           | (not yet implemented; design in risk-gate-architecture.md)                                                                                                                                   | (not yet implemented)                                                                                                                                                |
-| Market data         | `server/market-data/service.ts`, `server/market-data/quality-gate.ts`                                                                                                                        | `research/quantfoundry-md-bridge/src/quantfoundry_md_bridge/schwab/bridge.py:79-89`                                                                                  |
-| Signals (publish)   | `server/signals/publish.ts:49-52`                                                                                                                                                            | `research/quantfoundry-signals/src/quantfoundry_signals/publisher.py` (HTTP→ingress→NATS)                                                                            |
-| Signals (subscribe) | `server/signals/ws-bridge.ts:78`, `server/signals/drift-detector.ts:114`, `server/signals/exit-monitor.ts:198`, `server/strategy/runner.ts`, `server/execution/working-order-monitor.ts:150` | n/a                                                                                                                                                                  |
+- **TS:** [`src/types/subjects.ts`](../../src/types/subjects.ts) — typed
+  builders (`orders.submit(broker)`, `orders.gate.revoke(broker)`,
+  `marketdata.quotes(broker, symbol)`, …).
+- **Python:** [`research/magpie-subjects`](../../research/magpie-subjects)
+  (`magpie_subjects`) — the mirror, consumed by the broker bridges, MD
+  bridges, and risk-gate plugin.
+
+Cross-language parity (both modules emit identical strings for identical
+inputs) is enforced by
+[`nats-subjects.fixtures.json`](nats-subjects.fixtures.json), asserted from
+`src/types/subjects.test.ts` and `research/magpie-subjects/tests/test_subjects.py`.
+
+The callsites that _consume_ those builders:
+
+| Family      | TS                                                                                                                                              | Python                                                                                                                                                               |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Orders      | `server/order/adapters/nt-bridge.ts:68-72`                                                                                                      | `research/magpie-schwab-nt/src/magpie_schwab_nt/broker_bridge.py:91-97`, `research/magpie-ibkr-nt/src/magpie_ibkr_nt/broker_bridge.py:73-78` |
+| Risk gate   | (not yet implemented; design in risk-gate-architecture.md)                                                                                      | (not yet implemented)                                                                                                                                                |
+| Market data | `server/market-data/service.ts`, `server/market-data/quality-gate.ts`                                                                           | `research/magpie-md-bridge/src/magpie_md_bridge/schwab/bridge.py:79-89`                                                                                  |
+| Lifecycle   | (not yet implemented; publish point is the `onChange` hook wired at `server/index.ts` into `StrategyStore`, see `server/strategy/lifecycle.ts`) | (consumer is the prod bundle launcher — `research/magpie-prod-bundle/`)                                                                                        |

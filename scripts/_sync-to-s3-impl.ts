@@ -4,7 +4,7 @@
 // Idempotent — only uploads new/changed files. Suitable for cron scheduling.
 //
 // Usage:
-//   npx tsx scripts/sync-to-s3.ts --bucket quantfoundry-data
+//   npx tsx scripts/sync-to-s3.ts --bucket magpie-data
 //   npx tsx scripts/sync-to-s3.ts --endpoint-url https://s3.example.com
 //   npx tsx scripts/sync-to-s3.ts --only chains --dry-run
 //   npx tsx scripts/sync-to-s3.ts --no-chains --no-futures   # everything else

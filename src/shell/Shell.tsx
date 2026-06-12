@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   useConnectionStatus,
+  useExitRuleTrips,
   useOutstandingQuoteAlerts,
   useSystemState,
 } from "../state/StateProvider.js";
@@ -10,9 +11,11 @@ import { Modal } from "../components/ui/Modal.js";
 import { Drawer } from "../components/ui/Drawer.js";
 import { TypedConfirmation } from "../components/ui/TypedConfirmation.js";
 import { EnvPill } from "../components/ui/EnvPill.js";
+import { NotificationBanner, bannerLead, moreSuffix } from "../components/ui/NotificationBanner.js";
 import { Icon } from "../components/ui/Icon.js";
 import { Kbd } from "../components/ui/Kbd.js";
 import { systemKill, systemReset, getAccounts, type SchwabAccount } from "../lib/api.js";
+import { exitRuleLabel } from "../lib/exit-rule-format.js";
 import { WORKSPACES, getWorkspace } from "../workspaces/index.js";
 import { WorkspaceGrid } from "./WorkspaceGrid.js";
 import { OrderTicket } from "../flows/OrderTicket.js";
@@ -125,6 +128,7 @@ export function Shell() {
       <Tabs current={workspace} onChange={setWorkspace} disabled={halted} />
       {reconnecting && <ReconBanner />}
       <QuoteUnavailableBanner />
+      <ExitRuleClosingBanner />
       <Body workspace={workspace} />
       <StatusBar connected={connected} reconnecting={reconnecting} />
       <CommandPalette open={paletteOpen} onClose={closePalette} items={cmdItems} />
@@ -363,32 +367,66 @@ function ReconBanner() {
 // section override on mount.
 export function QuoteUnavailableBanner() {
   const outstanding = useOutstandingQuoteAlerts();
-  if (outstanding.size === 0) return null;
   // Show the most-recent entry's detail prominently; the count gives
   // the operator a quick view of breadth.
   const entries = Array.from(outstanding.values()).sort((a, b) =>
     a.ts > b.ts ? -1 : a.ts < b.ts ? 1 : 0,
   );
-  const lead = entries[0]!;
+  const head = bannerLead(entries);
+  if (!head) return null;
+  const { lead, more } = head;
   const ts = new Date(lead.ts).toLocaleTimeString();
   const detail = lead.detail ?? lead.reason;
   const adapter = lead.adapter ?? "unknown adapter";
-  const count = outstanding.size;
   function openHealth() {
     useUI.getState().setWorkspace("settings");
     useUI.getState().setSettingsSection("mdHealth");
   }
   return (
-    <div className="quote-unavailable-banner" role="status">
-      <span>Market data unavailable</span>
-      <span className="quote-unavailable-detail">
-        {detail} for {lead.symbol} via {adapter}. Last attempt: {ts}
-        {count > 1 ? ` · ${count - 1} more symbol${count - 1 === 1 ? "" : "s"} affected` : ""}
-      </span>
-      <button type="button" className="quote-unavailable-action" onClick={openHealth}>
-        View broker connections
-      </button>
-    </div>
+    <NotificationBanner
+      variant="warn"
+      label="Market data unavailable"
+      detail={
+        <>
+          {detail} for {lead.symbol} via {adapter}. Last attempt: {ts}
+          {moreSuffix(more, "symbol", "affected")}
+        </>
+      }
+      actionLabel="View broker connections"
+      onAction={openHealth}
+    />
+  );
+}
+
+// QF-322 — in-flight exit-rule closing banner. When the monitor trips a
+// rule it submits closing intents and broadcasts position_exit_rule
+// events; this banner makes the rule-driven close visible so the
+// operator can tell it apart from a manual liquidation. It surfaces the
+// most-recent trip plus a count of other affected positions. Distinct
+// styling (var(--neg)) separates it from the quote-unavailable warning.
+export function ExitRuleClosingBanner() {
+  const trips = useExitRuleTrips();
+  const head = bannerLead(trips);
+  if (!head) return null;
+  const { lead, more } = head;
+  const ts = new Date(lead.ts).toLocaleTimeString();
+  function openStrategies() {
+    useUI.getState().setWorkspace("strategies");
+  }
+  return (
+    <NotificationBanner
+      variant="neg"
+      label="Exit rule closing positions"
+      detail={
+        <>
+          {exitRuleLabel(lead.rule)} tripped for {lead.strategy_id} — closing {lead.position_id}.
+          Last trip: {ts}
+          {moreSuffix(more, "position", "closing")}
+        </>
+      }
+      actionLabel="View strategies"
+      onAction={openStrategies}
+    />
   );
 }
 

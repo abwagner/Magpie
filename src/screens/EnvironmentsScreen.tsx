@@ -31,20 +31,17 @@ const TRADING_MODE_TONES: Record<TradingModeValue, Tone> = {
   live: "neg",
 };
 
+// QF-263 — the Order Plane only exposes paper_local + manual now; the
+// auto / semi-auto / paper_broker modes were retired (NT strategies own
+// auto execution per M14-1 Architecture B).
 const EXECUTION_MODE_TONES: Record<ExecutionModeValue, Tone> = {
   paper_local: "warn",
-  paper_broker: "warn",
   manual: "neutral",
-  "semi-auto": "neutral",
-  auto: "pos",
 };
 
 const EXECUTION_MODE_DESCRIPTIONS: Record<ExecutionModeValue, string> = {
   paper_local: "fills synthesised in-process; no broker contact",
-  paper_broker: "broker paper-trading account, real round-trip",
   manual: "operator approves every intent before submit",
-  "semi-auto": "auto-submit within whitelist; otherwise approval",
-  auto: "auto-submit every intent the strategy emits",
 };
 
 export function EnvironmentsScreen() {

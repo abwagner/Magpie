@@ -6,24 +6,31 @@ Server-side cron for Magpie's data ingest, running on `your-server.example.com` 
 
 | Unit                                   | Purpose                                                                                                                                               |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `quantfoundry-ingest@.service`         | Template — runs `npm run ingest -- --source %i`. Instances: `fred`, `eia`, `cftc`, `fmp`, `yfinancial`, `portwatch`, `gfw`, `ofac`, `marinecadastre`. |
-| `quantfoundry-ingest@<source>.timer`   | One per source, triggers the matching `quantfoundry-ingest@<source>.service`.                                                                         |
-| `quantfoundry-rebuild-catalog.service` | Rebuilds `portfolio.duckdb` from MinIO data and mirrors it to `s3://quantfoundry-data/duckdb/portfolio.duckdb` (sets `CATALOG_S3_PUSH=1`).            |
-| `quantfoundry-rebuild-catalog.timer`   | Every 6h.                                                                                                                                             |
+| `magpie-ingest@.service`         | Template — runs `npm run ingest -- --source %i`. Instances: `fred`, `eia`, `cftc`, `fmp`, `yfinancial`, `portwatch`, `gfw`, `ofac`, `marinecadastre`. |
+| `magpie-ingest@<source>.timer`   | One per source, triggers the matching `magpie-ingest@<source>.service`.                                                                         |
+| `magpie-rebuild-catalog.service` | Rebuilds `portfolio.duckdb` from MinIO data and mirrors it to `s3://magpie-data/duckdb/portfolio.duckdb` (sets `CATALOG_S3_PUSH=1`).            |
+| `magpie-rebuild-catalog.timer`   | Every 6h.                                                                                                                                             |
+| `magpie-backup-observability.service` | Submits a `backup-observability` write-job — snapshots Loki+Prometheus stores to MinIO (offsite DR), keeps 30 daily snapshots. See [QF-279]. |
+| `magpie-backup-observability.timer`   | Daily at 03:00 ET.                                                                                                                              |
+
+> Either run this systemd timer **or** the in-container `npm run scheduler`
+> (which also fires `backup-observability` daily at 03:00 ET) — not both, to
+> avoid duplicate submissions. The write-jobs idempotency key dedupes
+> same-day re-submits regardless.
 
 ## Assumptions
 
-- `/srv/quantfoundry/Magpie` is a clone of this repo.
-- `/srv/quantfoundry/.env` is created from `.env.example` and filled in — contains `DATA_URI`, `S3_*`, etc.
-- `/srv/quantfoundry/logs/` is writable by the user running the timers.
+- `/srv/magpie/Magpie` is a clone of this repo.
+- `/srv/magpie/.env` is created from `.env.example` and filled in — contains `DATA_URI`, `S3_*`, etc.
+- `/srv/magpie/logs/` is writable by the user running the timers.
 - The **system timezone is `America/New_York`** (units use unqualified ET wall clocks). Verify with `timedatectl`. If the host is UTC, edit each timer's `OnCalendar=` accordingly.
-- `npm`, `npx`, and `aws` CLIs are on `PATH`. `node_modules/` installed in `/srv/quantfoundry/Magpie`.
+- `npm`, `npx`, and `aws` CLIs are on `PATH`. `node_modules/` installed in `/srv/magpie/Magpie`.
 - `loginctl enable-linger <user>` is set so user timers run when the user isn't logged in.
 
 ## Install
 
 ```sh
-cd /srv/quantfoundry/Magpie
+cd /srv/magpie/Magpie
 ./deploy/systemd/install.sh           # copies + enables all units
 ./deploy/systemd/install.sh --dry-run # preview only
 ```
@@ -37,18 +44,18 @@ The script is idempotent — safe to re-run after editing a unit.
 systemctl --user list-timers --no-pager
 
 # Trigger a job manually (one-shot, doesn't change the timer)
-systemctl --user start quantfoundry-ingest@fred.service
-systemctl --user start quantfoundry-rebuild-catalog.service
+systemctl --user start magpie-ingest@fred.service
+systemctl --user start magpie-rebuild-catalog.service
 
 # Inspect last run
-systemctl --user status quantfoundry-ingest@fred.service
-journalctl --user -u quantfoundry-ingest@fred.service -n 100
+systemctl --user status magpie-ingest@fred.service
+journalctl --user -u magpie-ingest@fred.service -n 100
 
 # Disable a timer (e.g. retiring a source)
-systemctl --user disable --now quantfoundry-ingest@gfw.timer
+systemctl --user disable --now magpie-ingest@gfw.timer
 ```
 
-Per-source logs (in addition to journald) land at `/srv/quantfoundry/logs/ingest-<source>.log`.
+Per-source logs (in addition to journald) land at `/srv/magpie/logs/ingest-<source>.log`.
 
 ## Schedules
 

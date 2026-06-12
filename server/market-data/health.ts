@@ -120,26 +120,66 @@ export interface BridgeStatus {
   rpc_error_rate_5m: number;
   rpc_latency_p50_ms: number | null;
   rpc_latency_p99_ms: number | null;
+  // QF-341 — MD fallback liveness (TDD §4.2).
+  /** Rank in the ratified MD priority order (0 = primary), or null if the
+   *  broker isn't listed in config/brokers.json marketdata.priority. */
+  priority_rank: number | null;
+  /** True when this broker is currently serving as a fallback target for
+   *  ≥1 method because a higher-priority broker is unavailable. */
+  serving_as_fallback: boolean;
+}
+
+/** Read-only policy header for the Settings → Bridges screen (TDD §4.2). */
+export interface BridgePolicy {
+  fallback_enabled: boolean;
+  priority: string[];
+  heartbeat_stale_ms: number;
+  /** Per-method overrides, surfaced verbatim for operator visibility. */
+  methods: Record<string, { fallback_enabled?: boolean; priority?: string[] }>;
 }
 
 export interface BridgesResponse {
   bridges: BridgeStatus[];
+  /** The ratified fallback policy, so the operator sees it without opening
+   *  the JSON. Absent when no policy is wired into the endpoint. */
+  policy?: BridgePolicy;
 }
 
 export interface BridgesDeps {
   /** Full adapter list. Only nt-bridge adapters are surfaced. */
   adapters: MarketDataAdapter[];
   metrics: MetricsRegistry;
+  // QF-341 — optional fallback policy + selector state. When omitted, the
+  // endpoint degrades to the QF-296 shape with priority_rank=null and
+  // serving_as_fallback=false (no fallback wired).
+  /** Parsed marketdata fallback policy (config/brokers.json). */
+  policy?: BridgePolicy;
+  /** Broker ids currently serving as a fallback target (selector latch). */
+  brokersServingAsFallback?: Set<string>;
 }
 
 // NT bridge adapter names follow the pattern "nt-bridge/<broker>".
 const NT_BRIDGE_PREFIX = "nt-bridge/";
+
+// An adapter that also exposes the exact last-heartbeat age (QF-341). The
+// nt-bridge-md adapter implements this; we duck-type to avoid importing the
+// adapter into the health layer.
+interface HeartbeatAgeAware {
+  lastHeartbeatAgeMs(): number | null;
+}
+
+function hasHeartbeatAge(a: MarketDataAdapter): a is MarketDataAdapter & HeartbeatAgeAware {
+  return typeof (a as Partial<HeartbeatAgeAware>).lastHeartbeatAgeMs === "function";
+}
 
 export async function getBridgeStatuses(deps: BridgesDeps): Promise<BridgesResponse> {
   const bridgeAdapters = deps.adapters.filter((a) => a.name.startsWith(NT_BRIDGE_PREFIX));
 
   const summaries = new Map<string, AdapterHealthSummary>();
   for (const s of deps.metrics.snapshot()) summaries.set(s.source, s);
+
+  const priority = deps.policy?.priority ?? [];
+  const servingAsFallback = deps.brokersServingAsFallback ?? new Set<string>();
 
   const bridges = await Promise.all(
     bridgeAdapters.map(async (a): Promise<BridgeStatus> => {
@@ -153,13 +193,15 @@ export async function getBridgeStatuses(deps: BridgesDeps): Promise<BridgesRespo
         // Treat errors as unavailable — same as heartbeat timeout.
       }
 
-      // Heartbeat age is approximated from alive state. When alive=true the
-      // bridge saw a heartbeat within 30s; when alive=false we cannot know
-      // the exact age without exposing the private closure — return null.
-      // The data-plane build-out ticket will replace this with an exact value.
-      const last_heartbeat_age_ms: number | null = alive ? null : null;
+      // QF-341 — exact heartbeat age from the adapter when it exposes it
+      // (replaces the QF-296 null stub). Adapters that don't implement the
+      // accessor keep the null behavior.
+      const last_heartbeat_age_ms: number | null = hasHeartbeatAge(a)
+        ? a.lastHeartbeatAgeMs()
+        : null;
 
       const summary = summaries.get(a.name);
+      const rank = priority.indexOf(broker);
 
       return {
         broker,
@@ -169,9 +211,11 @@ export async function getBridgeStatuses(deps: BridgesDeps): Promise<BridgesRespo
         rpc_error_rate_5m: summary?.error_rate ?? 0,
         rpc_latency_p50_ms: summary?.p50_ms ?? null,
         rpc_latency_p99_ms: summary?.p99_ms ?? null,
+        priority_rank: rank === -1 ? null : rank,
+        serving_as_fallback: servingAsFallback.has(broker),
       };
     }),
   );
 
-  return { bridges };
+  return deps.policy ? { bridges, policy: deps.policy } : { bridges };
 }

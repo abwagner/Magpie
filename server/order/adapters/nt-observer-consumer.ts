@@ -25,11 +25,18 @@ import type { BrokerExecReport } from "../../../src/types/order.js";
 import type { Logger } from "../../logger.js";
 import { buildNtNativeOrderRow, type AuditOrderWriter } from "../audit-orders.js";
 import { buildFillRow, type AuditFillWriter } from "../audit-fills.js";
+import { accountSubjectSuffix } from "./nt-bridge.js";
+import { orders } from "../../../src/types/subjects.js";
 
 // ── Public surface ────────────────────────────────────────────────────
 
 export interface NtObserverConsumerConfig {
   broker: string;
+  // QF-246 — M12-4: per-account exec_reports namespacing. Subscribes to
+  // orders.exec_reports.<broker>.<accountId> when set to a non-"default"
+  // id so the nt-native audit chain still sees a per-account bridge's
+  // reports. Absent / "default" keeps the bare subject.
+  accountId?: string;
 }
 
 // Dedup lookup: returns the audit_orders.order_id for the given
@@ -59,7 +66,7 @@ const X_CORRELATION_ID = "X-Correlation-Id";
 export function createNtObserverConsumer(deps: NtObserverConsumerDeps): NtObserverConsumer {
   const { nc, config, logger, lookupQfOrderId, auditOrderWriter, auditFillWriter } = deps;
   const sc = StringCodec();
-  const subject = `orders.exec_reports.${config.broker}`;
+  const subject = orders.execReports(config.broker) + accountSubjectSuffix(config.accountId);
   const sub = nc.subscribe(subject);
 
   void (async () => {
@@ -144,6 +151,10 @@ export function createNtObserverConsumer(deps: NtObserverConsumerDeps): NtObserv
       broker_rejection_reason:
         report.event === "rejected" ? (report.rejection_reason ?? "unknown") : null,
       correlation_id: correlationId,
+      // QF-246 — attribute the row to the exec report's originating
+      // account so per-account NT-native orders aren't all collapsed to
+      // 'default'. Mirrors the nt-bridge adapter's Fill/rejection stamps.
+      ...(report.account_id !== undefined ? { account_id: report.account_id } : {}),
     });
     await auditOrderWriter(orderRow);
 
@@ -170,9 +181,13 @@ export function createNtObserverConsumer(deps: NtObserverConsumerDeps): NtObserv
           filled_at: report.ts,
           broker: report.broker,
           broker_order_id: report.broker_order_id,
+          // QF-246 — carry the originating account onto the Fill so it's
+          // attributed to the right per-account bridge, not 'default'.
+          ...(report.account_id !== undefined ? { account_id: report.account_id } : {}),
         },
         source: "nt-native",
         correlation_id: correlationId,
+        ...(report.account_id !== undefined ? { account_id: report.account_id } : {}),
       });
       await auditFillWriter(fillRow);
     }

@@ -23,6 +23,14 @@ The shell renders five workspaces. Each is a CSS-Grid layout of panels resolved 
 
 Workspace definitions are pure data — see [src/workspaces/index.ts](../../src/workspaces/index.ts). Panels are looked up by id in [src/panels/registry.tsx](../../src/panels/registry.tsx).
 
+#### Drag-resize + layout persistence (QF-346)
+
+Panel boundaries inside a grid workspace are draggable. [src/shell/WorkspaceGrid.tsx](../../src/shell/WorkspaceGrid.tsx) overlays a thin handle on each internal grid line (`col-resize` / `row-resize`); a drag shifts pixel size between the two adjacent tracks, clamped so neither falls below `MIN_TRACK_PX` (80px). The drag math is pure and unit-tested in [src/shell/panel-resize.ts](../../src/shell/panel-resize.ts) — only the `gridTemplateRows` / `gridTemplateColumns` track sizes are operator-editable; the template `areas` + panel→cell mapping never change, so an override stays forward-compatible (a track-count mismatch after a workspace reshape falls back to the static template).
+
+On drag release the new track strings are persisted server-side via `PUT /api/gui/layouts/<workspace>`, backed by [server/gui/workspace-layout.ts](../../server/gui/workspace-layout.ts) (`data/workspace-layouts.json`, atomic write-then-rename, single-operator — matching the rest of the system's actor model). Each write fires a `workspace_layout` WebSocket push so a second connected device (laptop alongside desktop) re-flows its grid live, and the initial snapshot carries `workspace_layouts` so a fresh page load starts from the persisted sizes — multi-device sync without a reload.
+
+**Migration path.** A browser still holding a legacy `qf-layout` localStorage entry seeds the server once on first load (per-workspace, only when the server has no override yet) and then drops the local copy, so the server becomes the single source of truth.
+
 ### Persistent shell chrome
 
 - **Header (44px)** — `Magpie · v0.42.1 · alpha` brand, env pills (`app_env` / `trading_mode`), command palette button (⌘K), theme cycler.
@@ -70,6 +78,12 @@ ws://<host>:<port>/ws/state     — system + portfolio + strategy state, snapsho
     "portfolios": {
       "main": { "max_net_delta": 50, "max_net_vega": 100, ... }
     }
+  },
+  "workspace_layouts": {                   // QF-346 — drag-resized panel track sizes
+    "version": 1,
+    "layouts": {
+      "operate": { "rows": "260px 1fr 160px", "cols": "300px 1fr 1fr 400px" }
+    }
   }
 }
 ```
@@ -92,6 +106,7 @@ Paper vs live is a deploy-target distinction handled by the broker bundle's cred
 {"type": "alert", "data": { "type": "warn", "message": "..." }}
 {"type": "strategy_update", "data": { /* full Strategy, incl. exit_rules[] headroom — see QF-350 surface below */ }} // patches strategies[] in place by id
 {"type": "risk_limits", "data": { /* RiskLimitsConfig */ }}  // emitted when limits are saved via PUT
+{"type": "workspace_layout", "data": { /* WorkspaceLayoutsConfig */ }} // QF-346 — emitted on layout save; syncs other devices
 ```
 
 The reducer is pure ([applyMessage](../../src/state/StateProvider.tsx) — exported for tests):
@@ -348,6 +363,8 @@ Don't double-buffer the WS feed through Zustand — the WS reducer is canonical.
 | `/api/strategies/:id/drift`                    | GET      | Detail rail drift panel (z-scores vs. pinned QO baseline)                                            |
 | `/api/risk/limits`                             | GET      | (snapshot already includes; reserved)                                                                |
 | `/api/risk/limits/:portfolio`                  | PUT      | Risk Limits screen Save                                                                              |
+| `/api/gui/layouts`                             | GET      | (snapshot already includes; reserved)                                                                |
+| `/api/gui/layouts/:workspace`                  | PUT      | WorkspaceGrid drag-resize save (QF-346)                                                              |
 | `/api/quote`, `/api/chain`, `/api/expirations` | GET      | ChainPanel (via ChainPicker), GreekBuilder                                                           |
 | `/api/catalog`                                 | GET      | DataCatalog (mounted under Settings → Data → Catalog), BacktestsTab (filtered to `kind: "qo-run"`)   |
 | `/api/qo-run/:id`                              | GET      | BacktestsTab per-run drill-down — parsed `wfo_results` JSON                                          |
@@ -377,7 +394,8 @@ Bearer-token auth is enforced on every API call + WebSocket upgrade per [cross-c
 src/App.tsx                      — entry; <StateProvider><Shell/></StateProvider>
 src/main.tsx                     — Vite mount + tokens.css + ui.css + Plex fonts
 src/shell/Shell.tsx              — header / tabs / status bar / liquidation modal / palette / theme
-src/shell/WorkspaceGrid.tsx      — CSS-Grid renderer driven by WORKSPACES data
+src/shell/WorkspaceGrid.tsx      — CSS-Grid renderer + drag-resize handles (QF-346)
+src/shell/panel-resize.ts        — pure track-resize math + legacy localStorage migration (QF-346)
 src/state/StateProvider.tsx      — /ws/state wrapper, exported applyMessage reducer + hooks
 src/state/ui-store.ts            — Zustand UI store (workspace, theme, palette, ticket)
 src/styles/tokens.css            — Engineered tokens, three [data-theme] variants
@@ -436,7 +454,8 @@ src/components/ui/index.ts
 
 #### Server-side WebSocket bridge
 
-- `server/ws-state.ts` — `/ws/state` snapshot + delta push. Push methods: `pushPortfolioUpdate`, `pushOrderUpdate`, `pushFill`, `pushSystemHalt`, `pushAlert`, `pushStrategyUpdate`, `pushRiskLimits`.
+- `server/ws-state.ts` — `/ws/state` snapshot + delta push. Push methods: `pushPortfolioUpdate`, `pushOrderUpdate`, `pushFill`, `pushSystemHalt`, `pushAlert`, `pushStrategyUpdate`, `pushRiskLimits`, `pushWorkspaceLayouts`.
+- `server/gui/workspace-layout.ts` — `WorkspaceLayoutStore` (data/workspace-layouts.json); drives `GET/PUT /api/gui/layouts` and the `workspace_layout` push (QF-346).
 
 ---
 
@@ -446,7 +465,9 @@ React component tests are minimal — the focus is the state plumbing and the sa
 
 - [src/state/StateProvider.test.tsx](../../src/state/StateProvider.test.tsx) — `applyMessage` covers snapshot replace, portfolio merge, halt flip, order_update prepend + cap.
 - [src/components/ui/TypedConfirmation.test.tsx](../../src/components/ui/TypedConfirmation.test.tsx) — case-sensitive exact match for FIRE/LIQUIDATE.
-- [src/shell/WorkspaceGrid.test.tsx](../../src/shell/WorkspaceGrid.test.tsx) — cell counts, grid-template-areas applied, no-template fallback.
+- [src/shell/WorkspaceGrid.test.tsx](../../src/shell/WorkspaceGrid.test.tsx) — cell counts, grid-template-areas applied, no-template fallback, resize-handle count per boundary.
+- [src/shell/panel-resize.test.ts](../../src/shell/panel-resize.test.ts) — track parse/resolve/resize math (clamping, stale-override fallback) + legacy localStorage migration.
+- [server/gui/**tests**/unit/workspace-layout.test.ts](../../server/gui/__tests__/unit/workspace-layout.test.ts) — store load/persist/onChange + validation.
 
 Server-side strategy lifecycle and risk limits stores have full unit coverage:
 
@@ -457,18 +478,35 @@ A Playwright smoke suite for the LIQUIDATE / FIRE gates / palette switching / WS
 
 ---
 
+### 11.5 Observability
+
+The detailed framework lives in [observability.md](observability.md). The GUI has two observability halves with different mechanisms — the browser-side React app and the server-side WebSocket bridge.
+
+**Browser-side.** The React app does not feed the central JSON log stream (same constraint as the [Greek Builder worker](greek-builder.md#6-observability) — no server-side logger in the browser). Operator-facing signal comes through the UI itself: the Alerts banner consumer ([alerts.md §9](alerts.md#9-currently-shipped-rules)), the WS reconnection indicator (§1 Reconnection), and the per-strategy `gate_degraded` / halt badges ([risk-gate-architecture.md §4.3](risk-gate-architecture.md#43-observability-of-degraded-mode)). Wiring browser telemetry to the central stream needs a client-side telemetry endpoint, deferred identically to the Greek Builder's — see [greek-builder.md §6](greek-builder.md#6-observability).
+
+**Server-side WS bridge.** `server/ws-state.ts` runs in the QF server process and emits through the shared logger with `service = "ws-state"`. Outbound `POST /api/*` mutations that the GUI triggers are logged by their owning endpoint ([§8 API endpoints](#8-api-endpoints-used-by-the-gui)) under that endpoint's `service`, carrying the `X-Correlation-Id` the GUI sends; the WS upgrade carries the ID as a query param per [observability.md §4.2](observability.md#42-across-process-propagation).
+
+| Event                     | Level   | Payload (key fields)                  | Emitted when                                                                                          |
+| ------------------------- | ------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `ws.client_connected`     | `debug` | `clients`                             | A `/ws/state` client connects (`server/ws-state.ts`); `clients` is the live count.                  |
+| `ws.client_disconnected`  | `debug` | `clients`                             | A `/ws/state` client disconnects.                                                                    |
+| `ws.snapshot_sent`        | `debug` | `client_id`, `bytes`                  | Initial `/ws/state` snapshot pushed to a newly-connected client (§1 `/ws/state` initial snapshot).  |
+| `ws.delta_pushed`         | `debug` | `kind`, `client_count`               | A delta fan-out (`pushPortfolioUpdate` / `pushOrderUpdate` / `pushFill` / `pushSystemHalt` / `pushAlert` / `pushStrategyUpdate` / `pushRiskLimits`). `kind` names which push method fired. |
+
+These are `debug`-level — the WS bridge is high-frequency and operationally interesting state changes are visible in the pushed payloads themselves, not in the fan-out logs. Per [observability.md §6.4](observability.md#64-sampling), connection-count and delta-rate live in metrics, not these logs.
+
+**Implementation note.** `server/ws-state.ts` today emits the connect/disconnect pair; the snapshot/delta events above are the design target the push methods emit as the catalog fills in.
+
 ### 12. Deferred to v2
 
-See [internal planning notes](../../../.claude/plans/quantfoundry-v2.md) for the full list. Highlights:
+See [internal planning notes](../../../.claude/plans/magpie-v2.md) for the full list. Highlights:
 
 - Pop-out windows (BroadcastChannel + window registry).
-- Panel drag-resize.
 - Dynamic panel registry (runtime addition of new panel ids).
 - Multi-account / multi-environment switcher.
 - Mobile companion app (read-only).
 - Onboarding / first-run flow.
 - Symbol scanner panel.
-- Server-side workspace layout persistence (today: localStorage only).
 - Server-side Order Ticket draft store.
 - Role-based perms for FIRE/LIQUIDATE.
 - Greek Builder multi-symbol picker.

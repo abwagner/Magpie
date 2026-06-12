@@ -15,6 +15,7 @@
 import type { NatsConnection } from "nats";
 import { StringCodec } from "nats";
 import type {
+  BrokerAccount,
   BrokerAdapter,
   BrokerExecReport,
   BrokerOrderStatus,
@@ -24,12 +25,21 @@ import type {
   SubmitOrderParams,
 } from "../../../src/types/order.js";
 import type { Logger } from "../../logger.js";
+import { orders } from "../../../src/types/subjects.js";
 
 // ── Config ─────────────────────────────────────────────────────────
 
 export interface NtBridgeConfig {
   // "schwab" | "ibkr" — the suffix on the NATS subjects.
   broker: string;
+  // QF-246 — M12-4: per-account NATS-subject namespacing. When set to a
+  // non-"default" id the adapter targets the per-account subjects
+  // (orders.submit.schwab.<accountId>, ...) that the matching Python
+  // bridge process subscribes to, and stamps the id on every fanned-out
+  // Fill / rejection for the audit-attribution path. Absent / "default"
+  // keeps the bare un-suffixed subjects of the QF-237 single-account
+  // deploy. See docs/tdd/broker-integration.md §3.
+  accountId?: string;
   // Reply timeout for submitOrder. The Python bridge translates inbound
   // JSON to NT's OrderFactory call + waits for NT's submit ack, so
   // ~5s is comfortable. Configurable for stress tests / slow nets.
@@ -42,6 +52,19 @@ export interface NtBridgeConfig {
 
 const DEFAULT_SUBMIT_TIMEOUT_MS = 5_000;
 const DEFAULT_QUERY_TIMEOUT_MS = 2_000;
+// QF-246 — the legacy single-account sentinel: subjects drop the suffix
+// so the bare orders.submit.<broker> family the Python "default" bridge
+// owns keeps working unmodified.
+export const DEFAULT_ACCOUNT_ID = "default";
+
+// QF-246 — build the per-account subject suffix. "" for the default
+// account (legacy bare subjects); ".<accountId>" otherwise. Mirrors
+// subjects_for() in the Python bridge so both ends agree on the wire.
+// Exported so the audit observer consumer namespaces its exec_reports
+// subscription the same way.
+export function accountSubjectSuffix(accountId: string | undefined): string {
+  return accountId === undefined || accountId === DEFAULT_ACCOUNT_ID ? "" : `.${accountId}`;
+}
 
 // ── Wire payloads (request/reply) ──────────────────────────────────
 
@@ -65,11 +88,16 @@ export function createNtBridgeAdapter(
 ): BrokerAdapter {
   const submitTimeoutMs = config.submitTimeoutMs ?? DEFAULT_SUBMIT_TIMEOUT_MS;
   const queryTimeoutMs = config.queryTimeoutMs ?? DEFAULT_QUERY_TIMEOUT_MS;
-  const submitSubject = `orders.submit.${config.broker}`;
-  const cancelSubject = `orders.cancel.${config.broker}`;
-  const statusSubject = `orders.status.${config.broker}`;
-  const positionsSubject = `orders.positions.${config.broker}`;
-  const execReportsSubject = `orders.exec_reports.${config.broker}`;
+  const accountId = config.accountId ?? DEFAULT_ACCOUNT_ID;
+  // QF-335 builders own the base subject; QF-246 appends the per-account
+  // suffix ("" for the "default" account, ".<accountId>" otherwise).
+  const suffix = accountSubjectSuffix(config.accountId);
+  const submitSubject = orders.submit(config.broker) + suffix;
+  const cancelSubject = orders.cancel(config.broker) + suffix;
+  const statusSubject = orders.status(config.broker) + suffix;
+  const positionsSubject = orders.positions(config.broker) + suffix;
+  const accountsSubject = orders.accounts(config.broker) + suffix;
+  const execReportsSubject = orders.execReports(config.broker) + suffix;
 
   const sc = StringCodec();
   const fillCallbacks: Array<(fill: Fill) => void> = [];
@@ -109,6 +137,10 @@ export function createNtBridgeAdapter(
       // OrderPlane enriches intent_id + portfolio from the matched order;
       // we leave them as empty strings so the dispatch key (broker_order_id)
       // is what matters. broker field on the Fill is the report's broker.
+      // QF-246 — stamp account_id so M12-3's audit-attribution path can
+      // read it even for NT-native fills OPL didn't initiate. The report's
+      // own account_id wins (the originating bridge knows best); we fall
+      // back to this adapter's configured account.
       const fill: Fill = {
         fill_id: report.fill.fill_id,
         order_id: report.broker_order_id,
@@ -122,16 +154,22 @@ export function createNtBridgeAdapter(
         filled_at: report.ts,
         broker: report.broker,
         broker_order_id: report.broker_order_id,
+        account_id: report.account_id ?? accountId,
       };
       for (const cb of fillCallbacks) cb(fill);
       return;
     }
     if (report.event === "rejected") {
+      // QF-246 — stamp account_id on rejections too (mirrors the Fill
+      // path above) so M12-3's audit-attribution path can read it for
+      // per-account bridges. The report's own account_id wins; we fall
+      // back to this adapter's configured account when it's absent.
       const rejection: BrokerRejection = {
         broker_order_id: report.broker_order_id,
         reason: report.rejection_reason ?? "unknown",
         ...(report.broker_reason_code ? { broker_reason_code: report.broker_reason_code } : {}),
         rejected_at: report.ts,
+        account_id: report.account_id ?? accountId,
       };
       for (const cb of rejectionCallbacks) cb(rejection);
       return;
@@ -196,7 +234,30 @@ export function createNtBridgeAdapter(
     },
 
     async getPositions(): Promise<BrokerPosition[]> {
-      return requestJson<BrokerPosition[]>(positionsSubject, {}, queryTimeoutMs);
+      const reply = await requestJson<BrokerPosition[] | { error: string }>(
+        positionsSubject,
+        {},
+        queryTimeoutMs,
+      );
+      if (!Array.isArray(reply)) {
+        throw new Error(`nt-bridge positions failed: ${reply.error ?? "non-array reply"}`);
+      }
+      return reply;
+    },
+
+    // QF-272 — account discovery for /api/accounts. Throws on the
+    // bridge's `{error}` reply so the market-data layer falls back to the
+    // schwab-rest REST path.
+    async getAccounts(): Promise<BrokerAccount[]> {
+      const reply = await requestJson<BrokerAccount[] | { error: string }>(
+        accountsSubject,
+        {},
+        queryTimeoutMs,
+      );
+      if (!Array.isArray(reply)) {
+        throw new Error(`nt-bridge accounts failed: ${reply.error ?? "non-array reply"}`);
+      }
+      return reply;
     },
 
     onFill(callback: (fill: Fill) => void): void {

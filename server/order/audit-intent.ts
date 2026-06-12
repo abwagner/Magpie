@@ -9,8 +9,8 @@
 // so a quote-fetch failure or risk rejection still leaves a trace.
 //
 // Schema lives in server/db/init.ts (audit_intents table). intent_id
-// is the PK; the audit_pricing_decisions and audit_orders writers FK
-// to it, so this row must exist before either of those writers fires.
+// is the PK; the audit_orders writer FKs to it, so this row must exist
+// before that writer fires.
 //
 // M11 / QF-206 + QF-203.
 
@@ -30,10 +30,10 @@ export interface AuditIntentRow {
   strategy_id: string;
   // ISO-8601 at the boundary; DuckDB stores as TIMESTAMP.
   created_at: string;
-  // QF-214 — denormalized full Signal payload (JSON-stringified) so
-  // restart recovery can rebuild the working-order monitor's
-  // per-task originating Signal without an audit_signals join. Null
-  // when the intent has no upstream signal.
+  // QF-214 — self-contained full Signal payload (JSON-stringified) so
+  // restart recovery can rebuild the per-task originating Signal without
+  // an external join (the Arch-A audit_signals table was retired in
+  // QF-261). Null when the intent has no upstream signal.
   originating_signal_json: string | null;
   // QF-319 — writer-identity sourcing (Model A) per order-flow.md §4.2.
   // 'qf' for OPL-originated, 'qf-gated' for gate-evaluator-originated.

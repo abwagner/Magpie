@@ -1,13 +1,15 @@
 /**
  * Integration test: Order lifecycle
  *
- * Tests paper_local full flow, state transitions, submission_failed + retry.
+ * Tests paper_local full flow, state transitions, and the disconnected
+ * adapter (no broker configured) → submission_failed path.
  */
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createOrderPlane, type OrderPlane } from "../../plane.js";
 import { createPortfolioEngine, type PortfolioEngine } from "../../../portfolio/engine.js";
 import { createFillLog } from "../../fill-log.js";
-import { createPaperAdapter } from "../../adapters/paper.js";
+import { createFakeBroker } from "../fixtures/fake-broker.js";
+import { createDisconnectedAdapter } from "../../adapters/disconnected.js";
 import { createTestLogger } from "../../../__tests__/helpers/test-logger.js";
 import { testPortfolioConfig } from "../../../__tests__/helpers/fixtures.js";
 import { join } from "node:path";
@@ -46,20 +48,11 @@ describe("order lifecycle", () => {
     engine.initPortfolio("main", testPortfolioConfig());
 
     const fillLog = createFillLog(join(tempDir, "main.jsonl"));
-    const mockMarketData = {
-      async getQuote() {
-        return { bid: 12, ask: 13, mid: 12.5, last: 12.5, volume: 1000 };
-      },
-    };
-    const broker = createPaperAdapter(
-      { slippage: 0.75 },
-      mockMarketData,
-      () => `paper-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-    );
+    const broker = createFakeBroker({ autoFill: true });
 
     orderPlane = createOrderPlane({
       portfolioEngine: engine,
-      broker,
+      broker: broker.adapter,
       fillLog,
       logger,
       generateId: () => `order-${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -75,11 +68,11 @@ describe("order lifecycle", () => {
   });
 
   describe("paper_local mode", () => {
-    // Paper adapter fills asynchronously (setImmediate). We need to wait
-    // a tick after submit for the fill callback to fire.
+    // The fake broker fills asynchronously (setImmediate, like the
+    // retired paper adapter). Wait a tick after submit for the fill
+    // callback to fire.
     async function submitAndWaitForFill(intent: ReturnType<typeof makeIntent>) {
       const order = await orderPlane.submit(intent);
-      // Wait for setImmediate + async getQuote in paper adapter
       await new Promise((r) => setTimeout(r, 50));
       return order;
     }
@@ -126,6 +119,65 @@ describe("order lifecycle", () => {
       const retrieved = orderPlane.getOrder(order.order_id);
       expect(retrieved).toBeDefined();
       expect(retrieved?.order_id).toBe(order.order_id);
+    });
+  });
+
+  // QF-337 — backward-compat check. With no broker enabled in
+  // brokers.json the OrderPlane holds the disconnected fallback (which
+  // replaces the retired in-process paper adapter). An auto-approved
+  // paper_local order must still be SUBMITTED to the broker, then land in
+  // submission_failed when the broker refuses — the honest state for an
+  // OPL with no execution transport behind it.
+  describe("disconnected adapter (no broker configured)", () => {
+    let auditWrites: Array<{ order_id: string; status: string }>;
+    let disconnectedPlane: OrderPlane;
+
+    beforeEach(() => {
+      auditWrites = [];
+      const fillLog = createFillLog(join(tempDir, "disconnected.jsonl"));
+      disconnectedPlane = createOrderPlane({
+        portfolioEngine: engine,
+        broker: createDisconnectedAdapter(),
+        fillLog,
+        logger,
+        generateId: () => `order-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        mode: "paper_local",
+        auditOrderWriter: async (row) => {
+          auditWrites.push({ order_id: row.order_id, status: row.status });
+        },
+      });
+    });
+
+    it("auto-approves, attempts submit, then transitions to submission_failed", async () => {
+      const order = await disconnectedPlane.submit(makeIntent());
+      const updated = disconnectedPlane.getOrder(order.order_id);
+
+      // paper_local auto-approves and the OPL flips to "submitted" before
+      // calling the broker; the refusing broker then drives it terminal.
+      expect(updated?.status).toBe("submission_failed");
+      expect(updated?.completed_at).toBeDefined();
+    });
+
+    it("the disconnected broker refuses submitOrder with 'no broker configured'", async () => {
+      const adapter = createDisconnectedAdapter();
+      await expect(
+        adapter.submitOrder({
+          client_order_id: "intent-1",
+          symbol: "OPT:SPY:2026-05-16:C:500",
+          direction: "Short",
+          quantity: 1,
+          orderType: "market",
+        }),
+      ).rejects.toThrow(/no broker configured/);
+    });
+
+    it("audit_orders reflects the submitted → submission_failed sequence", async () => {
+      const order = await disconnectedPlane.submit(makeIntent());
+      const statuses = auditWrites
+        .filter((w) => w.order_id === order.order_id)
+        .map((w) => w.status);
+      expect(statuses).toContain("submitted");
+      expect(statuses[statuses.length - 1]).toBe("submission_failed");
     });
   });
 

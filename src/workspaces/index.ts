@@ -1,4 +1,4 @@
-// Workspace definitions — ports docs/design_handoff_quantfoundry/workspaces.jsx
+// Workspace definitions — ports docs/design_handoff_magpie/workspaces.jsx
 // to typed data. Phase 1 wires Operate; the other workspaces hold
 // their panel ids and grid templates so the grid renders the same
 // shapes with ComingSoon panels as fillers.

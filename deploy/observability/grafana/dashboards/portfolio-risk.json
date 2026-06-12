@@ -1,0 +1,206 @@
+{
+  "uid": "qf-portfolio-risk",
+  "title": "Portfolio & Risk",
+  "tags": ["magpie", "qf-277", "portfolio", "risk"],
+  "timezone": "utc",
+  "schemaVersion": 39,
+  "editable": true,
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "strategy_id",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(exit_rule_headroom_pct, strategy_id)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 2
+      }
+    ]
+  },
+  "links": [
+    {
+      "title": "Logs Explorer",
+      "type": "dashboards",
+      "tags": ["qf-277", "logs"],
+      "asDropdown": false,
+      "icon": "doc"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Exit-rule headroom (min across armed rules)",
+      "description": "exit_rule_headroom_pct = (threshold - actual) / |threshold|. Approaching 0 means a rule is about to trip. Net delta / vega / drawdown gauges are not yet emitted; see README §Known gaps.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "red"
+              },
+              {
+                "value": 0.1,
+                "color": "yellow"
+              },
+              {
+                "value": 0.25,
+                "color": "green"
+              }
+            ]
+          },
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "min by (strategy_id) (exit_rule_headroom_pct{strategy_id=~\"$strategy_id\"})",
+          "legendFormat": "{{strategy_id}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Armed positions with a rule",
+      "description": "Distinct position_id reporting headroom — proxy for live position count under exit-rule monitoring.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"]
+        },
+        "colorMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(count by (position_id) (exit_rule_headroom_pct{strategy_id=~\"$strategy_id\"}))",
+          "legendFormat": "positions"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Exit-rule trips / min by rule",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (rule) (rate(exit_rule_trips_total{strategy_id=~\"$strategy_id\"}[5m])) * 60",
+          "legendFormat": "{{rule}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Exit-rule eval duration ms (p95)",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (strategy_id, le) (rate(exit_rule_evaluation_duration_ms_bucket{strategy_id=~\"$strategy_id\"}[5m])))",
+          "legendFormat": "{{strategy_id}} p95"
+        }
+      ]
+    }
+  ]
+}

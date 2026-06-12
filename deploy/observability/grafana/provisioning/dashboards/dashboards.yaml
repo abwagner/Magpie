@@ -1,24 +1,26 @@
 # Grafana provisioned dashboards — Magpie.
 #
-# Phase 1: no dashboards ship yet. The starter set (5 dashboards —
-# trading pipeline health, broker & reconciliation, portfolio,
-# signal orchestrator, logs explorer) ships in M15-3 / QF-277 and
-# lands as JSON files in this directory.
+# The starter set (5 dashboards — trading pipeline health, broker &
+# reconciliation, portfolio & risk, market-data ingest, logs explorer)
+# ships in M15-3 / QF-277. The dashboard JSON lives apart from this
+# provider config under deploy/observability/grafana/dashboards/, mounted
+# read-only into the container at /etc/grafana/dashboards (see
+# docker-compose.yml + dashboards/README.md).
 #
 # This file is the provider config; Grafana watches the path below
-# and reloads new JSON dashboards every 30 seconds.
+# and reloads changed JSON dashboards every 30 seconds.
 
 apiVersion: 1
 
 providers:
-  - name: quantfoundry
+  - name: magpie
     orgId: 1
     folder: Magpie
-    folderUid: quantfoundry
+    folderUid: magpie
     type: file
     disableDeletion: false
     updateIntervalSeconds: 30
     allowUiUpdates: true
     options:
-      path: /etc/grafana/provisioning/dashboards
+      path: /etc/grafana/dashboards
       foldersFromFilesStructure: true

@@ -1,0 +1,21 @@
+[Unit]
+Description=Magpie signal catalog rebuild + MinIO mirror
+Documentation=https://github.com/your-org/Magpie/blob/main/server/signals/rebuild-catalog.ts
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/magpie/Magpie
+EnvironmentFile=/srv/magpie/.env
+# CATALOG_S3_PUSH=1 enables the post-rebuild aws s3 cp of portfolio.duckdb
+# to s3://magpie-data/duckdb/. Laptops fetch via scripts/fetch-catalog.sh.
+Environment=CATALOG_S3_PUSH=1
+Environment=CATALOG_DB_PATH=/srv/magpie/portfolio.duckdb
+ExecStart=/usr/bin/npx tsx server/signals/rebuild-catalog.ts /srv/magpie/Magpie/data
+StandardOutput=append:/srv/magpie/logs/rebuild-catalog.log
+StandardError=inherit
+Nice=10
+
+[Install]
+WantedBy=default.target

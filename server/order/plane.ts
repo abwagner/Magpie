@@ -1,6 +1,21 @@
 // ── Order & Execution Plane ────────────────────────────────────────
 // Order lifecycle state machine: intent → risk check → approval → submit → fill
 // Defined in: docs/tdd/order-execution.md
+//
+// QF-263 (M14-1 Architecture B, QF-259): the Order Plane is narrowed to
+// operator manual entry + kill-switch only. NT strategies own the
+// auto/semi-auto decision-to-broker path; the QF plane no longer runs
+// any auto-approval logic. The two remaining modes are:
+//   - "manual"     — every order parks in pending_approval until an
+//                    operator approves or rejects it.
+//   - "paper_local" — orders are auto-approved (no human in the loop)
+//                    and submitted to the active broker. QF-337 retired
+//                    the in-process paper fill simulator, so whether a
+//                    fill comes back depends on the wired broker: a real
+//                    nt-bridge (paper- or live-credentialed bundle)
+//                    fills, the disconnected fallback does not.
+// The retired modes (auto / semi-auto / paper_broker) and the
+// shouldAutoApprove whitelist gate are removed.
 
 import type {
   OrderIntent,
@@ -9,6 +24,7 @@ import type {
   BrokerAdapter,
   BrokerRejection,
   OrderObservationAdapter,
+  OrderSubmissionAdapter,
   ExecutionMode,
   OperatorEdits,
 } from "../../src/types/order.js";
@@ -16,6 +32,7 @@ import type { PortfolioEngine } from "../portfolio/engine.js";
 import type { FillLog } from "./fill-log.js";
 import type { TradeJournal } from "./trade-journal.js";
 import type { Logger } from "../logger.js";
+import type { AlertRouter } from "../alerts/router.js";
 import { buildOrderRow, type AuditOrderWriter, type RiskViolation } from "./audit-orders.js";
 import { buildFillRow, type AuditFillWriter } from "./audit-fills.js";
 import type { OrderPlaneMetrics } from "./metrics.js";
@@ -24,12 +41,43 @@ import type { OrderPlaneMetrics } from "./metrics.js";
 
 export interface OrderPlaneDeps {
   portfolioEngine: PortfolioEngine;
-  broker: BrokerAdapter;
+  // QF-245 — single active broker. LEGACY/backward-compat path: when
+  // `brokers` is absent every submit routes here regardless of the
+  // intent's account. Still required as the observation anchor (its
+  // onFill / onRejection feed the same dispatch as the per-account
+  // adapters) even in the multi-broker shape, so production keeps
+  // passing the first-enabled adapter here while also populating
+  // `brokers`. Optional only so multi-broker tests that supply
+  // `brokers` + their own observers don't have to construct a redundant
+  // single broker — but at least one of `broker` / `brokers` must be set.
+  broker?: BrokerAdapter;
+  // QF-245 — per-account submission adapters keyed by account_id (the
+  // SchwabAccountConfig.id from config/brokers.json). When present,
+  // submit() resolves OrderIntent → portfolio → account → adapter and
+  // routes the broker call there. A miss transitions the order to
+  // submission_failed with "no broker configured for account <id>".
+  // Observation (onFill / onRejection) for these adapters is wired by
+  // the caller into the shared handlers via `broker` / `observers`; the
+  // dispatch is keyed on broker_order_id so it doesn't matter which
+  // adapter delivered the event.
+  brokers?: Map<string, OrderSubmissionAdapter>;
+  // QF-245 — portfolio → account_id fallback. Consulted only when an
+  // OrderIntent carries no `account_id` (legacy intents). The strategy
+  // runner normally stamps account_id at intent-creation time; this
+  // keeps older intents routable. Returns undefined when the portfolio
+  // has no explicit routing, in which case account resolution falls
+  // through to the default account id.
+  resolvePortfolioAccount?: (portfolioId: string) => string | undefined;
+  // QF-245 — account id used for audit attribution + adapter lookup when
+  // neither the intent nor the portfolio map resolves one. Mirrors
+  // resolveAccountForPortfolio's "first enabled account" fallback so the
+  // single-account (synthetic "default") config routes identically to
+  // the pre-multi-account behaviour. Defaults to "default".
+  defaultAccountId?: string;
   fillLog: FillLog;
   logger: Logger;
   generateId: () => string;
   mode: ExecutionMode;
-  whitelist?: SemiAutoWhitelist;
   onOrderUpdate?: (order: Order) => void;
   onFill?: (fill: Fill) => void;
   tradeJournal?: TradeJournal;
@@ -50,23 +98,19 @@ export interface OrderPlaneDeps {
   // trade. Dispatch is keyed on Fill.broker_order_id, so observed
   // orders are reconciled against the same in-memory map.
   observers?: OrderObservationAdapter[];
-}
-
-interface SemiAutoWhitelist {
-  symbols: string[];
-  max_qty: number;
-  strategy_ids: string[];
+  // QF-336 — optional alert router for broker reject, kill-switch alerts.
+  alertRouter?: AlertRouter;
 }
 
 export interface OrderPlane {
   submit(intent: OrderIntent): Promise<Order>;
   // QF-50: `edits` (optional) lets manual-mode operators override the
-  // Execution Layer's recommendation at approve-time. Fields that differ
-  // from the original intent are captured on Order.operator_edits and
+  // submitted intent's params at approve-time. Fields that differ from
+  // the original intent are captured on Order.operator_edits and
   // persisted to audit_orders.operator_edits. Approving without `edits`
-  // (or with an `edits` that matches the recommendation field-for-field)
-  // leaves Order.operator_edits null — the standard "approved as
-  // recommended" path.
+  // (or with an `edits` that matches the intent field-for-field) leaves
+  // Order.operator_edits null — the standard "approved as submitted"
+  // path.
   approve(orderId: string, edits?: OperatorEdits): Promise<void>;
   reject(orderId: string): Promise<void>;
   // QF-204 + QF-217 — optional `reason` lets policy-driven cancels
@@ -76,7 +120,7 @@ export interface OrderPlane {
   // Manual operator cancels typically omit it; the audit column stays
   // null and the counter labels with reason="manual".
   cancel(orderId: string, opts?: { reason?: string }): Promise<void>;
-  // QF-210 — Execution Layer aborts before submit (quote-unavailable).
+  // QF-210 — caller aborts before submit (quote-unavailable).
   // Constructs an Order with status='rejected' in-memory, persists an
   // audit_orders row capturing the failure reason via the appropriate
   // column. Does NOT touch the broker. Returns the synthetic Order so
@@ -116,8 +160,51 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
   const orders = new Map<string, Order>();
   const intents = new Map<string, OrderIntent>(); // intent_id → intent
   const intentToOrder = new Map<string, string>(); // intent_id → order_id
+  // QF-245 — per-order account attribution. Resolved once at submit()
+  // time and reused by the fill/rejection handlers so the audit_orders /
+  // audit_fills rows carry the account the order actually routed to,
+  // rather than re-resolving (the portfolio routing could change under
+  // us between submit and fill).
+  const orderAccount = new Map<string, string>(); // order_id → account_id
   let systemHalted = false;
   let haltReason = "";
+
+  if (deps.broker === undefined && (deps.brokers === undefined || deps.brokers.size === 0)) {
+    throw new Error("OrderPlane requires either `broker` (legacy) or a non-empty `brokers` map");
+  }
+
+  const defaultAccountId = deps.defaultAccountId ?? "default";
+
+  // QF-245 — name reported on Order.broker + metrics labels. In the
+  // multi-broker shape every adapter is the same logical broker
+  // ("schwab") fronting different accounts, so the legacy broker's name
+  // is the canonical label; fall back to the first per-account adapter.
+  function brokerName(): string {
+    if (deps.broker) return deps.broker.name;
+    const first = deps.brokers?.values().next().value;
+    return first?.name ?? "unknown";
+  }
+
+  // QF-245 — resolve OrderIntent → account_id. Intent-stamped account
+  // wins (the strategy runner resolves it from portfolio config at
+  // intent-creation time); legacy intents fall back to the portfolio
+  // routing map, then to the configured default account.
+  function resolveAccountId(intent: OrderIntent): string {
+    return (
+      intent.account_id ?? deps.resolvePortfolioAccount?.(intent.portfolio) ?? defaultAccountId
+    );
+  }
+
+  // QF-245 — pick the submission adapter for a resolved account. Legacy
+  // single-broker path (no `brokers` map): always the lone broker.
+  // Multi-broker path: look up by account_id, returning undefined on a
+  // miss so submit() can fail-fast with a clear rejection reason.
+  function resolveBroker(accountId: string): OrderSubmissionAdapter | undefined {
+    if (deps.brokers && deps.brokers.size > 0) {
+      return deps.brokers.get(accountId);
+    }
+    return deps.broker;
+  }
 
   function emitUpdate(order: Order): void {
     deps.onOrderUpdate?.(order);
@@ -147,8 +234,8 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
 
   // QF-207 — fire-and-forget audit persistence at every state
   // transition. Errors are logged inside the writer; the emit path
-  // never throws (best-effort, matches the existing trade-journal +
-  // audit-pricing-decisions failure semantics).
+  // never throws (best-effort, matches the existing trade-journal
+  // failure semantics).
   function persist(
     order: Order,
     ctx: {
@@ -157,13 +244,19 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       broker_rejection_reason?: string;
       quote_failure_reason?: string;
       cancel_reason?: string;
+      // QF-245 — explicit override; otherwise the order's resolved
+      // account (from orderAccount) is attributed, falling back to the
+      // default account id for rows persisted before resolution.
+      account_id?: string;
     } = {},
   ): void {
     if (!deps.auditOrderWriter) return;
+    const accountId = ctx.account_id ?? orderAccount.get(order.order_id) ?? defaultAccountId;
     deps
       .auditOrderWriter(
         buildOrderRow({
           order,
+          account_id: accountId,
           ...(ctx.risk_violations ? { risk_violations: ctx.risk_violations } : {}),
           ...(ctx.halt_reason ? { halt_reason: ctx.halt_reason } : {}),
           ...(ctx.broker_rejection_reason
@@ -178,37 +271,47 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       });
   }
 
-  function shouldAutoApprove(intent: OrderIntent): boolean {
-    const mode = deps.mode;
-
-    if (mode === "paper_local" || mode === "paper_broker" || mode === "auto") {
-      return true;
-    }
-
-    if (mode === "semi-auto" && deps.whitelist) {
-      const wl = deps.whitelist;
-      const symbolMatch = wl.symbols.some((pattern) => {
-        if (pattern.endsWith("*")) {
-          return intent.symbol.startsWith(pattern.slice(0, -1));
-        }
-        return intent.symbol === pattern;
-      });
-      const strategyMatch = wl.strategy_ids.includes(intent.strategy_id);
-      const qtyMatch = intent.quantity <= wl.max_qty;
-      return symbolMatch && strategyMatch && qtyMatch;
-    }
-
-    return false; // manual mode
+  // QF-263 — the only auto-approval path left is paper_local. Every
+  // other mode ("manual") parks the order in pending_approval for an
+  // operator. QF-337 retired the in-process paper simulator, so an
+  // auto-approved order is submitted to whatever broker is wired (the
+  // disconnected fallback when none). The retired auto / semi-auto /
+  // paper_broker modes and their whitelist gate are gone; NT strategies
+  // own auto execution per M14-1 Architecture B.
+  function autoApprovesLocally(): boolean {
+    return deps.mode === "paper_local";
   }
 
   async function submitToBroker(order: Order, intent: OrderIntent): Promise<void> {
+    // QF-245 — resolve the per-account adapter. The account_id was
+    // stamped on orderAccount at submit() time. A miss in the
+    // multi-broker shape (account exists in routing but no adapter was
+    // wired, e.g. the account is disabled) fails the order fast with a
+    // clear rejection reason and an audit_orders row — never a silent
+    // drop or a route to the wrong account.
+    const accountId = orderAccount.get(order.order_id) ?? defaultAccountId;
+    const broker = resolveBroker(accountId);
+    if (!broker) {
+      order.status = "submission_failed";
+      order.completed_at = new Date().toISOString();
+      const reason = `no broker configured for account ${accountId}`;
+      deps.logger.error("Order submission failed: no broker for account", {
+        order_id: order.order_id,
+        account_id: accountId,
+      });
+      emitUpdate(order);
+      persist(order, { broker_rejection_reason: reason, account_id: accountId });
+      observeLifecycle(order, "submission_failed");
+      return;
+    }
+
     try {
       order.status = "submitted";
       order.submitted_at = new Date().toISOString();
       emitUpdate(order);
       persist(order);
 
-      const brokerOrderId = await deps.broker.submitOrder({
+      const brokerOrderId = await broker.submitOrder({
         // QF-310: passed to the broker's native idempotency token field
         // by the Python NT bridge. A 504-window retry (broker accepted,
         // reply lost) carries the same client_order_id and is dedup'd
@@ -272,6 +375,23 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
         reason: rejection.reason,
         broker_reason_code: rejection.broker_reason_code,
       });
+      if (deps.alertRouter) {
+        void deps.alertRouter
+          .record({
+            type: `broker.reject.${order.broker}`,
+            level: "warning",
+            message: `Order ${order.order_id} rejected by ${order.broker}: ${rejection.reason}`,
+            payload: {
+              order_id: order.order_id,
+              broker_order_id: rejection.broker_order_id,
+              reason: rejection.reason,
+              broker_reason_code: rejection.broker_reason_code,
+            },
+          })
+          .catch((err) => {
+            deps.logger.warn("broker reject alert failed", { error: String(err), order_id: order.order_id });
+          });
+      }
       emitUpdate(order);
       persist(order, { broker_rejection_reason: rejection.reason });
       deps.metrics?.ordersRejectedByBrokerTotal
@@ -295,7 +415,13 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
     });
   }
 
-  deps.broker.onRejection?.(handleBrokerRejection);
+  // QF-245 — observation wiring. The legacy single broker (when present)
+  // is the canonical observation anchor; in the multi-broker shape the
+  // caller passes the per-account adapters through `observers` so their
+  // fills/rejections reach the same handlers. Dispatch is keyed on
+  // broker_order_id, so it doesn't matter which adapter delivered the
+  // event.
+  deps.broker?.onRejection?.(handleBrokerRejection);
 
   // QF-234 — fill handler. Same dispatch pattern as rejection: extracted
   // so observers subscribe the same logic without duplicating the audit
@@ -385,8 +511,19 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
         // there's no clean expected and slippage stays null.
         if (deps.auditFillWriter) {
           const expectedPrice = intent?.limit_price ?? null;
+          // QF-245 — attribute the fill to the account the order routed
+          // to. The observation adapters all feed this one handler, so we
+          // recover the account from orderAccount (keyed at submit time)
+          // rather than from the delivering adapter.
+          const accountId = orderAccount.get(order.order_id) ?? defaultAccountId;
           deps
-            .auditFillWriter(buildFillRow({ fill: enrichedFill, expected_price: expectedPrice }))
+            .auditFillWriter(
+              buildFillRow({
+                fill: enrichedFill,
+                expected_price: expectedPrice,
+                account_id: accountId,
+              }),
+            )
             .catch(() => {
               // already logged inside the writer
             });
@@ -407,7 +544,7 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
     }
   }
 
-  deps.broker.onFill(handleBrokerFill);
+  deps.broker?.onFill(handleBrokerFill);
 
   // QF-234 — observation-only adapters (e.g. IBKR via NT). They feed
   // the same handlers as the active broker; dispatch is keyed on
@@ -429,13 +566,14 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
           // shaped; the broker is never called in this path.
           client_order_id: intent.client_order_id ?? intent.intent_id,
           portfolio: intent.portfolio,
-          broker: deps.broker.name,
+          broker: brokerName(),
           execution_mode: deps.mode,
           status: "rejected",
           created_at: new Date().toISOString(),
           completed_at: new Date().toISOString(),
         };
         orders.set(order.order_id, order);
+        orderAccount.set(order.order_id, resolveAccountId(intent));
         deps.logger.warn("Order rejected: system halted", {
           order_id: order.order_id,
           reason: haltReason,
@@ -458,7 +596,7 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
         // ExecAlgorithm child orders override.
         client_order_id: intent.client_order_id ?? intent.intent_id,
         portfolio: intent.portfolio,
-        broker: deps.broker.name,
+        broker: brokerName(),
         execution_mode: deps.mode,
         status: "risk_check",
         created_at: new Date().toISOString(),
@@ -466,6 +604,9 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       orders.set(order.order_id, order);
       intents.set(intent.intent_id, intent);
       intentToOrder.set(intent.intent_id, order.order_id);
+      // QF-245 — resolve + remember the account before the first audit
+      // write so every row for this order is attributed consistently.
+      orderAccount.set(order.order_id, resolveAccountId(intent));
       persist(order);
 
       // Risk check
@@ -489,7 +630,7 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       }
 
       // Approval gate
-      if (shouldAutoApprove(intent)) {
+      if (autoApprovesLocally()) {
         order.status = "approved";
         order.approved_at = new Date().toISOString();
         emitUpdate(order);
@@ -513,8 +654,8 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       order.approved_at = new Date().toISOString();
 
       // QF-50 — look up the original intent so we can diff `edits`
-      // against the Execution Layer's recommendation. The intents
-      // map has held entries since submit() was called.
+      // against the submitted intent's params. The intents map has
+      // held entries since submit() was called.
       let intent = intents.get(order.intent_id);
       if (!intent) {
         // Defensive fallback (only triggers for orders that came in
@@ -574,7 +715,7 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       observeLifecycle(order, "rejected");
     },
 
-    // QF-210 — Execution Layer aborts before submit (quote-unavailable).
+    // QF-210 — caller aborts before submit (quote-unavailable).
     // Build a synthetic rejected Order, register it so it shows up in
     // listOrders, persist an audit_orders row with quote_failure_reason
     // populated. No broker call; no risk gate (the precondition was a
@@ -589,7 +730,7 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
         // client_order_id.
         client_order_id: intent.client_order_id ?? intent.intent_id,
         portfolio: intent.portfolio,
-        broker: deps.broker.name,
+        broker: brokerName(),
         execution_mode: deps.mode,
         status: "rejected",
         created_at: now,
@@ -598,6 +739,7 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       orders.set(order.order_id, order);
       intents.set(intent.intent_id, intent);
       intentToOrder.set(intent.intent_id, order.order_id);
+      orderAccount.set(order.order_id, resolveAccountId(intent));
       deps.logger.error("Order rejected pre-submit", {
         order_id: order.order_id,
         kind: ctx.kind,
@@ -624,7 +766,9 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
         return;
 
       if (order.broker_order_id) {
-        await deps.broker.cancelOrder(order.broker_order_id);
+        // QF-245 — cancel against the same account the order routed to.
+        const broker = resolveBroker(orderAccount.get(order.order_id) ?? defaultAccountId);
+        await broker?.cancelOrder(order.broker_order_id);
       }
 
       order.status = "cancelled";
@@ -656,6 +800,15 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       orders.set(order.order_id, order);
       intents.set(intent.intent_id, intent);
       intentToOrder.set(intent.intent_id, order.order_id);
+      // QF-245 — restore the routing account so a post-restart cancel of
+      // a rehydrated working order reaches the right per-account adapter.
+      // QF-247 — the audit_orders row's account_id (stamped on the Order at
+      // submission time) is authoritative; it survives even when the intent
+      // can't re-derive the same account (audit_intents doesn't persist
+      // account_id, so resolveAccountId(intent) would fall back to the
+      // portfolio map / default). Prefer it; fall back to intent resolution
+      // for pre-M12 rows where the Order carries no account_id.
+      orderAccount.set(order.order_id, order.account_id ?? resolveAccountId(intent));
     },
 
     // QF-230 — reconciliation injectors. Run the missing fill/rejection
@@ -677,6 +830,20 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
       systemHalted = true;
       haltReason = reason;
       deps.logger.error("KILL SWITCH ACTIVATED", { reason });
+      if (deps.alertRouter) {
+        void deps.alertRouter
+          .record({
+            type: "kill_switch.activated",
+            level: "critical",
+            message: `Kill switch activated: ${reason}`,
+            payload: {
+              reason,
+            },
+          })
+          .catch((err) => {
+            deps.logger.warn("kill switch alert failed", { error: String(err) });
+          });
+      }
 
       // Cancel all pending/submitted orders
       for (const [, order] of orders) {
@@ -684,7 +851,9 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
           order.status = "cancelled";
           order.completed_at = new Date().toISOString();
           if (order.broker_order_id) {
-            deps.broker.cancelOrder(order.broker_order_id).catch(() => {});
+            // QF-245 — route the kill-switch cancel to the order's account.
+            const broker = resolveBroker(orderAccount.get(order.order_id) ?? defaultAccountId);
+            broker?.cancelOrder(order.broker_order_id).catch(() => {});
           }
           emitUpdate(order);
           persist(order, { halt_reason: reason });
@@ -711,9 +880,9 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
 // ── QF-50: operator-edit diff ────────────────────────────────────────
 //
 // Compares the operator-supplied `edits` against the original intent's
-// Execution Layer recommendation. Returns ONLY the keys where the
-// operator's value differs (or null if the operator approved as
-// recommended). Numeric fields use strict equality; string fields too.
+// submitted params. Returns ONLY the keys where the operator's value
+// differs (or null if the operator approved as submitted). Numeric
+// fields use strict equality; string fields too.
 // The returned object is what audit_orders.operator_edits stores —
 // a small JSON blob, never including unchanged fields.
 function diffEdits(intent: OrderIntent, edits?: OperatorEdits): OperatorEdits | null {

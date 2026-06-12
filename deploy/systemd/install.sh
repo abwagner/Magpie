@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install (or refresh) the Magpie systemd user units on your-server.example.com.
 # Idempotent — safe to re-run after editing a unit. Run as the user that
-# owns /srv/quantfoundry/Magpie (NOT root).
+# owns /srv/magpie/Magpie (NOT root).
 #
 # Usage:
 #   ./deploy/systemd/install.sh           # install + enable all timers

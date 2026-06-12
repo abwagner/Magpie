@@ -8,6 +8,7 @@ import type { Order, Fill } from "../src/types/order.js";
 import type { Logger } from "./logger.js";
 import type { Strategy } from "./strategy/lifecycle.js";
 import type { RiskLimitsConfig } from "./risk/limits.js";
+import type { WorkspaceLayoutsConfig } from "./gui/workspace-layout.js";
 
 // ── Types ─────────────────────────────────────────────────────────
 // QF-351 — trip event data carried on position_exit_rule messages.
@@ -50,6 +51,9 @@ export interface StateWebSocket {
   }): void;
   pushStrategyUpdate(strategy: Strategy): void;
   pushRiskLimits(cfg: RiskLimitsConfig): void;
+  // QF-346 — broadcasts the operator's drag-resized panel layouts so a
+  // second device (laptop alongside desktop) re-flows its grid live.
+  pushWorkspaceLayouts(cfg: WorkspaceLayoutsConfig): void;
   // QF-351 — trip event; drives the in-flight closing banner in the GUI.
   pushPositionExitRule(data: PositionExitRuleData): void;
   clientCount(): number;
@@ -127,6 +131,10 @@ export function createStateWebSocket(
 
     pushRiskLimits(cfg: RiskLimitsConfig): void {
       broadcast({ type: "risk_limits", data: cfg });
+    },
+
+    pushWorkspaceLayouts(cfg: WorkspaceLayoutsConfig): void {
+      broadcast({ type: "workspace_layout", data: cfg });
     },
 
     pushPositionExitRule(data: PositionExitRuleData): void {

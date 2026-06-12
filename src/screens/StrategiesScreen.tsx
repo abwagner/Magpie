@@ -2,13 +2,20 @@ import { useEffect, useMemo, useState } from "react";
 import { Panel } from "../components/ui/Panel.js";
 import { Modal } from "../components/ui/Modal.js";
 import { TypedConfirmation } from "../components/ui/TypedConfirmation.js";
-import { useStrategies } from "../state/StateProvider.js";
+import { useExitRuleTrips, useStrategies } from "../state/StateProvider.js";
+import {
+  exitRuleLabel,
+  formatExitRuleValues,
+  formatHeadroom,
+  isTripped,
+} from "../lib/exit-rule-format.js";
 import {
   registerStrategy as apiRegister,
   transitionStrategy as apiTransition,
   setStrategyNotes as apiSetNotes,
   pinDriftBaseline as apiPinDriftBaseline,
 } from "../lib/api.js";
+import { StrategyMonitorPanel } from "../panels/StrategyMonitorPanel.js";
 import type {
   LifecycleAction,
   LifecycleState,
@@ -107,7 +114,7 @@ export function StrategiesScreen() {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr 380px",
+        gridTemplateColumns: "1fr 380px 380px",
         gap: 8,
         padding: 8,
         height: "100%",
@@ -121,6 +128,7 @@ export function StrategiesScreen() {
         onRegisterClick={() => setRegisterOpen(true)}
       />
       <DetailPanel strategy={selected} />
+      <StrategyMonitorPanel strategy={selected} />
       <RegisterModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
     </div>
   );
@@ -251,6 +259,8 @@ function DetailPanel({ strategy }: { strategy: Strategy | null }) {
         <ActionRow strategy={strategy} />
         <LineageBadge provenance={strategy.params_provenance} />
         <LifecycleDiagram state={strategy.state} />
+        <ExitRulesSection strategy={strategy} />
+        <ExitRuleTripHistory strategyId={strategy.id} />
         <RepinBaselineSection strategyId={strategy.id} />
         <NotesEditor strategy={strategy} />
         <HistoryList strategy={strategy} />
@@ -440,6 +450,133 @@ function LifecycleDiagram({ state }: { state: LifecycleState }) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// ── Exit-rule monitor (QF-322) ────────────────────────────────────
+
+// Per-strategy declared exit rules with their live "closest to trip"
+// headroom, streamed on strategy_update.exit_rules[] by the monitor
+// (QF-321/QF-351). Renders nothing until the monitor has evaluated the
+// strategy at least once — undefined exit_rules means no policy or no
+// eval yet, both of which the panel shows as a dormant note.
+// Exported for unit tests.
+export function ExitRulesSection({ strategy }: { strategy: Strategy }) {
+  const rules = strategy.exit_rules;
+  return (
+    <div>
+      <SectionLabel>Exit rules</SectionLabel>
+      {!rules || rules.length === 0 ? (
+        <div className="dim2" style={{ fontSize: 11 }}>
+          No framework-enforced exits evaluated yet.
+        </div>
+      ) : (
+        <ul
+          style={{
+            listStyle: "none",
+            padding: 0,
+            margin: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          {rules.map((ev) => (
+            <ExitRuleRow key={ev.rule} ev={ev} />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ExitRuleRow({ ev }: { ev: NonNullable<Strategy["exit_rules"]>[number] }) {
+  const tripped = isTripped(ev);
+  return (
+    <li
+      style={{
+        display: "flex",
+        gap: 8,
+        alignItems: "baseline",
+        fontSize: 11,
+        padding: "3px 6px",
+        background: "var(--bg-app)",
+        borderLeft: `2px solid ${tripped ? "var(--neg)" : "var(--border-1)"}`,
+      }}
+    >
+      <span
+        className="mono"
+        style={{ width: 92, color: tripped ? "var(--neg)" : "var(--text-2)", fontWeight: 600 }}
+      >
+        {exitRuleLabel(ev.rule)}
+      </span>
+      <span className="mono dim">{formatExitRuleValues(ev)}</span>
+      <span style={{ flex: 1 }} />
+      <span
+        className="mono"
+        style={{ color: tripped ? "var(--neg)" : "var(--text-3)", fontSize: 10 }}
+      >
+        {formatHeadroom(ev)}
+      </span>
+    </li>
+  );
+}
+
+// Recent exit-rule trips for this strategy, filtered from the shell-wide
+// trip ring (StateProvider) by strategy_id. Surfaces the rule-driven
+// closes the monitor has acted on so the operator can audit them
+// alongside the strategy's lifecycle history. Exported for unit tests.
+export function ExitRuleTripHistory({ strategyId }: { strategyId: string }) {
+  const trips = useExitRuleTrips();
+  const mine = trips.filter((t) => t.strategy_id === strategyId).slice(0, 10);
+  return (
+    <div>
+      <SectionLabel>Exit-rule trips</SectionLabel>
+      {mine.length === 0 ? (
+        <div className="dim2" style={{ fontSize: 11 }}>
+          No trips in this session.
+        </div>
+      ) : (
+        <ol
+          style={{
+            listStyle: "none",
+            padding: 0,
+            margin: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          {mine.map((t) => (
+            <li
+              key={`${t.closing_intent_id}-${t.position_id}`}
+              style={{
+                fontSize: 11,
+                padding: "4px 6px",
+                borderLeft: "2px solid var(--neg)",
+                background: "var(--bg-app)",
+              }}
+            >
+              <div style={{ display: "flex", gap: 6, alignItems: "baseline" }}>
+                <span className="mono dim" style={{ fontSize: 10 }}>
+                  {new Date(t.ts).toLocaleString("en-US", { hour12: false })}
+                </span>
+                <span style={{ color: "var(--neg)", fontWeight: 600 }}>
+                  {exitRuleLabel(t.rule)}
+                </span>
+                <span style={{ flex: 1 }} />
+                <span className="dim2 mono" style={{ fontSize: 10 }}>
+                  {t.position_id}
+                </span>
+              </div>
+              <div className="dim2 mono" style={{ fontSize: 10, marginTop: 1 }}>
+                intent {t.closing_intent_id}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 }

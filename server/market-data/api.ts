@@ -6,8 +6,11 @@
 
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { MarketDataService, MarketDataAdapter } from "../../src/types/market-data.js";
+import type { BrokerAdapter } from "../../src/types/order.js";
 import { getLastCredits } from "../../src/lib/marketdata-api.js";
 import { fetchSchwabPositions, fetchSchwabAccounts } from "../order/adapters/schwab-rest.js";
+import { parseSchwabPositionRows } from "../order/positions/parse-schwab-positions.js";
+import { enrichPositionGreeks } from "./enrich-position-greeks.js";
 import type { Logger } from "../logger.js";
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -40,10 +43,28 @@ export interface MarketDataApiDeps {
   logger: Logger;
   /** QF-55. Optional; when present, /api/data/sources/health is served. */
   metrics?: import("./metrics.js").MetricsRegistry;
+  /**
+   * QF-272 — active broker adapter (the live Schwab NT bridge in
+   * practice). When present, /api/positions and /api/accounts source
+   * their data through it (same Schwab snapshot as the REST path) and
+   * fall back to the schwab-rest REST client when NT errors / is absent.
+   */
+  broker?: BrokerAdapter;
+  /**
+   * QF-341 — read-only MD fallback policy header for /api/marketdata/bridges
+   * (Settings → Bridges). Sourced from config/brokers.json marketdata block.
+   */
+  fallbackPolicy?: import("./health.js").BridgePolicy;
+  /**
+   * QF-341 — live set of brokers currently serving as a fallback target.
+   * Usually `selector.brokersServingAsFallback.bind(selector)`.
+   */
+  brokersServingAsFallback?: () => Set<string>;
 }
 
 export function createMarketDataApi(deps: MarketDataApiDeps) {
-  const { service, adapters, logger, metrics } = deps;
+  const { service, adapters, logger, metrics, broker, fallbackPolicy, brokersServingAsFallback } =
+    deps;
 
   return {
     async handleStatus(_req: IncomingMessage, res: ServerResponse): Promise<void> {
@@ -77,7 +98,14 @@ export function createMarketDataApi(deps: MarketDataApiDeps) {
         return;
       }
       const { getBridgeStatuses } = await import("./health.js");
-      const response = await getBridgeStatuses({ adapters, metrics });
+      const response = await getBridgeStatuses({
+        adapters,
+        metrics,
+        ...(fallbackPolicy ? { policy: fallbackPolicy } : {}),
+        ...(brokersServingAsFallback
+          ? { brokersServingAsFallback: brokersServingAsFallback() }
+          : {}),
+      });
       json(res, response);
     },
 
@@ -148,9 +176,30 @@ export function createMarketDataApi(deps: MarketDataApiDeps) {
 
     async handlePositions(req: IncomingMessage, res: ServerResponse): Promise<void> {
       const params = parseParams(req.url ?? "");
+      // QF-272 — prefer the NT bridge (the live Schwab connection) for the
+      // default (no specific account) case; it forwards the same raw
+      // Schwab snapshot rows, which the shared parser categorizes. An
+      // explicit ?account= hash stays on the REST path (the single-account
+      // NT bridge can't scope to an arbitrary hash). REST is the fallback
+      // whenever NT is absent or errors.
+      if (broker && !params.account) {
+        try {
+          const positions = await broker.getPositions();
+          const rows = positions
+            .map((p) => p.raw)
+            .filter((r): r is Record<string, unknown> => r != null);
+          // QF-355 — fill held-option greeks from the live MD chain.
+          json(res, await enrichPositionGreeks(parseSchwabPositionRows(rows), service, logger));
+          return;
+        } catch (e) {
+          logger.warn("positions via NT failed; falling back to schwab-rest", {
+            error: String(e),
+          });
+        }
+      }
       try {
         const positions = await fetchSchwabPositions(params.account || undefined);
-        json(res, positions);
+        json(res, await enrichPositionGreeks(positions, service, logger));
       } catch (e) {
         logger.warn("positions fetch failed", { error: String(e) });
         json(res, { error: String((e as Error).message ?? e) }, 502);
@@ -158,6 +207,19 @@ export function createMarketDataApi(deps: MarketDataApiDeps) {
     },
 
     async handleAccounts(_req: IncomingMessage, res: ServerResponse): Promise<void> {
+      // QF-272 — prefer the NT bridge's accounts subject; fall back to the
+      // schwab-rest REST client when NT is absent or errors.
+      if (broker?.getAccounts) {
+        try {
+          const accounts = await broker.getAccounts();
+          json(res, { accounts });
+          return;
+        } catch (e) {
+          logger.warn("accounts via NT failed; falling back to schwab-rest", {
+            error: String(e),
+          });
+        }
+      }
       try {
         const accounts = await fetchSchwabAccounts();
         json(res, { accounts });

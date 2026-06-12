@@ -1,20 +1,18 @@
 // ── Trade Inspector ───────────────────────────────────────────────────
-// Aggregates the full audit chain (signal → intent → pricing_decision →
-// order → fill) for a given fill_id. Backs the Trade Inspector GUI
-// surface defined in `docs/design_handoff_quantfoundry/source_brief_gui.md`
-// and addresses QF-215.
+// Aggregates the audit chain (intent → order → fill) for a given fill_id.
+// Backs the Trade Inspector GUI surface defined in
+// `docs/design_handoff_magpie/source_brief_gui.md` and addresses
+// QF-215.
 //
-// The inspector is a read-only join across the five audit tables. It is
+// The inspector is a read-only join across the three audit tables. It is
 // deliberately a separate module from server/analytics so the OrderPlane
 // surface owns its own forensic API alongside the writers (QF-207,
-// QF-208, QF-42, QF-206).
+// QF-208, QF-206).
 //
-// The signal join is the trickiest part: audit_intents.signal_ids is a
-// JSON-encoded array of zero-or-more signal_ids. For v1 we expand only
-// the first signal in the array (it's the originating one in practice)
-// and surface the rest unjoined via a separate `related_signal_ids`
-// field. Multi-signal joins (full set of upstream signals) can land in a
-// follow-up when a real use case emerges.
+// QF-338 — the audit_pricing_decisions chain hop and the audit_signals
+// join were retired (their writers were deleted in QF-283 / QF-261).
+// audit_intents.signal_ids is still surfaced raw on the intent row for
+// forensic context, but is no longer expanded into a joined signal.
 
 import type { Database } from "duckdb";
 import type { Logger } from "../logger.js";
@@ -66,42 +64,10 @@ export interface InspectorIntentRow {
   created_at: string;
 }
 
-export interface InspectorPricingDecisionRow {
-  decision_id: string;
-  intent_id: string;
-  strategy_id: string;
-  strategy_chosen: string;
-  profile_source: string;
-  inputs: unknown;
-  order_type: string;
-  limit_price: number | null;
-  limit_price_pre_snap: number | null;
-  time_in_force: string;
-  working_policy_id: string;
-  reasoning: string;
-  created_at: string;
-}
-
-export interface InspectorSignalRow {
-  signal_id: string;
-  model_id: string;
-  model_version: string;
-  symbol: string;
-  asof: string;
-  kind: string;
-  batch_id: string | null;
-  ingest_ts: string;
-}
-
 export interface TradeInspectorResult {
   fill: InspectorFillRow;
   order: InspectorOrderRow;
   intent: InspectorIntentRow;
-  // Ordered by created_at ASC; multi-decision intents (working-policy
-  // repegs) produce more than one row.
-  pricing_decisions: InspectorPricingDecisionRow[];
-  // Null when the intent referenced no signals (rare; legacy paths).
-  originating_signal: InspectorSignalRow | null;
 }
 
 export class TradeInspectorNotFoundError extends Error {
@@ -122,15 +88,6 @@ function runOne<T>(db: Database, sql: string, params: unknown[]): Promise<T | nu
         const arr = (rows as T[]) ?? [];
         resolve(arr[0] ?? null);
       }
-    });
-  });
-}
-
-function runMany<T>(db: Database, sql: string, params: unknown[]): Promise<T[]> {
-  return new Promise((resolve, reject) => {
-    db.all(sql, ...params, (err: Error | null, rows: unknown) => {
-      if (err) reject(err);
-      else resolve((rows as T[]) ?? []);
     });
   });
 }
@@ -185,10 +142,9 @@ export function createTradeInspector(db: Database, logger: Logger): TradeInspect
       );
       if (!fillRaw) throw new TradeInspectorNotFoundError(fillId);
 
-      // 2. Order, intent, pricing decisions, originating signal — one
-      // query per table. DuckDB handles these in O(microseconds) at this
-      // scale; the alternative single big JOIN risks Cartesian blowup on
-      // multi-decision intents.
+      // 2. Order, intent — one query per table. DuckDB handles these in
+      // O(microseconds) at this scale, and one-query-per-table keeps the
+      // chain hops explicit.
       type RawOrder = {
         order_id: string;
         intent_id: string;
@@ -250,37 +206,6 @@ export function createTradeInspector(db: Database, logger: Logger): TradeInspect
       }
       const signalIds = parseSignalIds(intentRaw.signal_ids);
 
-      type RawDecision = {
-        decision_id: string;
-        intent_id: string;
-        strategy_id: string;
-        strategy_chosen: string;
-        profile_source: string;
-        inputs_json: string;
-        order_type: string;
-        limit_price: number | null;
-        limit_price_pre_snap: number | null;
-        time_in_force: string;
-        working_policy_id: string;
-        reasoning: string;
-        created_at: string;
-      };
-      const decisionsRaw = await runMany<RawDecision>(
-        db,
-        `SELECT decision_id, intent_id, strategy_id, strategy_chosen,
-                profile_source, inputs_json, order_type, limit_price,
-                limit_price_pre_snap, time_in_force, working_policy_id,
-                reasoning, created_at
-         FROM audit_pricing_decisions
-         WHERE intent_id = ?
-         ORDER BY created_at ASC`,
-        [intentRaw.intent_id],
-      );
-
-      // audit_signals table retired with Arch-A signal subsystem (QF-261).
-      // originating_signal is always null after retirement.
-      const originatingSignal: InspectorSignalRow | null = null;
-
       return {
         fill: {
           fill_id: fillRaw.fill_id,
@@ -322,22 +247,6 @@ export function createTradeInspector(db: Database, logger: Logger): TradeInspect
           signal_ids: signalIds,
           created_at: intentRaw.created_at,
         },
-        pricing_decisions: decisionsRaw.map((d) => ({
-          decision_id: d.decision_id,
-          intent_id: d.intent_id,
-          strategy_id: d.strategy_id,
-          strategy_chosen: d.strategy_chosen,
-          profile_source: d.profile_source,
-          inputs: safeJsonParse(d.inputs_json),
-          order_type: d.order_type,
-          limit_price: d.limit_price,
-          limit_price_pre_snap: d.limit_price_pre_snap,
-          time_in_force: d.time_in_force,
-          working_policy_id: d.working_policy_id,
-          reasoning: d.reasoning,
-          created_at: d.created_at,
-        })),
-        originating_signal: originatingSignal,
       };
     },
   };

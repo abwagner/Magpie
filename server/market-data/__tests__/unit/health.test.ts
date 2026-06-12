@@ -179,4 +179,61 @@ describe("getBridgeStatuses", () => {
     expect(bridge.rpc_latency_p50_ms).toBeNull();
     expect(bridge.rpc_latency_p99_ms).toBeNull();
   });
+
+  // ── QF-341 — fallback liveness fields ───────────────────────────
+
+  it("defaults priority_rank=null and serving_as_fallback=false with no policy", async () => {
+    const metrics = createMetricsRegistry();
+    const result = await getBridgeStatuses({
+      adapters: [makeNtAdapter("schwab", true)],
+      metrics,
+    });
+    const bridge = result.bridges[0]!;
+    expect(bridge.priority_rank).toBeNull();
+    expect(bridge.serving_as_fallback).toBe(false);
+    expect(result.policy).toBeUndefined();
+  });
+
+  it("derives priority_rank from the policy order (0 = primary)", async () => {
+    const metrics = createMetricsRegistry();
+    const policy = {
+      fallback_enabled: true,
+      priority: ["ibkr", "schwab"],
+      heartbeat_stale_ms: 30000,
+      methods: {},
+    };
+    const result = await getBridgeStatuses({
+      adapters: [makeNtAdapter("schwab", true), makeNtAdapter("ibkr", true)],
+      metrics,
+      policy,
+    });
+    const schwab = result.bridges.find((b) => b.broker === "schwab");
+    const ibkr = result.bridges.find((b) => b.broker === "ibkr");
+    expect(ibkr?.priority_rank).toBe(0);
+    expect(schwab?.priority_rank).toBe(1);
+    expect(result.policy).toEqual(policy);
+  });
+
+  it("marks serving_as_fallback for brokers in the supplied set", async () => {
+    const metrics = createMetricsRegistry();
+    const result = await getBridgeStatuses({
+      adapters: [makeNtAdapter("schwab", true), makeNtAdapter("ibkr", false)],
+      metrics,
+      brokersServingAsFallback: new Set(["schwab"]),
+    });
+    const schwab = result.bridges.find((b) => b.broker === "schwab");
+    const ibkr = result.bridges.find((b) => b.broker === "ibkr");
+    expect(schwab?.serving_as_fallback).toBe(true);
+    expect(ibkr?.serving_as_fallback).toBe(false);
+  });
+
+  it("uses the adapter's exact last-heartbeat age when exposed (QF-341)", async () => {
+    const metrics = createMetricsRegistry();
+    const adapter: MarketDataAdapter & { lastHeartbeatAgeMs: () => number | null } = {
+      ...makeNtAdapter("schwab", true),
+      lastHeartbeatAgeMs: () => 4200,
+    };
+    const result = await getBridgeStatuses({ adapters: [adapter], metrics });
+    expect(result.bridges[0]!.last_heartbeat_age_ms).toBe(4200);
+  });
 });

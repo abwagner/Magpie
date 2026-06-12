@@ -44,6 +44,15 @@ function write(dir: string, filename: string, content: unknown): void {
   writeFileSync(join(dir, filename), JSON.stringify(content));
 }
 
+// QF-341 — BrokersConfig now requires a `marketdata` block. resolveAccount
+// tests don't exercise it, so attach a default to keep them type-safe.
+function withMd(schwab: { accounts: Array<{ id: string; label: string; enabled: boolean }> }) {
+  return {
+    schwab,
+    marketdata: { fallback_enabled: false, priority: [], methods: {}, heartbeat_stale_ms: 30000 },
+  };
+}
+
 // ── Legacy (QF-242) shape tests ───────────────────────────────────
 
 describe("loadBrokersConfig — legacy shape (QF-242 backward compat)", () => {
@@ -342,68 +351,249 @@ describe("loadBrokersConfig — portfolio routing validation", () => {
   });
 });
 
+// ── marketdata fallback block (QF-341) ────────────────────────────
+
+describe("loadBrokersConfig — marketdata fallback block (QF-341)", () => {
+  let dir: string;
+  let logger: ReturnType<typeof makeLogger>;
+
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), "brokers-config-md-"));
+    logger = makeLogger();
+  });
+
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it("defaults to fallback disabled when the block is absent", () => {
+    write(dir, "brokers.json", { schwab: { accounts: [{ id: "a", enabled: true }] } });
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.fallback_enabled).toBe(false);
+    expect(cfg.marketdata.priority).toEqual([]);
+    expect(cfg.marketdata.methods).toEqual({});
+    expect(cfg.marketdata.heartbeat_stale_ms).toBe(30000);
+  });
+
+  it("defaults to fallback disabled when the file is missing", () => {
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.fallback_enabled).toBe(false);
+    expect(cfg.marketdata.priority).toEqual([]);
+  });
+
+  it("parses a valid enabled block with priority over enabled brokers", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      ibkr: { enabled: true },
+      marketdata: { fallback_enabled: true, priority: ["ibkr", "schwab"] },
+    });
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.fallback_enabled).toBe(true);
+    expect(cfg.marketdata.priority).toEqual(["ibkr", "schwab"]);
+  });
+
+  it("accepts a disabled block naming brokers that aren't enabled yet (documents intent)", () => {
+    // The ratified default ships fallback_enabled:false + ["ibkr","schwab"]
+    // before either broker is enabled; that must load without error.
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: false }] },
+      marketdata: { fallback_enabled: false, priority: ["ibkr", "schwab"] },
+    });
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.fallback_enabled).toBe(false);
+    expect(cfg.marketdata.priority).toEqual(["ibkr", "schwab"]);
+  });
+
+  it("rejects an enabled priority entry that is not an enabled broker", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: true, priority: ["ibkr", "schwab"] },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(BrokersConfigError);
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/not an enabled broker/);
+  });
+
+  it("rejects a non-array priority", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: true, priority: "schwab" },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/must be an array/);
+  });
+
+  it("rejects an empty priority array", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: true, priority: [] },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/non-empty array/);
+  });
+
+  it("rejects duplicate priority entries", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: true, priority: ["schwab", "schwab"] },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/duplicate/);
+  });
+
+  it("rejects non-slug priority entries", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: true, priority: ["Schwab!"] },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/slug-safe/);
+  });
+
+  it("parses a per-method override and inherits global for absent methods", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      ibkr: { enabled: true },
+      marketdata: {
+        fallback_enabled: true,
+        priority: ["ibkr", "schwab"],
+        methods: {
+          quote: { fallback_enabled: true, priority: ["ibkr", "schwab"] },
+          candles: { fallback_enabled: false },
+        },
+      },
+    });
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.methods.quote).toEqual({
+      fallback_enabled: true,
+      priority: ["ibkr", "schwab"],
+    });
+    expect(cfg.marketdata.methods.candles).toEqual({ fallback_enabled: false });
+    expect(cfg.marketdata.methods.chain).toBeUndefined();
+  });
+
+  it("rejects an ineligible method key (historical_chain)", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { methods: { historical_chain: { fallback_enabled: true } } },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/not a fallback-eligible method/);
+  });
+
+  it("rejects an unknown method key", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { methods: { submit: { fallback_enabled: true } } },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/not a fallback-eligible method/);
+  });
+
+  it("rejects an unknown top-level field in the marketdata block", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: false, bogus: true },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/unknown field "bogus"/);
+  });
+
+  it("rejects an unknown field inside a method override", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { methods: { quote: { fallback_enabled: true, bogus: 1 } } },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/unknown field "bogus"/);
+  });
+
+  it("rejects a non-positive heartbeat_stale_ms", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { heartbeat_stale_ms: 0 },
+    });
+    expect(() => loadBrokersConfig(dir, logger as never)).toThrow(/positive number/);
+  });
+
+  it("warns on enabled + single-element priority (can never fall back)", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: true, priority: ["schwab"] },
+    });
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.priority).toEqual(["schwab"]);
+    expect(
+      logger.logs.some((l) => l.level === "warn" && l.msg.includes("can never fall back")),
+    ).toBe(true);
+  });
+
+  it("ignores a _doc string inside the marketdata block", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { _doc: "explanatory text", fallback_enabled: false },
+    });
+    const cfg = loadBrokersConfig(dir, logger as never);
+    expect(cfg.marketdata.fallback_enabled).toBe(false);
+  });
+
+  it("does not warn 'unknown broker key' for the marketdata block", () => {
+    write(dir, "brokers.json", {
+      schwab: { accounts: [{ id: "main", enabled: true }] },
+      marketdata: { fallback_enabled: false },
+    });
+    loadBrokersConfig(dir, logger as never);
+    expect(
+      logger.logs.some(
+        (l) => l.level === "warn" && l.fields?.key === "marketdata",
+      ),
+    ).toBe(false);
+  });
+});
+
 // ── resolveAccountForPortfolio ────────────────────────────────────
 
 describe("resolveAccountForPortfolio", () => {
   it("returns the matching enabled account when accountId is specified", () => {
-    const cfg = {
-      schwab: {
-        accounts: [
-          { id: "personal", label: "Personal", enabled: true },
-          { id: "ira", label: "IRA", enabled: true },
-        ],
-      },
-    };
+    const cfg = withMd({
+      accounts: [
+        { id: "personal", label: "Personal", enabled: true },
+        { id: "ira", label: "IRA", enabled: true },
+      ],
+    });
     const result = resolveAccountForPortfolio(cfg, "ira");
     expect(result?.id).toBe("ira");
   });
 
   it("falls back to first enabled account when accountId is undefined", () => {
-    const cfg = {
-      schwab: {
-        accounts: [
-          { id: "personal", label: "Personal", enabled: true },
-          { id: "ira", label: "IRA", enabled: true },
-        ],
-      },
-    };
+    const cfg = withMd({
+      accounts: [
+        { id: "personal", label: "Personal", enabled: true },
+        { id: "ira", label: "IRA", enabled: true },
+      ],
+    });
     const result = resolveAccountForPortfolio(cfg, undefined);
     expect(result?.id).toBe("personal");
   });
 
   it("falls back to first enabled when specified accountId is disabled", () => {
-    const cfg = {
-      schwab: {
-        accounts: [
-          { id: "personal", label: "Personal", enabled: true },
-          { id: "ira", label: "IRA", enabled: false },
-        ],
-      },
-    };
+    const cfg = withMd({
+      accounts: [
+        { id: "personal", label: "Personal", enabled: true },
+        { id: "ira", label: "IRA", enabled: false },
+      ],
+    });
     const result = resolveAccountForPortfolio(cfg, "ira");
     // ira is disabled, fall back to first enabled (personal)
     expect(result?.id).toBe("personal");
   });
 
   it("returns null when no enabled accounts exist", () => {
-    const cfg = {
-      schwab: {
-        accounts: [{ id: "main", label: "main", enabled: false }],
-      },
-    };
+    const cfg = withMd({
+      accounts: [{ id: "main", label: "main", enabled: false }],
+    });
     const result = resolveAccountForPortfolio(cfg, undefined);
     expect(result).toBeNull();
   });
 
   it("is deterministic — always returns the same account for the same config+id", () => {
-    const cfg = {
-      schwab: {
-        accounts: [
-          { id: "a", label: "A", enabled: true },
-          { id: "b", label: "B", enabled: true },
-        ],
-      },
-    };
+    const cfg = withMd({
+      accounts: [
+        { id: "a", label: "A", enabled: true },
+        { id: "b", label: "B", enabled: true },
+      ],
+    });
     expect(resolveAccountForPortfolio(cfg, "b")?.id).toBe("b");
     expect(resolveAccountForPortfolio(cfg, "b")?.id).toBe("b");
     expect(resolveAccountForPortfolio(cfg, undefined)?.id).toBe("a");

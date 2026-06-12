@@ -135,7 +135,7 @@ docs/                         # Documentation
 | [Runbook](docs/RUNBOOK.md)                                                            | Setup, configuration, paper trading, going live, monitoring, troubleshooting                                             |
 | [Coding Standards](docs/CODING-STANDARDS.md)                                          | TypeScript conventions, testing, error handling, dependency policy                                                       |
 | [Data Sources](docs/data/sources.md)                                                  | Per-source costs, rate limits, auth setup, credit budgets, collection scripts                                            |
-| [Magpie v2 plan](../../.claude/plans/quantfoundry-v2.md)                              | Backlog of deferred items (pop-outs, drag-resize, dynamic registry, multi-account, mobile, RBAC, etc.)                   |
+| [Magpie v2 plan](../../.claude/plans/magpie-v2.md)                              | Backlog of deferred items (pop-outs, drag-resize, dynamic registry, multi-account, mobile, RBAC, etc.)                   |
 | [Open work tracker](<internal tracker>)                                               | Linear project — bugs, settings stubs, execution layer, etc. Authoritative tracker for all in-flight work                |
 | [docs archive](docs/archive/)                                                         | Snapshot of QF-ISSUES, SETTINGS-STUBS, and TODO at the time the work moved to Linear (kept for closed-issue history)     |
 | [JSX → TS migration](docs/MIGRATION-JSX-TS.md)                                        | TypeScript migration tracker (zero `.jsx` left under `src/`; remaining work is `src/lib/*.js` math libs)                 |

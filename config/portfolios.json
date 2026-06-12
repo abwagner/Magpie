@@ -28,11 +28,6 @@
         "expire_after": { "working_ttl_ms": 300000 },
         "urgency_ramp": { "interval_ms": 5000, "horizon_ms_default": 60000 }
       },
-      "semi_auto_whitelist": {
-        "symbols": ["OPT:SPY:*"],
-        "max_qty": 5,
-        "strategy_ids": []
-      },
       "reconciliation": {
         "interval_seconds": 60,
         "halt_on_drift": true

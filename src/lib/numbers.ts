@@ -1,6 +1,6 @@
 // Magpie-spec number formatters. Emit the typographic minus
 // (U+2212) and keep tabular widths stable. Mirrors the `fmt` object
-// in docs/design_handoff_quantfoundry/primitives.jsx.
+// in docs/design_handoff_magpie/primitives.jsx.
 //
 // Note: src/lib/format.ts has older formatters (fmtNum returns
 // "1.5K"); those stay because DataCatalog and other legacy panels

@@ -1,4 +1,6 @@
-// QF-215 — Trade Inspector: read-only join across the five audit tables.
+// QF-215 — Trade Inspector: read-only join across the audit tables.
+// QF-338 — audit_pricing_decisions + audit_signals retired; the inspector
+// now joins intent → order → fill only.
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import {
@@ -10,9 +12,6 @@ import { createTestDb, type TestDb } from "../../../__tests__/helpers/test-db.js
 import { createTestLogger } from "../../../__tests__/helpers/test-logger.js";
 
 // ── DB seed helpers ───────────────────────────────────────────────────
-// audit_signals table retired with Arch-A signal subsystem (QF-261).
-// seedSignal removed; tests that previously called it now skip the seed
-// and expect originating_signal = null.
 
 async function seedIntent(
   tdb: TestDb,
@@ -76,40 +75,6 @@ async function seedOrder(
   );
 }
 
-async function seedPricingDecision(
-  tdb: TestDb,
-  args: {
-    decision_id: string;
-    intent_id: string;
-    reasoning?: string;
-    created_at?: string;
-    inputs_json?: string;
-  },
-): Promise<void> {
-  await tdb.run(
-    `INSERT INTO audit_pricing_decisions
-       (decision_id, intent_id, strategy_id, strategy_chosen, profile_source,
-        inputs_json, order_type, limit_price, limit_price_pre_snap,
-        time_in_force, working_policy_id, reasoning, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      args.decision_id,
-      args.intent_id,
-      "vol-buyer-spy",
-      "mid",
-      "default",
-      args.inputs_json ?? JSON.stringify({ quote: { bid: 12.4, ask: 12.6, mid: 12.5 } }),
-      "limit",
-      12.5,
-      12.5,
-      "day",
-      "cancel_on_signal_invalidate",
-      args.reasoning ?? "mid (default)",
-      args.created_at ?? "2026-05-19T12:00:03.000Z",
-    ],
-  );
-}
-
 async function seedFill(
   tdb: TestDb,
   args: {
@@ -157,15 +122,9 @@ describe("TradeInspector.inspect", () => {
     tdb.close();
   });
 
-  it("returns the full audit chain for a complete fill", async () => {
-    // audit_signals retired (QF-261) — no seedSignal; originating_signal is always null.
+  it("returns the audit chain (intent → order → fill) for a complete fill", async () => {
     await seedIntent(tdb, { intent_id: "int-1", signal_ids: ["sig-1"] });
     await seedOrder(tdb, { order_id: "ord-1", intent_id: "int-1" });
-    await seedPricingDecision(tdb, {
-      decision_id: "dec-1",
-      intent_id: "int-1",
-      reasoning: "[default] mid",
-    });
     await seedFill(tdb, { fill_id: "fill-1", order_id: "ord-1", price: 12.55 });
 
     const result = await inspector.inspect("fill-1");
@@ -177,79 +136,26 @@ describe("TradeInspector.inspect", () => {
     expect(result.order.status).toBe("filled");
     expect(result.intent.intent_id).toBe("int-1");
     expect(result.intent.symbol).toBe("OPT:SPY:2026-06-19:C:500");
-    expect(result.intent.signal_ids).toEqual(["sig-1"]);
-    expect(result.pricing_decisions).toHaveLength(1);
-    expect(result.pricing_decisions[0]!.reasoning).toBe("[default] mid");
-    // originating_signal is null after audit_signals retirement (QF-261).
-    expect(result.originating_signal).toBeNull();
   });
 
-  it("orders multi-decision intents (repegs) by created_at ASC", async () => {
-    await seedIntent(tdb, { intent_id: "int-1", signal_ids: ["sig-1"] });
+  it("surfaces the raw signal_ids on the intent row", async () => {
+    // audit_signals retired (QF-338) — signal_ids are no longer joined into
+    // a signal, but the raw ids stay on the intent for forensic context.
+    await seedIntent(tdb, { intent_id: "int-1", signal_ids: ["sig-1", "sig-2"] });
     await seedOrder(tdb, { order_id: "ord-1", intent_id: "int-1" });
-    await seedPricingDecision(tdb, {
-      decision_id: "dec-A",
-      intent_id: "int-1",
-      reasoning: "first decision",
-      created_at: "2026-05-19T12:00:03.000Z",
-    });
-    await seedPricingDecision(tdb, {
-      decision_id: "dec-B",
-      intent_id: "int-1",
-      reasoning: "repeg",
-      created_at: "2026-05-19T12:00:30.000Z",
-    });
     await seedFill(tdb, { fill_id: "fill-1", order_id: "ord-1" });
 
     const result = await inspector.inspect("fill-1");
-    expect(result.pricing_decisions.map((d) => d.decision_id)).toEqual(["dec-A", "dec-B"]);
+    expect(result.intent.signal_ids).toEqual(["sig-1", "sig-2"]);
   });
 
-  it("parses inputs_json into a structured object", async () => {
-    await seedIntent(tdb, { intent_id: "int-1", signal_ids: ["sig-1"] });
-    await seedOrder(tdb, { order_id: "ord-1", intent_id: "int-1" });
-    await seedPricingDecision(tdb, {
-      decision_id: "dec-1",
-      intent_id: "int-1",
-      inputs_json: JSON.stringify({
-        quote: { bid: 12.4, ask: 12.6, mid: 12.5, _meta: { source: "schwab" } },
-        signal_age_ms: 50,
-        signal_horizon_ms: 86400000,
-      }),
-    });
-    await seedFill(tdb, { fill_id: "fill-1", order_id: "ord-1" });
-
-    const result = await inspector.inspect("fill-1");
-    const inputs = result.pricing_decisions[0]!.inputs as {
-      quote: { mid: number; _meta: { source: string } };
-      signal_age_ms: number;
-    };
-    expect(inputs.quote.mid).toBe(12.5);
-    expect(inputs.quote._meta.source).toBe("schwab");
-    expect(inputs.signal_age_ms).toBe(50);
-  });
-
-  it("returns originating_signal=null when the intent had no signal_ids", async () => {
+  it("surfaces an empty signal_ids array when the intent had no signals", async () => {
     await seedIntent(tdb, { intent_id: "int-1", signal_ids: [] });
     await seedOrder(tdb, { order_id: "ord-1", intent_id: "int-1" });
-    await seedPricingDecision(tdb, { decision_id: "dec-1", intent_id: "int-1" });
     await seedFill(tdb, { fill_id: "fill-1", order_id: "ord-1" });
 
     const result = await inspector.inspect("fill-1");
-    expect(result.originating_signal).toBeNull();
     expect(result.intent.signal_ids).toEqual([]);
-  });
-
-  it("returns originating_signal=null when the intent has a signal_id (audit_signals retired)", async () => {
-    // audit_signals retired in QF-261 — originating_signal is always null.
-    await seedIntent(tdb, { intent_id: "int-1", signal_ids: ["sig-missing"] });
-    await seedOrder(tdb, { order_id: "ord-1", intent_id: "int-1" });
-    await seedPricingDecision(tdb, { decision_id: "dec-1", intent_id: "int-1" });
-    await seedFill(tdb, { fill_id: "fill-1", order_id: "ord-1" });
-
-    const result = await inspector.inspect("fill-1");
-    expect(result.originating_signal).toBeNull();
-    expect(result.intent.signal_ids).toEqual(["sig-missing"]);
   });
 
   it("surfaces rejection reasons (risk_violations, halt_reason, broker_rejection_reason)", async () => {
@@ -267,7 +173,6 @@ describe("TradeInspector.inspect", () => {
         "ord-1",
       ],
     );
-    await seedPricingDecision(tdb, { decision_id: "dec-1", intent_id: "int-1" });
     await seedFill(tdb, { fill_id: "fill-1", order_id: "ord-1" });
 
     const result = await inspector.inspect("fill-1");
@@ -290,7 +195,6 @@ describe("TradeInspector.inspect", () => {
       intent_id: "int-1",
       account_id: "schwab-acct-7842",
     });
-    await seedPricingDecision(tdb, { decision_id: "dec-1", intent_id: "int-1" });
     await seedFill(tdb, {
       fill_id: "fill-1",
       order_id: "ord-1",

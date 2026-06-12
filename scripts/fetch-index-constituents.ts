@@ -187,7 +187,7 @@ async function fetchHoldings(etfTicker: string): Promise<Row[]> {
   if (!spec) throw new Error(`Unknown ETF: ${etfTicker}`);
   const url = holdingsUrl(spec, etfTicker);
   const res = await fetch(url, {
-    headers: { "User-Agent": "quantfoundry/fetch-index-constituents" },
+    headers: { "User-Agent": "magpie/fetch-index-constituents" },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${etfTicker} holdings`);
   return parseCsv(await res.text());

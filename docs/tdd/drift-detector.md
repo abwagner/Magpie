@@ -2,7 +2,7 @@
 
 How QF detects when a live strategy is behaving differently than its backtest or spec said it would — and what it does about it.
 
-This is a **design** doc. No drift detector lives in `server/risk/` today. The previous design intent sketched in `portfolio-risk-engine.md` (nightly-only, auto-halt on z-score, point-estimate thresholds) is superseded by this doc.
+This is an **implemented** module. The drift detector ships in `server/risk/drift-detector.ts` (module entrypoint), `server/risk/fast-tier.ts` (per-fill hard-bound checks), `server/risk/slow-tier.ts` (60s timer + statistical machinery), and `server/risk/baseline-resolver.ts` (baseline source resolution). The previous design intent sketched in `portfolio-risk-engine.md` (nightly-only, auto-halt on z-score, point-estimate thresholds) has been superseded by this two-tier design now live in code.
 
 ---
 
@@ -198,7 +198,43 @@ The per-day alert budget (§3.3) is enforced by a `SELECT COUNT(*) FROM drift_al
 
 ---
 
-## 8. Out of scope
+## 8. Observability
+
+The detailed framework lives in [`observability.md`](observability.md). This section names only the events the drift detector emits. All events follow the common JSON schema: `ts`, `level`, `service` (= `"drift-detector"`), `correlation_id`, `event`, plus the event-specific payload below.
+
+The `correlation_id` on drift events is propagated from the inbound fill that triggered the work (fast tier) or generated at the tick boundary (slow tier — a timer-driven entry point with no inbound message, so it anchors a fresh ULID per tick per [observability.md §4.1](observability.md#41-generation)). The same ID lands on the `DriftAlert` payload (§5.1) and the `drift_alerts.correlation_id` column (§7), so a fired alert reconstructs back to the fill or tick that produced it.
+
+| Event                     | Level   | Payload (key fields)                                                                                      | Emitted when                                                                                                                                       |
+| ------------------------- | ------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `drift.started`           | `info`  | `fast_tier`, `slow_tier`, `tick_seconds`                                                                  | Detector boots; names which tiers are active and the slow-tier cadence.                                                                            |
+| `drift.stopped`           | `info`  | `reason`                                                                                                  | Detector shuts down (process stop / config reload).                                                                                                |
+| `drift.fast.checked`      | `debug` | `strategy_id`, `portfolio_id`, `check`, `observed`, `bound`                                               | Per-fill hard-bound check ran (§2.1). Every check at `debug`; only a crossing escalates to `drift.fast.tripped`.                                   |
+| `drift.fast.tripped`      | `warn`  | `strategy_id`, `portfolio_id`, `check`, `observed`, `bound`, `alert_type` (= `"drift_fast_floor"`)        | A fast-tier hard bound was crossed (§2.1). Paired with a `drift_fast_floor` alert and a `drift_checks_tripped_total` increment.                    |
+| `drift.slow.evaluated`    | `debug` | `strategy_id`, `metric`, `sample_size`, `n_min`, `ci_lower`, `ci_upper`, `spec_range`, `baseline_source`  | A slow-tier metric was evaluated (§3). Carries the CI and the spec range it was compared against, whether or not it tripped.                       |
+| `drift.slow.warming_up`   | `debug` | `strategy_id`, `metric`, `sample_size`, `n_min`                                                           | Metric below its `n_min` gate (§3.1); not evaluated. Mirrors the GUI "monitoring warming up" badge.                                                |
+| `drift.slow.tripped`      | `warn`  | `strategy_id`, `portfolio_id`, `metric`, `observed`, `spec_range`, `baseline_source`, `sample_size`       | CI fell fully outside the spec range (§3.2) and the per-day alert budget (§3.3) had room. Paired with a `drift_slow_distribution` alert.           |
+| `drift.alert.suppressed`  | `debug` | `strategy_id`, `metric`, `fired_date_utc`                                                                 | A metric would have tripped but the per-(strategy, metric) per-UTC-day budget (§3.3) was already spent. The `drift_alerts` row is **not** written. |
+| `drift.alert.recorded`    | `info`  | `strategy_id`, `metric`, `alert_type`, `drift_alert_id`                                                   | A `drift_alerts` row was persisted and routed to the alert router (§5.1).                                                                          |
+| `drift.baseline.resolved` | `debug` | `strategy_id`, `metric`, `baseline_source` (`spec` \| `qo_pinned` \| `computed_historical`), `spec_range` | Baseline resolution (§4) chose a source for a (strategy, metric) pair.                                                                             |
+| `drift.baseline.disabled` | `info`  | `strategy_id`, `metric`, `reason`                                                                         | No declared baseline and insufficient history (§4); slow-tier drift detection disabled for the pair.                                               |
+
+**Sampling.** The slow tier evaluates every metric every tick (default 60s) for every strategy; emitting `drift.slow.evaluated` / `drift.slow.warming_up` at `debug` keeps steady-state `info` volume to the rare trip/record events while preserving full reconstruction at `debug`. Per [observability.md §6.4](observability.md#64-sampling), the unsampled counts live in the metrics (§9), not the logs.
+
+**Implementation note.** The module today emits `drift.started`, `drift.alert.recorded`, and `drift.stopped` (`server/risk/drift-detector.ts`); the per-check / per-metric events above are the design target the fast-tier (`fast-tier.ts`) and slow-tier (`slow-tier.ts`) modules emit as each tier fills in.
+
+## 9. Metrics
+
+Per [observability.md §6.4](observability.md#64-sampling), metrics carry the unsampled counts that the sampled logs above don't.
+
+| Metric                             | Type    | Labels                          | Description                                                 |
+| ---------------------------------- | ------- | ------------------------------- | ----------------------------------------------------------- |
+| `drift_checks_total`               | counter | `strategy_id`, `tier`, `metric` | Every check evaluated (fast or slow), tripped or not.       |
+| `drift_checks_tripped_total`       | counter | `strategy_id`, `tier`, `metric` | Checks that crossed their bound / spec range.               |
+| `drift_alerts_emitted_total`       | counter | `strategy_id`, `alert_type`     | `drift_alerts` rows written + routed (post budget).         |
+| `drift_alerts_suppressed_total`    | counter | `strategy_id`, `metric`         | Trips suppressed by the per-day alert budget (§3.3).        |
+| `drift_slow_tick_duration_seconds` | gauge   | —                               | Wall time of the last slow-tier tick across all strategies. |
+
+## 10. Out of scope
 
 - **Per-strategy configurable halt-on-drift.** Deferred — see §5.3.
 - **Bayesian / online-learning baselines.** v1 uses simple frequentist CIs from a rolling window. Bayesian updates would help shorter samples but add complexity not justified at v1.

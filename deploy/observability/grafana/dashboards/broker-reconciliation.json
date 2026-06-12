@@ -1,0 +1,250 @@
+{
+  "uid": "qf-broker-recon",
+  "title": "Broker & Reconciliation",
+  "tags": ["magpie", "qf-277", "broker"],
+  "timezone": "utc",
+  "schemaVersion": 39,
+  "editable": true,
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "broker",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(orders_filled_total, broker)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 2
+      }
+    ]
+  },
+  "links": [
+    {
+      "title": "Logs Explorer",
+      "type": "dashboards",
+      "tags": ["qf-277", "logs"],
+      "asDropdown": false,
+      "icon": "doc"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Fills / min per broker",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (broker) (rate(orders_filled_total{broker=~\"$broker\"}[5m])) * 60",
+          "legendFormat": "{{broker}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Fills (last 1h) per broker",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"]
+        },
+        "colorMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (broker) (increase(orders_filled_total{broker=~\"$broker\",partial=\"false\"}[1h]))",
+          "legendFormat": "{{broker}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Broker rejections / min per broker",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (broker, broker_reason_code) (rate(orders_rejected_by_broker_total{broker=~\"$broker\"}[5m])) * 60",
+          "legendFormat": "{{broker}} / {{broker_reason_code}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Submit-to-terminal seconds p95 per broker",
+      "description": "Per-broker tail latency from order_lifecycle_duration_seconds. Reconciliation drift counter is not yet emitted; see README §Known gaps.",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (broker, le) (rate(order_lifecycle_duration_seconds_bucket{broker=~\"$broker\"}[5m])))",
+          "legendFormat": "{{broker}} p95"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Broker connection — last scrape (qf-server up)",
+      "description": "Connection-status gauge per broker is not yet emitted; this proxies on whether the QF server exposing broker adapters is being scraped. See README §Known gaps.",
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "UP",
+                  "color": "green"
+                }
+              }
+            },
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "DOWN",
+                  "color": "red"
+                }
+              }
+            }
+          ],
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"]
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "up{service=\"qf-server\"}",
+          "legendFormat": "qf-server"
+        }
+      ]
+    }
+  ]
+}

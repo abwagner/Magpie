@@ -42,8 +42,8 @@ flowchart LR
 
   subgraph PY["Per-broker NT bundles (credential host)"]
     direction TB
-    SCHWAB["quantfoundry-schwab-nt<br/>NT TradingNode<br/>SchwabExecutionClient (orders)<br/>SchwabMarketDataClient (MD)<br/>QF risk-gate plugin<br/>QF ExecAlgorithm plugins<br/>NT strategies"]
-    IBKR["quantfoundry-ibkr-nt<br/>NT TradingNode<br/>InteractiveBrokersExecutionClient (orders)<br/>InteractiveBrokersDataClient (MD)<br/>QF risk-gate plugin<br/>QF ExecAlgorithm plugins<br/>NT strategies"]
+    SCHWAB["magpie-schwab-nt<br/>NT TradingNode<br/>SchwabExecutionClient (orders)<br/>SchwabMarketDataClient (MD)<br/>QF risk-gate plugin<br/>QF ExecAlgorithm plugins<br/>NT strategies"]
+    IBKR["magpie-ibkr-nt<br/>NT TradingNode<br/>InteractiveBrokersExecutionClient (orders)<br/>InteractiveBrokersDataClient (MD)<br/>QF risk-gate plugin<br/>QF ExecAlgorithm plugins<br/>NT strategies"]
   end
 
   subgraph BR["External brokers"]
@@ -313,14 +313,20 @@ On timeout: the MarketDataService rejects the call with a timeout error. No retr
 
 ### 7.3 Common failures
 
-| Failure                                     | TS-side surface                        | Handling                                                                                                                                             |
-| ------------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Broker bundle down at startup               | adapter `available()` returns `false`  | OPL refuses to start the affected portfolio; MarketDataService surfaces `BridgeUnavailableError` to callers. Visible to operator.                    |
-| Reply payload validation fails              | adapter throws (orders) / rejects (MD) | Logged; metric incremented. Orders → `submission_failed`.                                                                                            |
-| Exec report for unknown `broker_order_id`   | observation handler logs and drops     | No audit write; `broker_exec_report_orphan_total` increments.                                                                                        |
-| Exec report for `intent_id: null`           | observation handler drops silently     | NT-internal-orders case; expected behavior.                                                                                                          |
-| MD heartbeat stale (> `heartbeat_stale_ms`) | service marks `bridge_alive=false`     | RPC calls reject with `BridgeUnavailableError`; streaming subscriptions stay registered and resume when heartbeats return. No cross-broker fallback. |
-| Error frame from MD bundle                  | service rejects the call + logs        | Caller handles per-method (e.g. OPL rejects manual order submit). Codes per §4.2.                                                                    |
+| Failure                                     | TS-side surface                        | Handling                                                                                                                                                                                                      |
+| ------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Broker bundle down at startup               | adapter `available()` returns `false`  | OPL refuses to start the affected portfolio; MarketDataService surfaces `BridgeUnavailableError` to callers. Visible to operator.                                                                             |
+| Reply payload validation fails              | adapter throws (orders) / rejects (MD) | Logged; metric incremented. Orders → `submission_failed`.                                                                                                                                                     |
+| Exec report for unknown `broker_order_id`   | observation handler logs and drops     | No audit write; `broker_exec_report_orphan_total` increments.                                                                                                                                                 |
+| Exec report for `intent_id: null`           | observation handler drops silently     | NT-internal-orders case; expected behavior.                                                                                                                                                                   |
+| MD heartbeat stale (> `heartbeat_stale_ms`) | service marks `bridge_alive=false`     | RPC calls reject with `BridgeUnavailableError`; streaming subscriptions stay registered and resume when heartbeats return. No cross-broker fallback by default — see §7.4 for the opt-in read-only exception. |
+| Error frame from MD bundle                  | service rejects the call + logs        | Caller handles per-method (e.g. OPL rejects manual order submit). Codes per §4.2.                                                                                                                             |
+
+### 7.4 Cross-broker MD fallback (proposed — QF-341)
+
+The "no cross-broker fallback" commitment in the Overview, §5.2, and §7.2–§7.3 is being **scoped down** by a design proposal: it stays absolute for **orders** (account-bound), but read-only `marketdata.rpc.*` requests may opt into cross-broker fallback because their result is a property of the canonical QF symbol, not of a broker account. Fallback is config-gated (off by default) and, when all brokers are down, still surfaces `BridgeUnavailableError` exactly as today. The detection signal is the existing `marketdata.<broker>.heartbeat` liveness (§3.3) and the MD-service availability check (§5.2 / §7.3) — no new primitive.
+
+The full decision matrix (per RPC method), the `config/brokers.json` priority schema, the selector mechanics, the Settings → Bridges liveness surface, and the operator-ratification asks live in the dedicated design TDD: **[marketdata-fallback.md](marketdata-fallback.md)**. Until the operator ratifies that doc's §1 + §2 and it is implemented, the behavior described in §5.2 / §7.2 / §7.3 (no fallback) remains in force.
 
 ---
 
@@ -365,3 +371,34 @@ Every broker bundle follows the same shape — one Python process, one `TradingN
 Both clients share a single `SchwabAuth` helper (token rotation, refresh-token persistence — see [data/sources.md](../data/sources.md#schwab)).
 
 In both bundles, all actors subscribe to the node's `MessageBus`. NT strategies consume broker MD through NT's `DataEngine`, fed by the in-bundle MD client. The same MD client publishes to NATS `marketdata.*` subjects so the TS-side `MarketDataService` can consume the same data for non-NT use. Operators launch each bundle via the per-broker launcher (see [strategy-deployment-topology.md](strategy-deployment-topology.md)).
+
+---
+
+## 10. Observability
+
+The detailed framework lives in [observability.md](observability.md). Broker integration spans two runtimes — the TS-side MD service + order adapters (§5), and the Python per-broker bundle (§9) — so its events come from two `service` families. The `correlation_id` crosses the boundary on the `X-Correlation-Id` NATS header carried on every order RPC, exec report, and MD RPC (§4.3).
+
+### 10.1 TS-side MD service + order adapters
+
+`service = "market-data"` for the MD consumer and adapters; `service = "order-plane"` for the order-submission adapter (catalog in [order-execution.md §6](order-execution.md#6-metrics) / [order-flow.md §8](order-flow.md#8-observability)). MD-side events:
+
+| Event                         | Level   | Payload (key fields)                            | Emitted when                                                                                                                                                                                                                                              |
+| ----------------------------- | ------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `md.bridge.heartbeat`         | `debug` | `broker`, `lag_ms`                              | MD bridge heartbeat received (`adapters/nt-bridge-md.ts`). `trace`/`debug` only — `info` is reserved for state changes per [observability.md §6.4](observability.md#64-sampling).                                                                         |
+| `md.bridge.unavailable`       | `warn`  | `broker`, `last_heartbeat_age_s`                | Heartbeat lapsed past the freshness window (§7.2). Fires the `bridge.unavailable.<broker>` alert.                                                                                                                                                         |
+| `md.bridge.recovered`         | `info`  | `broker`                                        | First heartbeat after an outage. Companion to `md.bridge.unavailable`.                                                                                                                                                                                    |
+| `md.rpc.failed`               | `warn`  | `broker`, `subject`, `reason`                   | An MD RPC (quote / chain / candles) timed out or returned an error frame (§7.2). Carries `error`.                                                                                                                                                         |
+| `md.payload.malformed`        | `warn`  | `broker`, `kind` (`quote` \| `trade` \| `book`) | A published MD payload failed schema validation at the consumer.                                                                                                                                                                                          |
+| `md.book.budget_preempted`    | `info`  | `symbol`, `reason`                              | Order-book subscription budget reclaimed a slot (`subscriptions.ts` book-budget logic).                                                                                                                                                                   |
+| `order.exec_report.malformed` | `warn`  | `broker`, `subject`                             | `orders.exec_reports.<broker>` payload failed validation (`adapters/nt-bridge.ts`, `nt-observer-consumer.ts`).                                                                                                                                            |
+| `order.exec_report_orphan`    | `warn`  | `broker`, `broker_order_id`                     | Exec report with no matching `audit_orders` row (audit-chain leak or out-of-band broker action). Fires the `broker.exec_report_orphan.<broker>` alert and the `broker_exec_report_orphan_total` counter ([alerts.md §7](alerts.md#7-producer-callsites)). |
+
+### 10.2 Python per-broker bundle
+
+The bundle processes (broker bridge, MD bridge, gate plugin, ExecAlgorithms, strategies) emit through `magpie_logging` ([observability.md §5.2](observability.md#52-python--magpie_logging)) with `service = "<broker>-bundle.<role>"` (e.g. `"schwab-bundle.md-bridge"`, `"ibkr-bundle.broker-bridge"`). Their event catalogs are owned by the components running inside the bundle: the gate plugin's events in [risk-gate-architecture.md §10](risk-gate-architecture.md#10-observability), per-strategy attribution in [observability.md §7.5](observability.md#75-per-strategy-attribution-in-a-shared-tradingnode), and ExecAlgorithm events per algo as algos ship ([exec-algorithms.md §11](exec-algorithms.md#11-what-this-doc-does-not-cover)).
+
+NautilusTrader's own internal events (NT `RiskEngine`, `ExecutionEngine`, `DataEngine` log lines) are emitted by NT, not by QF code; the bundle launcher routes them through the same JSON sink with `service = "<broker>-bundle.nt"` but does not re-document NT's internal taxonomy here — those event names are owned by the upstream NT release pinned in `research/pyproject.toml`.
+
+### 10.3 Correlation across the bridge
+
+The order RPC (`orders.<broker>` request/reply), the exec-report fan-out (`orders.exec_reports.<broker>`), and the MD RPCs (§4.3) all carry `X-Correlation-Id`. The Python bridge reads it into the `magpie_logging` ContextVar via `subscribe_with_context`; the TS adapters read it into `AsyncLocalStorage` via the subscriber wrapper. A single-ID query therefore reconstructs an order's life across the TS server and the Python bundle without gaps ([observability.md §1](observability.md#1-purpose--acceptance-test)).

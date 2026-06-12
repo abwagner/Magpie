@@ -139,6 +139,21 @@ Broker creds, NATS creds, MinIO/S3 keys, the token-store hash file, and any futu
 
 Secrets are never committed to the repo, never logged, never included in API responses or metrics labels. `.env` is in `.gitignore`.
 
+**Secrets provider abstraction (QF-349).** The TS server and Python broker bridges (Schwab NT, IBKR NT) consume secrets through a unified `SecretsProvider` interface:
+
+- **TypeScript:** `server/secrets/index.ts` exports `createSecretsProvider() => SecretsProvider`, with methods `resolve(key) => Promise<string>` and `resolveSync(key) => string`. Singleton via `getSecretsProvider()`.
+- **Python:** `research/magpie-secrets/src/magpie_secrets/provider.py` exports the same interface as `create_secrets_provider()` and `get_secrets_provider()`. Both are synchronous in Python (no Promise equivalent). Imported by broker bridges and risk-gate plugin.
+
+**Backend chain:** 1Password CLI → environment variables. The provider checks `OP_<key>` env var for a 1Password path (`op://<vault>/<item>/<field>`); if set, runs `op read <path>` via subprocess. On failure (CLI not installed, path invalid, timeout), falls back to `process.env[key]` or `os.environ[key]`. **Fallback ensures nothing breaks if 1Password is unavailable**—important for public open-source release that uses plain `.env` files.
+
+**Caching:** TTL-based in-memory cache (default 5 minutes) to avoid repeated CLI invocations. Call `provider.clear()` to invalidate all entries. Useful for local dev where env vars change between test runs.
+
+**Migration path:** Existing code that reads `process.env["SCHWAB_APP_KEY"]` is left as-is during the transition. At call sites that already exist (e.g., Schwab NT's `getAccessToken()`), wrap the env read in a provider call for reference implementation. Future expansion: update all broker/market-data adapters to use the provider. See [research/magpie-schwab-nt docs](../../research/magpie-schwab-nt) for the first migrated callsite.
+
+**Typed errors:** Both backends export `SecretResolutionError(key: str, reason: str)` with `.key` and `.reason` attributes, allowing callers to distinguish missing secrets from other exceptions.
+
+**Out of scope:** Secret rotation automation (QF-349 deferred). The provider assumes secrets are managed externally (1Password on the server, `.env` for local dev or CI). Rotating a secret requires updating the source (1Password or `.env`) and restarting the process (or calling `provider.clear()` in Python for selective invalidation).
+
 #### 1.8 NATS auth + binding
 
 NATS is **bound to 127.0.0.1 only** on the deployment host (`your-server`). The TS server, the per-broker NT bundles, and the audit observer all connect over localhost. There is no NATS-level authentication: any process on the host with `NATS_URL=nats://localhost:4222` can publish or subscribe on any subject.
@@ -244,7 +259,7 @@ The system has the following config files, each with its own reload watcher:
 | `config/market-calendar.json` | Market hours, holidays                                    | §2 above                                        |
 | `config/brokers.json`         | Broker bundle wiring (credential host, NATS, accounts)    | [Broker integration TDD](broker-integration.md) |
 
-Strategy registration is **not** in `config/portfolios.json` — strategies are NT-resident in the quantfoundry-strategies repo and enabled / disabled via the lifecycle registry (`server/strategy/lifecycle.ts`). The portfolios file declares which broker and which risk envelope a portfolio uses; what trades inside that envelope is registry state.
+Strategy registration is **not** in `config/portfolios.json` — strategies are NT-resident in the magpie-strategies repo and enabled / disabled via the lifecycle registry (`server/strategy/lifecycle.ts`). The portfolios file declares which broker and which risk envelope a portfolio uses; what trades inside that envelope is registry state.
 
 **`config/portfolios.json` schema (v1):**
 
@@ -502,9 +517,9 @@ Config files                           config/*.json
 ```jsonc
 // config/storage.json
 {
-  "chains_path": "s3://quantfoundry-data/chains",
-  "macro_path": "s3://quantfoundry-data/macro",
-  "results_path": "s3://quantfoundry-data/results",
+  "chains_path": "s3://magpie-data/chains",
+  "macro_path": "s3://magpie-data/macro",
+  "results_path": "s3://magpie-data/results",
   "duckdb_path": "data/portfolio.duckdb", // local FS path; not S3
 
   // S3 client config (also applies to MinIO / R2 / GCS via endpoint)
@@ -563,8 +578,8 @@ The `data/portfolio.duckdb` file is the indefinitely-retained system of record f
 
 | Concern        | Rule                                                                                                |
 | -------------- | --------------------------------------------------------------------------------------------------- |
-| Cadence        | Nightly via `quantfoundry-scheduler` container cron entry (`0 2 * * *` local time).                 |
-| Destination    | MinIO bucket `quantfoundry-backups`, prefix `audit/`. AWS equivalent: `s3://<bucket>/audit/`.       |
+| Cadence        | Nightly via `magpie-scheduler` container cron entry (`0 2 * * *` local time).                 |
+| Destination    | MinIO bucket `magpie-backups`, prefix `audit/`. AWS equivalent: `s3://<bucket>/audit/`.       |
 | Retention      | Rolling 30 daily backups; first-of-month archived to 12 monthly slots (in-bucket lifecycle policy). |
 | Compression    | None (DuckDB files compress poorly because rows are already column-compressed; gzip adds ~5%).      |
 | Authentication | The handler runs in-process on the TS server; uses the server's existing MinIO/S3 credentials.      |
@@ -574,11 +589,11 @@ The `data/portfolio.duckdb` file is the indefinitely-retained system of record f
 
 **Restore procedure.** Loss of `data/portfolio.duckdb` (disk failure, accidental `rm`, corrupt fsync) breaks the audit chain and every derived state. To restore:
 
-1. **Stop the TS server.** `systemctl --user stop quantfoundry` (or container equivalent). Do not let the server run with a stale or missing DB — `audit_fills` replay would land an inconsistent position state into running broker connections.
-2. **Identify the right backup.** List backups in MinIO at `s3://quantfoundry-backups/audit/`; the most recent backup older than the last known-good operator action is the right choice. If broker positions have changed since the backup (the broker continued to fill orders while QF was down), the reconciliation step below will surface the drift.
-3. **Copy the chosen backup over the local file.** `aws s3 cp s3://quantfoundry-backups/audit/portfolio_<YYYYMMDD>_<HHMMSS>.duckdb data/portfolio.duckdb` (or `mc cp` for MinIO direct).
+1. **Stop the TS server.** `systemctl --user stop magpie` (or container equivalent). Do not let the server run with a stale or missing DB — `audit_fills` replay would land an inconsistent position state into running broker connections.
+2. **Identify the right backup.** List backups in MinIO at `s3://magpie-backups/audit/`; the most recent backup older than the last known-good operator action is the right choice. If broker positions have changed since the backup (the broker continued to fill orders while QF was down), the reconciliation step below will surface the drift.
+3. **Copy the chosen backup over the local file.** `aws s3 cp s3://magpie-backups/audit/portfolio_<YYYYMMDD>_<HHMMSS>.duckdb data/portfolio.duckdb` (or `mc cp` for MinIO direct).
 4. **Verify integrity.** `duckdb data/portfolio.duckdb "PRAGMA table_info('audit_intents'); SELECT COUNT(*) FROM audit_fills;"` — must succeed without errors.
-5. **Restart the server.** `systemctl --user start quantfoundry`. The portfolio engine replays the restored `audit_fills`; the gate rehydrates from `audit_intents`; the GUI shows the recovered state.
+5. **Restart the server.** `systemctl --user start magpie`. The portfolio engine replays the restored `audit_fills`; the gate rehydrates from `audit_intents`; the GUI shows the recovered state.
 6. **Reconcile against the broker.** The position-reconciliation loop ([portfolio-risk-engine.md §3](portfolio-risk-engine.md#3-position-reconciliation)) runs on its next cycle (default 60s) and surfaces any drift between the restored positions and the broker's actual positions. The operator inspects every drift entry — fills the broker has that the restored DB doesn't (or vice versa) — and either manually adds the missing fills via the standard tooling or accepts the broker's view.
 
 **What restore does not recover.** Any `correlation_id` lifecycle whose fills landed after the backup is gone; observability log retention ([RUNBOOK §"Retention and backup"](../RUNBOOK.md#retention-and-backup)) keeps the structured log evidence in Loki, but the audit-chain rows themselves are lost for that window. The reconciliation step recovers position state but not the audit trail. Backup cadence is set such that this window is at most one trading session.
@@ -590,7 +605,7 @@ Detail in [tdd/observability.md](observability.md). Short summary so this file i
 - **Acceptance test.** An operator must be able to reconstruct the full course of events for a single position lifecycle (strategy submission or operator entry → intent → risk → broker → fill → open → … → close) by querying a single `correlation_id`. Anything that breaks single-ID traceability is a framework bug.
 - **Common JSON log schema.** Required top-level fields: `ts` (RFC 3339 UTC, microsecond), `level`, `service` (kebab-case component identifier), `correlation_id` (ULID), `event` (`<category>.<action>`), `payload` (object, snake_case keys). Optional: `error`, `host`, `process`, `parent_id`. Closed key set so log indexes stay stable.
 - **Correlation-ID propagation.** ULID generated at the lifecycle anchor (typically `intent.proposed` or the first wire-event of an operator-initiated action). Across the wire: `X-Correlation-Id` header on NATS messages and HTTP. Across the PyO3 boundary: first non-input argument to every entry function (explicit, not thread-local). In-process: `AsyncLocalStorage` (TS), `contextvars.ContextVar` (Python), `tracing::Span` (Rust).
-- **Per-runtime helper packages.** TS logger extension under `server/logging/`; new Python package at `research/quantfoundry-logging/` (`qf_logging`); new Rust crate at `core/qf-logging/`. Golden-test parity rule prevents drift.
+- **Per-runtime helper packages.** TS logger extension under `server/logging/`; new Python package at `research/magpie-logging/` (`qf_logging`); new Rust crate at `core/qf-logging/`. Golden-test parity rule prevents drift.
 - **Component event catalogs** live in component TDDs (§10 Observability section), not here. [portfolio-risk-engine.md §10](portfolio-risk-engine.md#10-observability) is the worked example.
 - **Out of scope (v1):** OTel spans, runtime metrics (those stay per-component under §6 Metrics), multi-tenant correlation. All forward-compatible additions, not load-bearing for v1.
 
@@ -612,6 +627,32 @@ The existing system-health-vs-business-observability split documented in the [to
 
 **Why bother.** The alternative — a constellation of standalone services on your-server that QF "happens to talk to" — drifts. Logs scatter across services with different schemas, secret rotation forks per service, admission denials disappear into per-service log files, and version skew between QF and the mirrors becomes its own incident class. Treating them as QF components from day one is cheaper than reconciling drift later.
 
+### 5. Retention & archival
+
+The system retains indefinitely by default per §5 (Database schema). Retention policies apply at the write-jobs layer via the `audit-retention` handler (QF-311), enforcing per-table windowing on a configurable nightly cadence. The goal is to manage DuckDB footprint on long-running deployments while preserving audit completeness for operational queries.
+
+**Retention policies by table:**
+
+| Table | Mode | Window | Archive | Cadence |
+| --- | --- | --- | --- | --- |
+| `audit_intents` | Archive | 90 days | Parquet to MinIO `audit/archive/` | Nightly |
+| `audit_orders` | Archive | 90 days | Parquet to MinIO `audit/archive/` | Nightly |
+| `audit_fills` | Archive | 90 days | Parquet to MinIO `audit/archive/` | Nightly |
+| `drift_alerts` | Rolling delete | 30 days | None; drift signals lose relevance | Nightly |
+| `portfolio_snapshots` | Rolling delete | 90 days | None (optional low-res monthly in future) | Nightly |
+
+**Archive mode.** Rows older than the window are exported to Parquet in MinIO (date-partitioned by `created_at`), then deleted from DuckDB. The export uses DuckDB's `COPY ... TO 's3://...'` with `httpfs` loaded, so the archive runs inline in the handler—no subprocess. Archive paths: `s3://magpie-data/audit/archive/{table}/{YYYY/MM/DD}/{table}_{YYYY-MM-DD}.parquet`.
+
+**Rolling-window delete.** No archive; rows older than the window are deleted in-place. Used for tables whose rows have limited operational value after N days (e.g., drift alerts are re-raised if the condition persists; historical alerts are noise).
+
+**Dry-run mode.** The handler accepts `dry_run: true` in params—counts rows that would be archived/deleted and logs the plan without executing DELETEs or S3 uploads.
+
+**Configuration.** Cadence, windows, and archive bucket are set in [`config/retention.json`](../../config/retention.json). Override via job params when submitting to the `POST /api/write-jobs` endpoint with `kind: "audit-retention"`. Default cadence is nightly (24h); `cadence_hours` in the config is parsed by the scheduler (future; today, submission is manual or via cron container).
+
+**Operator visibility.** The handler logs per-table row counts (archived, deleted) and any errors at info level. A future Settings panel will expose disk-usage metrics (DuckDB file size, last-sweep timestamps, rows archived per table). For now, the metric is visible in structured logs and exportable via `GET /api/telemetry/metrics` (Prometheus format).
+
+**Future: low-res monthly archive for `portfolio_snapshots`.** Rolling deletes today; per the decision, implement rolling-window deletion for `portfolio_snapshots` but note that a monthly low-res (e.g., end-of-day snapshot per month) archive is a follow-up for longer-term P&L trend analysis. File a ticket when needed; it's deferred because the operational value (recent positions for reconciliation) is highest for the rolling window.
+
 ---
 
 ### Files
@@ -623,8 +664,10 @@ Cross-cutting files referenced above:
 - [`config/market-data.json`](../../config/market-data.json) — Bridge subscriptions and freshness rules; defined by [data-plane.md](../data/data-plane.md).
 - [`config/brokers.json`](../../config/brokers.json) — Per-broker bundle wiring; defined by [broker-integration.md](broker-integration.md).
 - [`config/storage.json`](../../config/storage.json) — Object-store and DB path configuration (§7).
+- [`config/retention.json`](../../config/retention.json) — Per-table retention policies, archive windows, cadence (§5).
 - [`server/calendar/index.ts`](../../server/calendar/index.ts) — Calendar interface (§2).
 - [`server/db/init.ts`](../../server/db/init.ts) — DuckDB initialization (creates all tables in §5).
+- [`server/writeJobs/handlers/audit-retention.ts`](../../server/writeJobs/handlers/audit-retention.ts) — Retention handler implementation (§5).
 - [`scripts/sync-to-s3.sh`](../../scripts/sync-to-s3.sh) / [`scripts/sync-from-s3.sh`](../../scripts/sync-from-s3.sh) — Object-store Parquet sync.
 - [`tsconfig.json`](../../tsconfig.json), [`eslint.config.js`](../../eslint.config.js), [`.prettierrc`](../../.prettierrc) — TS / lint / format configuration (§6).
 - [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml) — Pre-commit hook config (§6).

@@ -12,7 +12,7 @@ The "soon" tag in the nav is purely cosmetic — the Settings IA is intentionall
 
 Wired sections (for reference): Risk → Limits, Data → Brokers, Models → Signals, Activity → Audit.
 
-Backend work for each placeholder section is tracked in [internal planning notes §12](../../.claude/plans/quantfoundry-v2.md). Pick whichever the operator actually wants to use first; none blocks v1.
+Backend work for each placeholder section is tracked in [internal planning notes §12](../../.claude/plans/magpie-v2.md). Pick whichever the operator actually wants to use first; none blocks v1.
 
 ---
 

@@ -23,6 +23,8 @@ import { syncToS3Handler } from "./handlers/sync-to-s3.js";
 import { chainStoreHandler } from "./handlers/chain-store.js";
 import { orchestrateRefreshHandler } from "./handlers/orchestrate-refresh.js";
 import { databentoPullHandler } from "./handlers/databento-pull.js";
+import { backupObservabilityHandler } from "./handlers/backup-observability.js";
+import { createAuditRetentionHandler } from "./handlers/audit-retention.js";
 
 export interface WriteJobsModule {
   runner: WriteJobRunner;
@@ -67,6 +69,8 @@ export async function initWriteJobs(opts: WriteJobsInitOpts): Promise<WriteJobsM
   runner.registerHandler(chainStoreHandler);
   runner.registerHandler(orchestrateRefreshHandler);
   runner.registerHandler(databentoPullHandler);
+  runner.registerHandler(backupObservabilityHandler);
+  runner.registerHandler(createAuditRetentionHandler(db));
 
   // 4. Orphan recovery — any job left in `running` from a prior process
   //    is now stale. Mark them failed before we start serving.

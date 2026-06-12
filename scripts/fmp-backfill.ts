@@ -1,7 +1,7 @@
 // ── FMP Historical Backfill — thin API client (M10-1) ─────────────
 //
 // Hard cutover. Pre-M10, this script wrote MinIO directly with S3
-// credentials and tracked progress in ~/.cache/quantfoundry/. Now the
+// credentials and tracked progress in ~/.cache/magpie/. Now the
 // QF server is the only thing that holds write creds. This script
 // submits a write job to the dispatcher and polls until done.
 //
@@ -104,7 +104,7 @@ async function main(): Promise<void> {
   );
 
   let lastReport = -1;
-  // eslint-disable-next-line no-constant-condition
+   
   while (true) {
     await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
     const job = await api<JobStatus>(`/api/write-jobs/${encodeURIComponent(submit.job_id)}`);

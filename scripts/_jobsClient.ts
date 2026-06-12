@@ -104,7 +104,7 @@ export async function submitAndPoll(
   );
 
   let lastReport = -1;
-  // eslint-disable-next-line no-constant-condition
+   
   while (true) {
     await new Promise((r) => setTimeout(r, pollMs));
     const job = await api<JobStatus>(`/api/write-jobs/${encodeURIComponent(submit.job_id)}`);

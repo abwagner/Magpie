@@ -288,3 +288,26 @@ The join is `audit_fills.order_id → audit_orders.order_id`; both tables carry 
 - [Portfolio & Risk Engine](portfolio-risk-engine.md) — unified `canExecute()` + gate-evaluator entry points, strategy drift monitoring.
 - [Cross-Cutting](cross-cutting.md) — audit table DDLs, source column type.
 - [Exec Algorithms](exec-algorithms.md) — NT-plugin pricing / repeg / working-order management; the algo catalog that handles `exec_algorithm_id` on either OPL or strategy intents.
+
+---
+
+## 8. Observability
+
+The detailed framework lives in [observability.md](observability.md). This section names the audit-chain write events emitted across both flows — the events that make the framework's single-`correlation_id` acceptance test ([observability.md §1](observability.md#1-purpose--acceptance-test)) reconstructable end-to-end. All events follow the common JSON schema: `ts`, `level`, `service`, `correlation_id`, `event`, plus the payload below.
+
+Order-flow is two flows over one audit chain (§4), so its events are emitted by more than one `service`: OPL writes (`service = "order-plane"`) carry `source = "qf"`; the gate-RPC handler (`service = "gate-evaluator"`) carries `source = "qf-gated"`; the audit observer (`service = "audit-observer"`) carries `source = "nt-native"`. The unifying invariant is the `correlation_id`: every event below carries the ID anchored at the lifecycle origin (OPL `POST /api/orders` or the NT-side gate plugin's first RPC), so a single-ID query returns the whole chain across services.
+
+| Event                  | Service          | Payload (key fields)                                                            | Emitted when                                                                                                  |
+| ---------------------- | ---------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `intent.proposed`      | varies           | `intent_id`, `source`, `strategy_id`, `portfolio`, `symbol`, `side`, `qty`     | `audit_intents` row written **before** the decision (§6.3). One per intent, both flows.                     |
+| `intent.rejected`      | varies           | `intent_id`, `source`, `reason`, `violations`                                   | Decision was reject — risk violation, strategy/portfolio halt, operator block. Chain stops here (§5).        |
+| `intent.approved`      | varies           | `intent_id`, `source`, `gate_decision` (= `"approve"`)                          | Decision was allow; downstream submission follows. For NT-native this is the `gate.evaluated` approve reply. |
+| `order.submitted`      | `order-plane`    | `intent_id`, `order_id`, `broker`, `broker_order_id`                            | OPL `audit_orders` row written and order handed to the nt-bridge.                                            |
+| `order.observed`       | `audit-observer` | `order_id`, `broker`, `broker_order_id`, `deduped`                              | Observer saw `orders.exec_reports.<broker>`; `deduped=true` when OPL already claimed the row (§4.3).         |
+| `fill.persisted`       | varies           | `order_id`, `fill_id`, `price`, `quantity`, `account_id`                        | `audit_fills` row written. Single-writer per fill via the dedup contract (§4.3).                             |
+| `order.cancelled`      | `order-plane`    | `order_id`, `broker_order_id`, `reason`                                         | A working order was cancelled (operator liquidation, exit-rule close, drift halt).                           |
+| `recon.drift`          | `order-plane`    | `portfolio`, `broker`, `kind`, `symbol`                                         | Broker positions ≠ `audit_orders` on a reconciliation tick (§6.4). Also fires the alert router.             |
+
+**Single-writer discipline.** Because both OPL's fill handler and the audit observer see the same exec report, the dedup contract (§4.3) decides which one writes the row — and therefore which one emits `fill.persisted` / `order.observed`. The non-writing path emits the `*.observed` event with `deduped=true` rather than a duplicate `*.persisted`, so log volume stays one-write-per-fill while preserving the fact that both consumers saw the report.
+
+**Reconstruction.** The acceptance test (§4.4) is the SQL join over `audit_fills → audit_orders → audit_intents`; the log-side equivalent is a single-`correlation_id` query that returns the same chain as a time-ordered event list spanning all three services. Anything that breaks single-ID traceability across the dedup boundary is a framework bug per [observability.md §1](observability.md#1-purpose--acceptance-test).

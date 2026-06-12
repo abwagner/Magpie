@@ -6,7 +6,9 @@
    keyframes, focus rings).
    ────────────────────────────────────────────────────────────── */
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
 }
@@ -34,12 +36,24 @@ body {
   font-variant-numeric: tabular-nums;
   color: var(--text-1);
 }
-.mono { font-family: var(--font-mono); }
-.dim { color: var(--text-3); }
-.dim2 { color: var(--text-4); }
-.pos { color: var(--pos); }
-.neg { color: var(--neg); }
-.warn-text { color: var(--warn); }
+.mono {
+  font-family: var(--font-mono);
+}
+.dim {
+  color: var(--text-3);
+}
+.dim2 {
+  color: var(--text-4);
+}
+.pos {
+  color: var(--pos);
+}
+.neg {
+  color: var(--neg);
+}
+.warn-text {
+  color: var(--warn);
+}
 
 .kbd {
   font-family: var(--font-mono);
@@ -52,13 +66,22 @@ body {
 }
 
 .dot {
-  width: 6px; height: 6px;
+  width: 6px;
+  height: 6px;
   display: inline-block;
 }
-.dot.pos { background: var(--pos); }
-.dot.neg { background: var(--neg); }
-.dot.warn { background: var(--warn); }
-.dot.accent { background: var(--accent); }
+.dot.pos {
+  background: var(--pos);
+}
+.dot.neg {
+  background: var(--neg);
+}
+.dot.warn {
+  background: var(--warn);
+}
+.dot.accent {
+  background: var(--accent);
+}
 
 /* ── Panel primitive ───────────────────────────────────────── */
 
@@ -85,7 +108,9 @@ body {
   text-transform: uppercase;
   flex-shrink: 0;
 }
-.panel-header.dense { height: 28px; }
+.panel-header.dense {
+  height: 28px;
+}
 .panel-title {
   display: flex;
   align-items: center;
@@ -112,7 +137,10 @@ body {
   align-items: center;
   justify-content: center;
 }
-.panel-actions button:hover { color: var(--text-1); background: var(--bg-elev); }
+.panel-actions button:hover {
+  color: var(--text-1);
+  background: var(--bg-elev);
+}
 .panel-body {
   flex: 1;
   min-height: 0;
@@ -137,21 +165,32 @@ body {
   cursor: pointer;
   white-space: nowrap;
 }
-.btn:hover { background: var(--bg-elev); border-color: var(--border-2); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:hover {
+  background: var(--bg-elev);
+  border-color: var(--border-2);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .btn-ghost {
   background: transparent;
   border-color: transparent;
   color: var(--text-2);
 }
-.btn-ghost:hover { background: var(--bg-elev); color: var(--text-1); }
+.btn-ghost:hover {
+  background: var(--bg-elev);
+  color: var(--text-1);
+}
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
   color: oklch(0.12 0 0);
   font-weight: 600;
 }
-[data-theme="light"] .btn-primary { color: white; }
+[data-theme="light"] .btn-primary {
+  color: white;
+}
 .btn-buy {
   background: var(--pos-bg);
   border-color: var(--pos-dim);
@@ -170,7 +209,9 @@ body {
   color: var(--neg);
   font-weight: 600;
 }
-.btn-danger:disabled { opacity: 0.4; }
+.btn-danger:disabled {
+  opacity: 0.4;
+}
 
 /* ── Inputs ────────────────────────────────────────────────── */
 
@@ -186,7 +227,9 @@ body {
   font-size: var(--fs-13);
   outline: none;
 }
-.input:focus { border-color: var(--border-focus); }
+.input:focus {
+  border-color: var(--border-focus);
+}
 
 /* ── Tables ────────────────────────────────────────────────── */
 
@@ -214,8 +257,12 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-.tbl thead th.l { text-align: left; }
-.tbl thead th.c { text-align: center; }
+.tbl thead th.l {
+  text-align: left;
+}
+.tbl thead th.c {
+  text-align: center;
+}
 .tbl tbody td {
   padding: 0 10px;
   height: var(--row-h);
@@ -225,12 +272,22 @@ body {
   color: var(--text-1);
   vertical-align: middle;
 }
-.tbl tbody td.l { text-align: left; }
-.tbl tbody td.c { text-align: center; }
+.tbl tbody td.l {
+  text-align: left;
+}
+.tbl tbody td.c {
+  text-align: center;
+}
 .tbl tbody tr:hover td,
-.tbl tbody tr:focus-within td { background: var(--bg-elev); }
-.tbl tbody tr.sel td { background: var(--bg-selected); }
-.tbl tbody tr.alt td { background: var(--bg-row-alt); }
+.tbl tbody tr:focus-within td {
+  background: var(--bg-elev);
+}
+.tbl tbody tr.sel td {
+  background: var(--bg-selected);
+}
+.tbl tbody tr.alt td {
+  background: var(--bg-row-alt);
+}
 .tbl tbody td .sym {
   font-family: var(--font-ui);
   font-weight: 600;
@@ -254,10 +311,26 @@ body {
   border: 1px solid var(--border-1);
   white-space: nowrap;
 }
-.badge.pos { background: var(--pos-bg); color: var(--pos); border-color: var(--pos-dim); }
-.badge.neg { background: var(--neg-bg); color: var(--neg); border-color: var(--neg-dim); }
-.badge.warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
-.badge.accent { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+.badge.pos {
+  background: var(--pos-bg);
+  color: var(--pos);
+  border-color: var(--pos-dim);
+}
+.badge.neg {
+  background: var(--neg-bg);
+  color: var(--neg);
+  border-color: var(--neg-dim);
+}
+.badge.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border-color: var(--warn);
+}
+.badge.accent {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
 /* ── Workspace shell ───────────────────────────────────────── */
 
@@ -300,7 +373,7 @@ body {
   position: relative;
 }
 .ws-brand-mark::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 3px 3px 6px 6px;
   background: var(--bg-pane);
@@ -334,21 +407,43 @@ body {
   padding: 0 9px;
   color: var(--text-3);
 }
-.env-pill + .env-pill { border-left: 1px solid var(--border-1); }
+.env-pill + .env-pill {
+  border-left: 1px solid var(--border-1);
+}
 .env-pill .env-label {
   color: var(--text-4);
   font-size: 9px;
 }
-.env-pill.dev { color: var(--text-1); }
-.env-pill.dev .env-dot { background: var(--text-3); }
-.env-pill.staging { color: var(--warn); }
-.env-pill.staging .env-dot { background: var(--warn); }
-.env-pill.prod { color: var(--neg); }
-.env-pill.prod .env-dot { background: var(--neg); }
-.env-pill.paper { color: var(--accent); }
-.env-pill.paper .env-dot { background: var(--accent); }
-.env-pill.live { color: var(--pos); }
-.env-pill.live .env-dot { background: var(--pos); }
+.env-pill.dev {
+  color: var(--text-1);
+}
+.env-pill.dev .env-dot {
+  background: var(--text-3);
+}
+.env-pill.staging {
+  color: var(--warn);
+}
+.env-pill.staging .env-dot {
+  background: var(--warn);
+}
+.env-pill.prod {
+  color: var(--neg);
+}
+.env-pill.prod .env-dot {
+  background: var(--neg);
+}
+.env-pill.paper {
+  color: var(--accent);
+}
+.env-pill.paper .env-dot {
+  background: var(--accent);
+}
+.env-pill.live {
+  color: var(--pos);
+}
+.env-pill.live .env-dot {
+  background: var(--pos);
+}
 .env-dot {
   width: 6px;
   height: 6px;
@@ -363,7 +458,7 @@ body {
   gap: 6px;
   height: 24px;
   padding: 0 12px;
-  background: oklch(0.30 0.10 25);
+  background: oklch(0.3 0.1 25);
   border: 1px solid var(--neg);
   color: var(--neg);
   font-family: var(--font-ui);
@@ -373,15 +468,23 @@ body {
   text-transform: uppercase;
   cursor: pointer;
 }
-.kill-switch:hover { background: var(--neg); color: white; }
+.kill-switch:hover {
+  background: var(--neg);
+  color: white;
+}
 .kill-switch.armed {
   background: var(--neg);
   color: white;
   animation: ws-pulse 1.6s ease-in-out infinite;
 }
 @keyframes ws-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--neg); }
-  50%      { box-shadow: 0 0 0 4px transparent; }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--neg);
+  }
+  50% {
+    box-shadow: 0 0 0 4px transparent;
+  }
 }
 
 /* ── Workspace tab bar ─────────────────────────────────────── */
@@ -420,7 +523,9 @@ body {
   border-bottom-color: var(--accent);
   background: var(--bg-pane);
 }
-.ws-tab:hover:not(.active) { color: var(--text-2); }
+.ws-tab:hover:not(.active) {
+  color: var(--text-2);
+}
 
 /* ── Halt + recon banners ──────────────────────────────────── */
 
@@ -443,13 +548,23 @@ body {
   background: white;
   animation: ws-blink 1s steps(2) infinite;
 }
-@keyframes ws-blink { 50% { opacity: 0; } }
+@keyframes ws-blink {
+  50% {
+    opacity: 0;
+  }
+}
 
 /* Strategy state dot pulse — animates only on `running`. */
 @keyframes sp-pulse {
-  0%   { box-shadow: 0 0 0 0 currentColor; }
-  70%  { box-shadow: 0 0 0 6px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
 }
 .state-dot {
   width: 6px;
@@ -458,7 +573,9 @@ body {
   background: currentColor;
   display: inline-block;
 }
-.state-dot.running { animation: sp-pulse 1.6s ease-out infinite; }
+.state-dot.running {
+  animation: sp-pulse 1.6s ease-out infinite;
+}
 .halt-banner .halt-detail {
   font-family: var(--font-mono);
   font-weight: 400;
@@ -493,30 +610,32 @@ body {
   font-family: var(--font-mono);
 }
 
-/* QF-228 — quote-unavailable banner. Same height + variant as
-   .recon-banner; payload detail in monospace; right-aligned CTA. */
-.quote-unavailable-banner {
-  background: var(--warn-bg);
-  color: var(--warn);
+/* Shared full-width notification banner. Used by the QF-228
+   quote-unavailable warning and the QF-322 exit-rule close. Color is
+   supplied by a variant class (.banner--warn / .banner--neg) via the
+   --banner-* custom properties so the layout lives in one place. */
+.banner-base {
+  background: var(--banner-bg);
+  color: var(--banner-fg);
   min-height: 26px;
   display: flex;
   align-items: center;
   padding: 4px 14px;
   gap: 10px;
   font-size: 11px;
-  border-bottom: 1px solid var(--warn);
+  border-bottom: 1px solid var(--banner-fg);
   font-family: var(--font-ui);
   font-weight: 600;
 }
-.quote-unavailable-banner .quote-unavailable-detail {
+.banner-base .banner-detail {
   font-family: var(--font-mono);
   font-weight: 400;
   font-size: 11px;
   opacity: 0.9;
 }
-.quote-unavailable-banner .quote-unavailable-action {
+.banner-base .banner-action {
   margin-left: auto;
-  background: var(--warn);
+  background: var(--banner-fg);
   color: white;
   padding: 3px 10px;
   font-weight: 600;
@@ -524,6 +643,16 @@ body {
   font-size: 11px;
   border: none;
   border-radius: var(--r-1);
+}
+/* QF-228 — a missing quote is a warning. */
+.banner--warn {
+  --banner-bg: var(--warn-bg);
+  --banner-fg: var(--warn);
+}
+/* QF-322 — a rule-driven close is a more urgent, risk-side event. */
+.banner--neg {
+  --banner-bg: var(--neg-bg);
+  --banner-fg: var(--neg);
 }
 .stale .num,
 .stale .pos,
@@ -543,7 +672,35 @@ body {
   display: grid;
   gap: 8px;
 }
-.ws-canvas > .panel { min-height: 0; min-width: 0; }
+.ws-canvas > .panel {
+  min-height: 0;
+  min-width: 0;
+}
+
+/* QF-346 — drag-resize handles. Sit on the grid lines between tracks;
+   the gap (8px) leaves room for the handle without overlapping panels.
+   Transparent until hovered/active so they read as hairline gutters. */
+.ws-resize {
+  align-self: stretch;
+  justify-self: stretch;
+  z-index: 2;
+  background: transparent;
+  transition: background 0.1s ease;
+}
+.ws-resize-col {
+  width: 8px;
+  margin: 0 -8px;
+  cursor: col-resize;
+}
+.ws-resize-row {
+  height: 8px;
+  margin: -8px 0;
+  cursor: row-resize;
+}
+.ws-resize:hover,
+.ws-resize:active {
+  background: var(--accent);
+}
 
 /* ── Status bar ────────────────────────────────────────────── */
 
@@ -561,24 +718,28 @@ body {
   font-family: var(--font-mono);
 }
 .ws-statusbar .live::before {
-  content: '●';
+  content: "●";
   color: var(--pos);
   margin-right: 4px;
 }
 .ws-statusbar .reconnecting::before {
-  content: '●';
+  content: "●";
   color: var(--warn);
   margin-right: 4px;
   animation: ws-blink 1.2s steps(2) infinite;
 }
-.ws-statusbar .sep { width: 1px; height: 12px; background: var(--border-1); }
+.ws-statusbar .sep {
+  width: 1px;
+  height: 12px;
+  background: var(--border-1);
+}
 
 /* ── Command palette ───────────────────────────────────────── */
 
 .cmdk-overlay {
   position: fixed;
   inset: 0;
-  background: oklch(0.10 0.005 240 / 0.55);
+  background: oklch(0.1 0.005 240 / 0.55);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -666,7 +827,9 @@ body {
   z-index: 40;
   backdrop-filter: blur(2px);
 }
-.modal-overlay.danger { background: oklch(0.18 0.10 25 / 0.55); }
+.modal-overlay.danger {
+  background: oklch(0.18 0.1 25 / 0.55);
+}
 .modal {
   background: var(--bg-pane);
   border: 1px solid var(--border-2);
@@ -776,7 +939,9 @@ body {
   letter-spacing: 0.08em;
   outline: none;
 }
-.typed-confirm-input:focus { border-color: var(--border-focus); }
+.typed-confirm-input:focus {
+  border-color: var(--border-focus);
+}
 .typed-confirm-input.armed {
   border-color: var(--neg);
   color: var(--neg);

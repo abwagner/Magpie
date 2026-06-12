@@ -1,6 +1,6 @@
 {
   "mode": "s3",
-  "s3Bucket": "quantfoundry-data",
+  "s3Bucket": "magpie-data",
   "s3Endpoint": "https://s3.example.com",
   "s3Region": "us-east-1"
 }

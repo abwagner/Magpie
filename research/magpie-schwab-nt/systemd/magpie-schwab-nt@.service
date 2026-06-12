@@ -1,0 +1,36 @@
+[Unit]
+# QF-246 — M12-4: per-account Schwab NT broker-bridge template unit.
+# One instance per Schwab account: `systemctl start magpie-schwab-nt@<account_id>`.
+# The instance name (%i) becomes SCHWAB_ACCOUNT_ID, which the bridge maps
+# to the per-account NATS subjects (orders.submit.schwab.<account_id>, ...).
+# The "default" instance keeps the bare un-suffixed subjects for the
+# legacy QF-237 single-account deploy.
+Description=Magpie Schwab NT broker bridge (account %i)
+Documentation=https://github.com/your-org/Magpie/blob/main/docs/tdd/broker-integration.md
+After=network-online.target nats.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=awagner
+WorkingDirectory=~/Magpie/research
+# Per-account creds live in their own env file so each instance reads
+# only its own 1Password-sourced OAuth tokens + account hash. Full
+# operator playbook (1Password item layout, token bootstrap) is M12-6 /
+# QF-62; this is the deploy-unit sketch the QF-246 scope calls for.
+EnvironmentFile=~/.config/magpie/schwab-nt@%i.env
+Environment=PYTHONUNBUFFERED=1
+Environment=NATS_URL=nats://localhost:4222
+Environment=SCHWAB_ACCOUNT_ID=%i
+# The actual entrypoint is the deploy bootstrap (constructs SchwabAuthClient
+# + SchwabRestExecClient + SchwabStreamerClient from the per-account creds,
+# then calls broker_bridge.run_from_env). Not in this repo yet — v1 stub
+# command below; replace once the bootstrap script lands (M12-6 / QF-62).
+ExecStart=/usr/local/bin/uv run --package magpie-schwab-nt python -m magpie_schwab_nt.run_bridge
+Restart=on-failure
+RestartSec=10s
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

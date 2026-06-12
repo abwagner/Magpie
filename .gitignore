@@ -17,7 +17,8 @@ data/signals/
 scripts/.schwab-auth-*.pem
 # Local secrets store (Schwab OAuth refresh tokens etc.). QF-161.
 data/secrets/
-.claude/settings.local.json
+# Claude Code local state: agent worktrees (.claude/worktrees/), local settings, etc.
+.claude/
 
 # Rust build artifacts (core/ cargo workspace, per QF-88).
 core/target/
@@ -48,7 +49,11 @@ core/qf-optimizer/python_smoke/__pycache__/
 core/qf-optimizer/*.egg-info/
 core/qf-optimizer/dist/
 
-# Discovery symlink to the sibling quantfoundry-strategies repo
+# Discovery symlink to the sibling magpie-strategies repo
 # (`scripts/setup-strategies-symlink.sh`). Each operator creates it
 # locally; not tracked. See docs/RUNBOOK.md §"Operator setup".
 strategies
+
+# session worktrees + editor settings (do not commit)
+.worktrees/
+.vscode/

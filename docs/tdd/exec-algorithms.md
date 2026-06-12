@@ -16,10 +16,10 @@ This is QF's analog of the risk-gate work: another supported NT plugin point, ow
 config = LiveTradingNodeConfig(
     trader_id="QF-PROD",
     strategies=[...],
-    risk=RiskEngineConfig(risk_module_path="quantfoundry_risk_gate.gate:QFRiskGate", ...),
+    risk=RiskEngineConfig(risk_module_path="magpie_risk_gate.gate:QFRiskGate", ...),
     exec_algorithms=[
         ImportableExecAlgorithmConfig(
-            exec_algorithm_path="quantfoundry_exec_algos.smart_peg:QFSmartPeg",
+            exec_algorithm_path="magpie_exec_algos.smart_peg:QFSmartPeg",
             config={...},
         ),
         # ... more algo entries ...

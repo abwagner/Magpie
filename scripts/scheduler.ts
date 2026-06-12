@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ── Magpie Ingest Scheduler ─────────────────────────────────
-// Long-running entrypoint for the quantfoundry-scheduler container.
+// Long-running entrypoint for the magpie-scheduler container.
 // Schedules the nightly data ingest jobs that previously ran as
 // systemd timers + crontab on your-workstation:
 //
@@ -9,6 +9,7 @@
 //   ingest-eia      11:00 ET Wednesdays    (EIA WPSR publishes 10:30 ET)
 //   ingest-cftc     20:00 ET Fridays       (CFTC COT)
 //   databento-pull  18:00 ET weekdays      (Databento futures, post-close)
+//   backup-observability  03:00 ET daily   (Loki+Prometheus → MinIO DR)
 //
 // Logs to stdout; docker captures.
 
@@ -57,6 +58,12 @@ const JOBS: readonly Job[] = [
     schedule: "0 18 * * 1-5",
     command: "npm",
     args: ["run", "--silent", "databento:pull"],
+  },
+  {
+    name: "backup-observability",
+    schedule: "0 3 * * *",
+    command: "npm",
+    args: ["run", "--silent", "backup-observability"],
   },
 ];
 

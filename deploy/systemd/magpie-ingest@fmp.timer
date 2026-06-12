@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie FMP fundamentals ingest — Sun 18:00 ET
+
+[Timer]
+OnCalendar=Sun *-*-* 18:00:00
+Unit=magpie-ingest@fmp.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

@@ -29,6 +29,7 @@ import type { PortfolioEngine } from "../portfolio/engine.js";
 import { buildIntentRow, type AuditIntentWriter } from "../order/audit-intent.js";
 import type { PendingIntentsStore, PendingIntent } from "./pending-intents.js";
 import type { WarmUpGate } from "./rehydration.js";
+import { orders } from "../../src/types/subjects.js";
 
 // ── Wire contract (mirrors risk-gate-architecture.md §3.2–3.3) ────────
 
@@ -144,7 +145,7 @@ export function createGateHandler(deps: GateHandlerDeps): GateHandler {
   const pendingIntents = deps.pendingIntents;
   const now = deps.now ?? (() => new Date().toISOString());
   const sc = StringCodec();
-  const subject = `orders.gate.${config.broker}`;
+  const subject = orders.gate(config.broker);
   const sub = nc.subscribe(subject);
 
   void (async () => {

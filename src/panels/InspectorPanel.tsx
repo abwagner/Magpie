@@ -1,8 +1,11 @@
 // ── Trade Inspector Panel (QF-229) ────────────────────────────────
 // Detail view for a single fill_id. Calls GET /api/trades/inspect
-// (the QF-215 structured handler) and renders the full audit chain
-// as five sections: Signal → Intent → Pricing decision(s) →
-// Inputs snapshot → Order lifecycle → Fill.
+// (the QF-215 structured handler) and renders the audit chain as
+// three sections: Intent → Order lifecycle → Fill.
+//
+// QF-338 — the Signal and Pricing-decision sections were retired
+// alongside the audit_signals / audit_pricing_decisions tables (their
+// writers were deleted in QF-261 / QF-283).
 //
 // Cross-fill search (by time / strategy / signal) is intentionally
 // out of scope for this ticket; a future "search shell" panel could
@@ -57,39 +60,10 @@ interface InspectorIntentRow {
   created_at: string;
 }
 
-interface InspectorPricingDecisionRow {
-  decision_id: string;
-  intent_id: string;
-  strategy_id: string;
-  strategy_chosen: string;
-  profile_source: string;
-  inputs: unknown;
-  order_type: string;
-  limit_price: number | null;
-  limit_price_pre_snap: number | null;
-  time_in_force: string;
-  working_policy_id: string;
-  reasoning: string;
-  created_at: string;
-}
-
-interface InspectorSignalRow {
-  signal_id: string;
-  model_id: string;
-  model_version: string;
-  symbol: string;
-  asof: string;
-  kind: string;
-  batch_id: string | null;
-  ingest_ts: string;
-}
-
 interface TradeInspectorResult {
   fill: InspectorFillRow;
   order: InspectorOrderRow;
   intent: InspectorIntentRow;
-  pricing_decisions: InspectorPricingDecisionRow[];
-  originating_signal: InspectorSignalRow | null;
 }
 
 // ── Component ─────────────────────────────────────────────────────
@@ -218,14 +192,8 @@ export function InspectorPanel() {
 function ResultView({ result }: { result: TradeInspectorResult }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <Section title="Signal">
-        <SignalView signal={result.originating_signal} />
-      </Section>
       <Section title="Intent">
         <IntentView intent={result.intent} />
-      </Section>
-      <Section title="Pricing decision">
-        <PricingDecisionsView decisions={result.pricing_decisions} />
       </Section>
       <Section title="Order lifecycle">
         <OrderView order={result.order} />
@@ -264,28 +232,6 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function SignalView({ signal }: { signal: InspectorSignalRow | null }) {
-  if (!signal) {
-    return (
-      <div className="dim" style={{ fontSize: 11 }}>
-        Intent referenced no upstream signal (legacy path or manual entry).
-      </div>
-    );
-  }
-  return (
-    <KV
-      rows={[
-        ["model", `${signal.model_id} @ ${signal.model_version}`],
-        ["symbol", signal.symbol],
-        ["as of", signal.asof],
-        ["kind", signal.kind],
-        ["ingested", signal.ingest_ts],
-        ...(signal.batch_id ? ([["batch_id", signal.batch_id]] as Array<[string, string]>) : []),
-      ]}
-    />
-  );
-}
-
 function IntentView({ intent }: { intent: InspectorIntentRow }) {
   return (
     <KV
@@ -299,127 +245,6 @@ function IntentView({ intent }: { intent: InspectorIntentRow }) {
         ["created_at", intent.created_at],
       ]}
     />
-  );
-}
-
-function PricingDecisionsView({ decisions }: { decisions: InspectorPricingDecisionRow[] }) {
-  if (decisions.length === 0) {
-    return (
-      <div className="dim" style={{ fontSize: 11 }}>
-        No pricing decisions recorded (pre-Execution-Layer order).
-      </div>
-    );
-  }
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      {decisions.map((d, i) => (
-        <div
-          key={d.decision_id}
-          style={{
-            ...(decisions.length > 1
-              ? {
-                  borderLeft: "2px solid var(--border-1)",
-                  paddingLeft: 8,
-                }
-              : {}),
-          }}
-        >
-          {decisions.length > 1 && (
-            <div className="dim" style={{ fontSize: 9, marginBottom: 2, letterSpacing: "0.06em" }}>
-              DECISION {i + 1} of {decisions.length} · {d.created_at}
-            </div>
-          )}
-          <div
-            className="mono"
-            style={{
-              fontSize: 11,
-              padding: "4px 6px",
-              background: "var(--bg-pane)",
-              borderRadius: "var(--r-1)",
-              marginBottom: 6,
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-word",
-            }}
-          >
-            {d.reasoning}
-          </div>
-          <KV
-            rows={[
-              ["strategy_chosen", d.strategy_chosen],
-              ["profile_source", d.profile_source],
-              ["order_type", d.order_type],
-              [
-                "limit_price",
-                d.limit_price != null
-                  ? `${d.limit_price.toFixed(2)}${
-                      d.limit_price_pre_snap != null && d.limit_price_pre_snap !== d.limit_price
-                        ? ` (pre-snap: ${d.limit_price_pre_snap.toFixed(2)})`
-                        : ""
-                    }`
-                  : "—",
-              ],
-              ["time_in_force", d.time_in_force],
-              ["working_policy", d.working_policy_id],
-            ]}
-          />
-          <InputsSnapshotView inputs={d.inputs} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function InputsSnapshotView({ inputs }: { inputs: unknown }) {
-  if (!inputs || typeof inputs !== "object") return null;
-  const obj = inputs as Record<string, unknown>;
-  const bid = obj.bid as number | undefined;
-  const ask = obj.ask as number | undefined;
-  const mid = obj.mid as number | undefined;
-  const signalAgeMs = obj.signal_age_ms as number | undefined;
-  const signalHorizonMs = obj.signal_horizon_ms as number | undefined;
-  const meta = obj._meta as Record<string, unknown> | undefined;
-  if (
-    bid == null &&
-    ask == null &&
-    mid == null &&
-    signalAgeMs == null &&
-    signalHorizonMs == null &&
-    !meta
-  )
-    return null;
-  return (
-    <div style={{ marginTop: 6 }}>
-      <div
-        className="dim"
-        style={{
-          fontSize: 9,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase",
-          marginBottom: 3,
-        }}
-      >
-        Inputs snapshot
-      </div>
-      <KV
-        rows={[
-          ...(bid != null && ask != null
-            ? ([
-                [
-                  "quote",
-                  `bid ${bid.toFixed(2)} · ask ${ask.toFixed(2)}${mid != null ? ` · mid ${mid.toFixed(2)}` : ""}`,
-                ],
-              ] as Array<[string, string]>)
-            : []),
-          ...(signalAgeMs != null
-            ? ([["signal_age_ms", String(signalAgeMs)]] as Array<[string, string]>)
-            : []),
-          ...(signalHorizonMs != null
-            ? ([["signal_horizon_ms", String(signalHorizonMs)]] as Array<[string, string]>)
-            : []),
-          ...(meta?.source ? ([["source", String(meta.source)]] as Array<[string, string]>) : []),
-        ]}
-      />
-    </div>
   );
 }
 

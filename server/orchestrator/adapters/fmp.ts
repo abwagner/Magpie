@@ -265,9 +265,9 @@ async function fetchOneFundamental(
   ticker: string,
   limiter: RateLimiter,
 ): Promise<FundamentalRow | null> {
-  let quote: FmpQuote = {};
-  let km: FmpKeyMetricsTtm = {};
-  let est: FmpAnalystEstimate[] = [];
+  let quote: FmpQuote;
+  let km: FmpKeyMetricsTtm;
+  let est: FmpAnalystEstimate[];
   try {
     quote = ((await getJson<FmpQuote[]>(`quote/${ticker}`, {}, "v3", limiter))[0] ??
       {}) as FmpQuote;

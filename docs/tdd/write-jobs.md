@@ -32,7 +32,7 @@ flowchart TD
 
     subgraph storage["storage"]
         db[("write_jobs table<br/>(DuckDB)")]
-        s3["parquet writes<br/>s3://quantfoundry-data/...<br/>(or local file:// via DATA_URI)"]
+        s3["parquet writes<br/>s3://magpie-data/...<br/>(or local file:// via DATA_URI)"]
     end
 
     fmp -->|bearer token + body| post
@@ -180,7 +180,7 @@ Failure modes (`401` missing/invalid, `403` scope-missing) are per [cross-cuttin
 Typical holders:
 
 - **Operator** — `submit:write-job` is part of the standard operator scope bundle, so the same GUI token that lets the operator submit orders also lets them trigger Run-now backfills from the freshness screen.
-- **Scheduler container** (`quantfoundry-scheduler`) — `submit:write-job` is its only scope. Token issued via `npm run issue-token --actor scheduler-container --scopes submit:write-job`.
+- **Scheduler container** (`magpie-scheduler`) — `submit:write-job` is its only scope. Token issued via `npm run issue-token --actor scheduler-container --scopes submit:write-job`.
 - **CLI scripts** (`npm run fmp-backfill` etc.) — same operator token from the operator's environment, or a dedicated `cli:<name>` token with `submit:write-job` for unattended runs.
 
 Per-kind sub-scoping (e.g. `submit:write-job:fmp-backfill`) is a future option per [cross-cutting.md §1.2](cross-cutting.md); today the single scope is the only granularity.
@@ -227,6 +227,7 @@ Handlers that spawn subprocesses (`collect-bulk`, `sync-to-s3`, `databento-pull`
 2. **Validate params at `handler.validate(params)` before spawn.** Each handler's `validate` must call into a shared set of param-sanitizers (`server/writeJobs/sanitize.ts`): allowlist enums for fixed-value fields, regex for canonical symbols, ISO-8601 date format for date fields, max-length on free-text. Validation failures return `400` with the error list — the job never queues, the subprocess never spawns.
 3. **No env-var inheritance into the subprocess beyond the documented allowlist.** Each subprocess wrapper script declares its expected env vars; the runner passes only those. Eliminates `LD_PRELOAD`-style cross-process injection.
 4. **Subprocess output bounded.** Stdout / stderr captured to a tmp file, capped at 10 MiB. Beyond cap, the runner kills the subprocess with `failed: "output_exceeded_cap"`.
+5. **Subprocess output redacted before logging.** Subprocess stdout/stderr lines are raw text, not structured log fields, so the field-name redaction in [observability.md §6.5](observability.md#65-redaction) (which keys off the field name in the helper packages) does **not** apply to them. Tools the handlers shell out to (`aws`, `databento-pull`, and the impl scripts) can print credentials, tokens, presigned URLs, or other secrets to stdout/stderr. Therefore the `spawnHandlerSubprocess` wrapper passes every captured line through a **line-level pattern redactor** (`server/writeJobs/sanitize.ts` → `redactSubprocessLine`) before it reaches `ctx.logger`. The redactor matches secret-shaped substrings (bearer/`Authorization:` headers, AWS access-key IDs and secret keys, `aws_session_token`, presigned-URL query params such as `X-Amz-Signature` / `X-Amz-Credential`, and the env-var values on the subprocess's documented secret allowlist) and replaces them with `«redacted»`. The pattern set is the same one the structured logger applies, extracted into a shared module so both the field-name path (§6.5) and this line-level path stay in sync. A handler that needs unredacted subprocess output for debugging must route it to the tmp-file capture (rule 4), which is operator-readable on disk but never forwarded to the central log stream.
 
 These rules are enforced by the runner (not the handlers) — a handler can't opt out by spawning a subprocess outside the `spawnHandlerSubprocess` wrapper without it being obvious in code review.
 
@@ -248,11 +249,30 @@ This is used today for operator-triggered surfaces in the GUI that fan out into 
 
 ## 11. Cron and scheduler integration
 
-The live ingest scheduler (`scripts/scheduler.ts`, the `quantfoundry-scheduler` container; schedule + ops in [`data/CRON.md`](../../data/CRON.md)) submits jobs through the runner using a server-host token. Adapters used by the ingest jobs live in `server/orchestrator/adapters/`.
+The live ingest scheduler (`scripts/scheduler.ts`, the `magpie-scheduler` container; schedule + ops in [`data/CRON.md`](../../data/CRON.md)) submits jobs through the runner using a server-host token. Adapters used by the ingest jobs live in `server/orchestrator/adapters/`.
 
-## 12. Metrics emitted
+## 12. Observability
 
-Per [observability.md §6 — Metrics]:
+### 12.1 Events
+
+The detailed framework lives in [observability.md](observability.md). This subsection names the events the runner and handlers emit. All events follow the common JSON schema: `ts`, `level`, `service` (= `"write-jobs"`; handlers run under the child logger `write-jobs.<kind>` via `HandlerContext.logger`), `correlation_id`, `event`, plus the payload below.
+
+A job's `correlation_id` is generated at the submit boundary (`POST /api/write-jobs` handler, or the in-process `submit()` call from the scheduler) and stored on the `write_jobs` row. The runner re-binds it via `withCorrelationId` before dispatching the handler, so every event a handler emits — including subprocess stdout/stderr lines it forwards — carries the submitting request's ID. Subprocess lines are passed through the line-level secret redactor (§8.1 rule 5) before logging, so the passthrough never bypasses the [observability.md §6.5](observability.md#65-redaction) redaction policy.
+
+| Event                     | Level   | Payload (key fields)                                          | Emitted when                                                                                          |
+| ------------------------- | ------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `write_jobs.submitted`    | `info`  | `job_id`, `kind`, `actor`, `deduped`                         | A job row is inserted (or a dedup hit returns the existing job).                                     |
+| `write_jobs.started`      | `info`  | `job_id`, `kind`                                             | Runner picks the job up and dispatches the handler.                                                  |
+| `write_jobs.progress`     | `debug` | `job_id`, `kind`, `pct`, `message`                           | Handler reports progress through `ProgressSink`. Sampled at `debug` — high-frequency for long jobs. |
+| `write_jobs.completed`    | `info`  | `job_id`, `kind`, `duration_s`                               | Handler returned successfully; row moves to `completed`.                                             |
+| `write_jobs.failed`       | `error` | `job_id`, `kind`, `reason` (`validation` \| `handler_error`) | Handler threw or input validation failed; row moves to `failed`. Carries the `error` field.         |
+| `write_jobs.orphaned`     | `warn`  | `kind`, `count`                                              | Orphan recovery (§6) marks rows stranded by a prior crash as `failed` at boot.                       |
+
+Handlers that shell out to subprocesses (`sync-to-s3`, `collect-bulk`, `databento-pull`) forward subprocess output through `ctx.logger` rather than the framework event names; those lines carry the job's `correlation_id` but are operator-diagnostic, not part of the stable event catalog. They are redacted line-by-line before logging per §8.1 rule 5. Renaming the catalog events above is a breaking change to saved queries ([observability.md §6.2](observability.md#62-event-naming)); subprocess passthrough lines are not.
+
+### 12.2 Metrics
+
+Per [observability.md §6.4](observability.md#64-sampling), metrics carry the unsampled counts the sampled `write_jobs.progress` events don't.
 
 - `write_jobs_submitted_total{kind, actor, deduped}` — counter
 - `write_jobs_completed_total{kind, actor}` — counter

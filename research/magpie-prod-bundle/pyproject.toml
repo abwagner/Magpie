@@ -1,0 +1,29 @@
+[project]
+name = "magpie-prod-bundle"
+version = "0.0.1"
+description = "Prod bundle launcher for NautilusTrader — config builder + hot-swap orchestrator (QF-326, QF-327)."
+requires-python = ">=3.13"
+dependencies = [
+  # NT framework for building LiveTradingNode configs and running strategies.
+  # Version matches magpie-md-bridge + magpie-risk-gate.
+  "nautilus-trader[ib]>=1.227.0",
+  # NATS client for subscribing to lifecycle events (QF-327 hot-swap).
+  "nats-py>=2.7.0",
+  # Shared NATS subject builders (QF-335).
+  "magpie-subjects",
+  # HTTP client for querying the QF TS server's lifecycle registry API.
+  "httpx>=0.27.0",
+]
+
+[tool.uv.sources]
+magpie-subjects = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/magpie_prod_bundle"]
+
+[tool.mypy]
+strict = true

@@ -37,8 +37,49 @@ export interface SchwabBrokerConfig {
   accounts: SchwabAccountConfig[];
 }
 
+// ── Market-data fallback policy (QF-341) ──────────────────────────
+//
+// Optional `marketdata` block in config/brokers.json. Defined in
+// docs/tdd/marketdata-fallback.md §2. Governs the opt-in cross-broker
+// fallback for read-only marketdata.rpc.* methods. Absent block → no
+// fallback (today's behavior). Lives in brokers.json so the policy sits
+// next to the broker definitions it references.
+
+/** The four fallback-eligible RPC methods (TDD §1). */
+export type MdFallbackMethod = "quote" | "chain" | "expirations" | "candles";
+
+export const MD_FALLBACK_METHODS: readonly MdFallbackMethod[] = Object.freeze([
+  "quote",
+  "chain",
+  "expirations",
+  "candles",
+]);
+
+/** Per-method override of the global fallback policy (TDD §2.2). */
+export interface MdMethodOverride {
+  /** When set, overrides the global `fallback_enabled` for this method. */
+  fallback_enabled?: boolean;
+  /** When set, overrides the global `priority` for this method. */
+  priority?: string[];
+}
+
+/** Parsed `marketdata` block. Always present after load (synthesised
+ *  default when absent). */
+export interface MarketDataFallbackConfig {
+  /** Master switch. Default false = today's behavior (no fallback). */
+  fallback_enabled: boolean;
+  /** Global fallback order; first entry is primary. Empty when absent. */
+  priority: string[];
+  /** Per-method overrides keyed by the four eligible methods. */
+  methods: Partial<Record<MdFallbackMethod, MdMethodOverride>>;
+  /** Liveness threshold reused by the fallback selector (TDD §3.1). */
+  heartbeat_stale_ms: number;
+}
+
 export interface BrokersConfig {
   schwab: SchwabBrokerConfig;
+  /** MD fallback policy (QF-341). Always present after load. */
+  marketdata: MarketDataFallbackConfig;
 }
 
 /** Slim per-portfolio routing hint loaded from portfolios.json. */
@@ -60,10 +101,24 @@ const DEFAULT_ACCOUNT: SchwabAccountConfig = Object.freeze({
   enabled: false,
 });
 
+// Default MD fallback policy: disabled, no priority. Absent `marketdata`
+// block resolves to this — identical to today's no-fallback behavior.
+const DEFAULT_HEARTBEAT_STALE_MS = 30_000;
+
+function defaultMarketDataConfig(): MarketDataFallbackConfig {
+  return {
+    fallback_enabled: false,
+    priority: [],
+    methods: {},
+    heartbeat_stale_ms: DEFAULT_HEARTBEAT_STALE_MS,
+  };
+}
+
 const DEFAULTS: BrokersConfig = Object.freeze({
   schwab: Object.freeze({
     accounts: [DEFAULT_ACCOUNT],
   }),
+  marketdata: Object.freeze(defaultMarketDataConfig()),
 }) as BrokersConfig;
 
 // ── Slug regex ────────────────────────────────────────────────────
@@ -118,14 +173,16 @@ export function loadBrokersConfig(
   const root = raw as Record<string, unknown>;
 
   // Forward-compat: log + skip unknown brokers (e.g. "ibkr" landing later).
+  // `marketdata` (QF-341) is a known non-broker block, handled below.
   for (const key of Object.keys(root)) {
-    if (key !== "schwab" && key !== "_doc") {
+    if (key !== "schwab" && key !== "_doc" && key !== "marketdata") {
       logger.warn("brokers.json: unknown broker key ignored", { key });
     }
   }
 
   const schwab = parseSchwabConfig(root.schwab, logger);
-  const config: BrokersConfig = { schwab };
+  const marketdata = parseMarketDataConfig(root.marketdata, enabledBrokerIds(root, schwab), logger);
+  const config: BrokersConfig = { schwab, marketdata };
 
   // Validate portfolio→account references when routing hints are provided.
   if (portfolioRouting && portfolioRouting.length > 0) {
@@ -352,4 +409,188 @@ function parsePositiveNumber(v: unknown, name: string): number {
     throw new BrokersConfigError(`brokers.json: ${name} must be a positive number`);
   }
   return v;
+}
+
+// ── Market-data fallback parser (QF-341) ──────────────────────────
+
+/**
+ * Compute the set of broker ids that are enabled in this config file.
+ * A `priority` entry in the marketdata block must name one of these
+ * (TDD §2.3 rule 2). Schwab is "enabled" if any of its accounts is.
+ * Future top-level broker keys (e.g. "ibkr") with an `enabled: true`
+ * field count too, so the rule already works the day IBKR lands.
+ */
+function enabledBrokerIds(root: Record<string, unknown>, schwab: SchwabBrokerConfig): Set<string> {
+  const ids = new Set<string>();
+  if (schwab.accounts.some((a) => a.enabled)) ids.add("schwab");
+  for (const [key, val] of Object.entries(root)) {
+    if (key === "schwab" || key === "_doc" || key === "marketdata") continue;
+    if (val !== null && typeof val === "object" && !Array.isArray(val)) {
+      const obj = val as Record<string, unknown>;
+      if (obj.enabled === true) ids.add(key);
+    }
+  }
+  return ids;
+}
+
+/**
+ * Parse + validate the optional `marketdata` block. Absent → defaults
+ * (fallback disabled). Enforces the TDD §2.3 validation rules. Throws
+ * BrokersConfigError on any violation (fail-closed: refuse to start
+ * rather than route nowhere).
+ */
+function parseMarketDataConfig(
+  raw: unknown,
+  enabled: Set<string>,
+  logger: Logger,
+): MarketDataFallbackConfig {
+  if (raw === undefined) return defaultMarketDataConfig();
+  if (raw === null || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new BrokersConfigError("brokers.json: marketdata must be an object");
+  }
+  const obj = raw as Record<string, unknown>;
+
+  // `_doc` mirrors the top-level documentation-comment convention.
+  const known = new Set(["_doc", "fallback_enabled", "priority", "methods", "heartbeat_stale_ms"]);
+  for (const key of Object.keys(obj)) {
+    if (!known.has(key)) {
+      throw new BrokersConfigError(`brokers.json: marketdata: unknown field "${key}"`);
+    }
+  }
+
+  const fallback_enabled = parseMdBoolean(obj.fallback_enabled, "marketdata.fallback_enabled");
+  // The enabled-broker membership check (rule 2/4) only matters when
+  // fallback will actually route. A disabled block is documentation of
+  // intent and may name brokers that aren't enabled yet (the ratified
+  // default ships fallback_enabled:false + priority:["ibkr","schwab"]
+  // before either broker is enabled). Shape rules (array, slug, unique)
+  // always apply; the membership rule is gated on fallback_enabled.
+  const priority =
+    obj.priority === undefined
+      ? []
+      : parsePriority(obj.priority, "marketdata.priority", fallback_enabled ? enabled : null);
+  const heartbeat_stale_ms =
+    obj.heartbeat_stale_ms === undefined
+      ? DEFAULT_HEARTBEAT_STALE_MS
+      : parsePositiveNumber(obj.heartbeat_stale_ms, "marketdata.heartbeat_stale_ms");
+  const methods = parseMethods(obj.methods, enabled, fallback_enabled);
+
+  // Rule 5: enabled + single-element global priority can never fall back.
+  if (fallback_enabled && priority.length === 1) {
+    logger.warn(
+      "brokers.json: marketdata.fallback_enabled=true with a single-element priority " +
+        "can never fall back (documents intent only)",
+      { priority },
+    );
+  }
+
+  return { fallback_enabled, priority, methods, heartbeat_stale_ms };
+}
+
+function parseMdBoolean(v: unknown, name: string): boolean {
+  if (v === undefined) return false;
+  if (typeof v !== "boolean") {
+    throw new BrokersConfigError(`brokers.json: ${name} must be a boolean`);
+  }
+  return v;
+}
+
+/**
+ * Validate a priority array (TDD §2.3 rule 2 / rule 4): non-empty array
+ * of unique, slug-safe broker ids, each naming an enabled broker.
+ */
+function parsePriority(v: unknown, name: string, enabled: Set<string> | null): string[] {
+  if (!Array.isArray(v)) {
+    throw new BrokersConfigError(`brokers.json: ${name} must be an array`);
+  }
+  if (v.length === 0) {
+    throw new BrokersConfigError(`brokers.json: ${name} must be a non-empty array`);
+  }
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const entry of v) {
+    if (typeof entry !== "string" || entry.length === 0 || !SLUG_RE.test(entry)) {
+      throw new BrokersConfigError(
+        `brokers.json: ${name} entries must be slug-safe broker ids (got ${JSON.stringify(entry)})`,
+      );
+    }
+    if (seen.has(entry)) {
+      throw new BrokersConfigError(`brokers.json: ${name} has duplicate broker id "${entry}"`);
+    }
+    if (enabled !== null && !enabled.has(entry)) {
+      throw new BrokersConfigError(
+        `brokers.json: ${name} entry "${entry}" is not an enabled broker in this file`,
+      );
+    }
+    seen.add(entry);
+    out.push(entry);
+  }
+  return out;
+}
+
+/**
+ * Parse the per-method override map (TDD §2.3 rule 3 / rule 4). Keys are
+ * restricted to the four eligible methods; unknown method keys (incl.
+ * historical_chain / orders.*) are rejected.
+ */
+function parseMethods(
+  v: unknown,
+  enabled: Set<string>,
+  globalFallbackEnabled: boolean,
+): Partial<Record<MdFallbackMethod, MdMethodOverride>> {
+  if (v === undefined) return {};
+  if (v === null || typeof v !== "object" || Array.isArray(v)) {
+    throw new BrokersConfigError("brokers.json: marketdata.methods must be an object");
+  }
+  const obj = v as Record<string, unknown>;
+  const allowed = new Set<string>(MD_FALLBACK_METHODS);
+  const out: Partial<Record<MdFallbackMethod, MdMethodOverride>> = {};
+  for (const [key, val] of Object.entries(obj)) {
+    if (!allowed.has(key)) {
+      throw new BrokersConfigError(
+        `brokers.json: marketdata.methods: "${key}" is not a fallback-eligible method ` +
+          `(allowed: ${MD_FALLBACK_METHODS.join(", ")})`,
+      );
+    }
+    out[key as MdFallbackMethod] = parseMethodOverride(val, key, enabled, globalFallbackEnabled);
+  }
+  return out;
+}
+
+function parseMethodOverride(
+  v: unknown,
+  method: string,
+  enabled: Set<string>,
+  globalFallbackEnabled: boolean,
+): MdMethodOverride {
+  if (v === null || typeof v !== "object" || Array.isArray(v)) {
+    throw new BrokersConfigError(`brokers.json: marketdata.methods.${method} must be an object`);
+  }
+  const obj = v as Record<string, unknown>;
+  const known = new Set(["fallback_enabled", "priority"]);
+  for (const key of Object.keys(obj)) {
+    if (!known.has(key)) {
+      throw new BrokersConfigError(
+        `brokers.json: marketdata.methods.${method}: unknown field "${key}"`,
+      );
+    }
+  }
+  const out: MdMethodOverride = {};
+  if (obj.fallback_enabled !== undefined) {
+    out.fallback_enabled = parseMdBoolean(
+      obj.fallback_enabled,
+      `marketdata.methods.${method}.fallback_enabled`,
+    );
+  }
+  // Membership check applies when this method's effective fallback is on
+  // (its own override, or the inherited global). Shape rules always apply.
+  const effectiveEnabled = out.fallback_enabled ?? globalFallbackEnabled;
+  if (obj.priority !== undefined) {
+    out.priority = parsePriority(
+      obj.priority,
+      `marketdata.methods.${method}.priority`,
+      effectiveEnabled ? enabled : null,
+    );
+  }
+  return out;
 }

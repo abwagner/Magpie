@@ -1,0 +1,42 @@
+# ── Magpie QF API server container (QF-201, Option B) ──────────────
+# Runs server/index.ts (the long-running QF API + state WebSocket on
+# port 3001) on your-server.example.com. This is the always-on,
+# write-capable server that holds the sole MinIO write key under the
+# M10-6 single-writer topology (docs/tdd/deployment-topology.md §4).
+#
+# Distinct from:
+#   - Dockerfile        — GUI-only (Vite build served via nginx).
+#   - Dockerfile.ingest — headless cron scheduler (scripts/scheduler.ts).
+# This image is the headless API server (`npm run server`).
+#
+# Base: bookworm-slim (Debian, glibc). Alpine is avoided for the same
+# reason as Dockerfile.ingest — duckdb's npm package ships a glibc
+# precompiled binary that can't dlopen against musl libc (QF-167).
+
+FROM node:22-bookworm-slim
+
+# python3 / make / g++ for native deps that fall back to a source build
+# during `npm install`. curl is used by the compose healthcheck against
+# /api/status. bash is pre-installed in bookworm-slim.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 make g++ curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY package.json package-lock.json* ./
+RUN npm install
+
+COPY . .
+
+# Built GUI bundle is served as static assets by the server in prod
+# (deployment-topology.md §5 / migration step 5). Build it at image
+# time so no Vite process is needed at runtime.
+RUN npm run build
+
+EXPOSE 3001
+
+# server/index.ts reads PORT (default 3001). It loads /app/.env if
+# present, but in the container all config arrives via the compose
+# `environment` / `env_file` block — never bake secrets into the image.
+CMD ["npm", "run", "--silent", "server"]

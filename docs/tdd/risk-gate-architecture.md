@@ -28,7 +28,7 @@ config = LiveTradingNodeConfig(
     trader_id="QF-PROD",
     strategies=[...],
     risk=RiskEngineConfig(
-        risk_module_path="quantfoundry_risk_gate.gate:QFRiskGate",
+        risk_module_path="magpie_risk_gate.gate:QFRiskGate",
         config={
             "nats_url": "nats://qf-server:4222",
             "gate_subject_prefix": "orders.gate",
@@ -42,7 +42,7 @@ config = LiveTradingNodeConfig(
 )
 ```
 
-The package lives in-tree at `research/quantfoundry-risk-gate/` (uv workspace member alongside the broker bridges). `QFRiskGate` subclasses NT's `RiskEngine` and overrides `_check_order`. The strategy plugins, the QF bridge plugin, and the risk-gate plugin are all loaded into the same TradingNode by the bundle launcher — three different slots in `LiveTradingNodeConfig`, same loading machinery.
+The package lives in-tree at `research/magpie-risk-gate/` (uv workspace member alongside the broker bridges). `QFRiskGate` subclasses NT's `RiskEngine` and overrides `_check_order`. The strategy plugins, the QF bridge plugin, and the risk-gate plugin are all loaded into the same TradingNode by the bundle launcher — three different slots in `LiveTradingNodeConfig`, same loading machinery.
 
 Strategies don't import or know about the gate. `Strategy.submit_order()` flows through NT's MessageBus → RiskEngine → ExecutionEngine pipeline exactly as it would with NT's default `RiskEngine`. The gate is transparent: the strategy sees either an approved submission proceed to broker or a structured rejection, both shaped identically to NT's built-in risk-rejection responses.
 
@@ -289,17 +289,17 @@ audit_intents (intent_id=I1, source='qf-gated', gate_decision='approve',
 
 Rejected intents stop at `audit_intents` (one row, no downstream). The Trade Inspector endpoint (`GET /api/trades/inspect`) gets a new mode: `?intent_id=...` returns the gate decision plus the full child-order fan-out via the `intent_id` foreign key (no `parent_order_id` walk required).
 
-## 7. Implementation phasing
+## 7. Implementation status
 
-Rough sequencing:
+The core gate architecture is **implemented** across phases 1–3, with phase 4 (bundle launcher) live in production:
 
-1. **Phase 1 — Gate plugin skeleton.** `research/quantfoundry-risk-gate/` package; subclass of NT's RiskEngine; NATS-RPC client; closes-only fail-open + classifier; unit tests against a fake QF service.
-2. **Phase 2 — QF-side gate service.** Endpoint in `server/risk/` that evaluates intents against `risk_limits.yaml`; in-memory `pending_intents` log; observer integration for fill events.
-3. **Phase 3 — Audit-chain extension.** `source='qf-gated'`, `gate_decision`, `gate_reason` columns; Trade Inspector intent-lookup mode.
-4. **Phase 4 — Bundle launcher wiring.** Prod bundle launcher loads gate alongside strategies and bridge; paper-live smoke test confirms gate works against an IBKR paper account.
-5. **Phase 5 — Observability + degraded-mode UX.** GUI Strategies-screen gate-degraded indicator; `gate_unavailable` alert; per-strategy gate-rejection counters.
+1. **Phase 1 — Gate plugin skeleton.** `research/magpie-risk-gate/` package; subclass of NT's RiskEngine; NATS-RPC client; closes-only fail-open + classifier; unit tests against a fake QF service. **Shipped.**
+2. **Phase 2 — QF-side gate service.** `server/risk/gate-handler.ts` (NATS request/reply subscriber on `orders.gate.<broker>`) and `server/portfolio/evaluator.ts` (pure evaluation logic); both wired in `server/index.ts` (`createGateHandler(...)`) and fed by `evaluator.evaluate(gateRequest)`. **Shipped.**
+3. **Phase 3 — Audit-chain extension.** `source='qf-gated'`, `gate_decision`, `gate_reason` columns; Trade Inspector intent-lookup mode. **Shipped.**
+4. **Phase 4 — Bundle launcher wiring.** Prod bundle launcher loads gate alongside strategies and bridge; paper-live smoke test confirms gate works against an IBKR paper account. **Live in production.**
+5. **Phase 5 — Observability + degraded-mode UX.** GUI Strategies-screen gate-degraded indicator; `gate_unavailable` alert; per-strategy gate-rejection counters. **Landed with QF-350/351.**
 
-Sequencing rationale: phases 1+2 can land independently behind a feature flag (gate off → strategies trade unchecked); phase 4 is the prod cutover.
+The NATS subjects (`orders.gate.<broker>`, `orders.gate.revoke.<broker>`) are active. Genuine future work (envelope revocation refinements §3.5, advanced parent-budget child fast-path optimizations) remain possible enhancements; the core two-tier evaluation + envelope lifecycle are shipped.
 
 ## 8. Backtest evaluation
 
@@ -311,3 +311,26 @@ The same evaluator runs over historical intents inside quant-optimizer's `Backte
 - **NT internals modification.** The gate uses NT's supported `RiskEngineConfig.risk_module_path` extension point. No NT source-code changes.
 
 Other open architectural questions (HFT latency mode, OpenTelemetry across the RPC) are consolidated in [docs/OPEN-QUESTIONS.md](../OPEN-QUESTIONS.md).
+
+## 10. Observability
+
+The detailed framework lives in [observability.md](observability.md); the degraded-mode logging is specced separately in §4.3. This section names the full event catalog the QF-side gate evaluator emits. All events follow the common JSON schema: `ts`, `level`, `service` (= `"gate-evaluator"`), `correlation_id`, `event`, plus the payload below.
+
+The `correlation_id` arrives on the inbound `orders.gate.<broker>` RPC as the `X-Correlation-Id` NATS header (set by the NT-side gate plugin from the strategy-supplied ID); the evaluator binds it via `withCorrelationId` before evaluating, propagates it through its `audit_intents` write, and echoes it on the reply. A subscriber that receives a gate RPC **without** the header generates one and logs `system.correlation_id.missing` per [observability.md §4.2](observability.md#42-across-process-propagation).
+
+| Event                          | Level   | Payload (key fields)                                                                                    | Emitted when                                                                                                                                      |
+| ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gate.evaluated`               | `info`  | `intent_id`, `strategy_id`, `portfolio_id`, `broker`, `decision` (`approve` \| `reject`), `reason`      | Every parent-intent evaluation (§2.1). Reject events carry the `RejectionReason`; approve events the issued `envelope_id`.                        |
+| `gate.request_malformed`       | `warn`  | `subject`, `reason`                                                                                     | Inbound RPC payload failed schema validation (`server/risk/gate-handler.ts`). Returns reject to NT.                                               |
+| `gate.evaluator_error`         | `error` | `intent_id`, `subject`                                                                                  | The evaluator threw mid-decision. Carries the `error` field with stack; the RPC returns reject (fail-safe, not fail-open).                        |
+| `gate.audit_write_failed`      | `error` | `intent_id`                                                                                             | The pre-decision `audit_intents` write failed (§6); audit-before-decision (§6.3) means the intent cannot proceed. Carries `error`.                |
+| `gate.envelope.committed`      | `debug` | `intent_id`, `envelope_id`, `estimated_delta`, `estimated_notional`                                     | Parent approved; the `pending_intents` row is committed against aggregate budgets (§5.1) before NT submits.                                       |
+| `gate.envelope.terminated`     | `info`  | `intent_id`, `envelope_id`, `termination` (`filled` \| `cancelled` \| `rejected` \| `envelope_revoked`) | An envelope reached a terminal state (§5.3); reserved aggregate capacity is reclaimed.                                                            |
+| `gate.envelope.revoked`        | `warn`  | `intent_id`, `envelope_id`, `revoke_reason`                                                             | QF sent `orders.gate.revoke.<broker>` (§3.5); mutates `audit_intents.envelope_revoked_at` in place.                                               |
+| `gate.fail_open.allowed_close` | `warn`  | `strategy_id`, `intent_id`                                                                              | QF unreachable; a **closing** intent was allowed under closes-only fail-open (§4). Companion Prometheus counter per §4.3.                         |
+| `gate.fail_open.blocked_open`  | `warn`  | `strategy_id`, `intent_id`                                                                              | QF unreachable; an **opening** intent was blocked under closes-only fail-open (§4).                                                               |
+| `gate.warming_up_blocked`      | `warn`  | `strategy_id`, `intent_id`                                                                              | Cold-start fail-closed (§5.2); rehydration from `audit_intents` not yet complete, so the intent is rejected with `gate_unavailable_open_blocked`. |
+
+**Sampling.** Gate evaluations fire at strategy-submission frequency (not tick frequency), so every `gate.evaluated` emits at `info` without sampling. The high-frequency path is the algo's child-order fan-out, which is **not** re-evaluated by the gate (it runs under the already-committed envelope per §2.1) — so the gate's log volume tracks parent intents, not orders.
+
+**Phasing.** This catalog lands with Phase 5 of §7 (Observability + degraded-mode UX); Phases 1–4 emit the subset already present in `server/risk/gate-handler.ts` (`gate.request_malformed`, `gate.evaluator_error`, `gate.audit_write_failed`).

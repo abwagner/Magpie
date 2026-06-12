@@ -22,7 +22,7 @@ Each entry should specify: **what writes to what, on what schedule, and which pr
 | `DATA_URI`                          | Used by                                                  |
 | ----------------------------------- | -------------------------------------------------------- |
 | `file:///abs/path/to/Magpie/data` | Local dev on a single machine                        |
-| `s3://quantfoundry-data`            | Default for the home server (writes go to MinIO)         |
+| `s3://magpie-data`            | Default for the home server (writes go to MinIO)         |
 
 S3 mode also requires `S3_ENDPOINT_URL`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`. See [`.env.example`](../.env.example) for the canonical list.
 
@@ -30,7 +30,7 @@ S3 mode also requires `S3_ENDPOINT_URL`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRE
 
 ## Where the scheduler runs
 
-**Home server (`your-server.example.com`, LAN `192.168.x.x`) — `quantfoundry-scheduler` docker-compose service.**
+**Home server (`your-server.example.com`, LAN `192.168.x.x`) — `magpie-scheduler` docker-compose service.**
 
 Lives in `your-ops-repo/docker-compose.yml` as a sibling to `tanker-scheduler`. Builds from this repo's [`Dockerfile.ingest`](../Dockerfile.ingest) and runs [`scripts/scheduler.ts`](../scripts/scheduler.ts) — a long-running `croner`-based daemon.
 
@@ -45,24 +45,24 @@ Why a container, not host systemd: see the parent ticket QF-156. tl;dr — unifo
 | `ingest-eia`    | Wednesdays 22:30 | EIA petroleum data via `npm run ingest -- --source eia`   | `data/macro/eia/*.parquet`    |
 | `ingest-cftc`   | Fridays 20:00    | CFTC COT positions via `npm run ingest -- --source cftc`  | `data/macro/cftc/*.parquet`   |
 
-To change a schedule or add a job, edit the `JOBS` array in [`scripts/scheduler.ts`](../scripts/scheduler.ts), open a PR, and after it merges run `docker compose build quantfoundry-scheduler && docker compose up -d quantfoundry-scheduler` on the server.
+To change a schedule or add a job, edit the `JOBS` array in [`scripts/scheduler.ts`](../scripts/scheduler.ts), open a PR, and after it merges run `docker compose build magpie-scheduler && docker compose up -d magpie-scheduler` on the server.
 
 ### Operating the container
 
 ```bash
 # View live logs (next-run times + per-job start/finish)
-docker compose logs -f quantfoundry-scheduler
+docker compose logs -f magpie-scheduler
 
 # Force-run one job ad-hoc (uses the container's env, writes to the same data store)
-docker compose exec quantfoundry-scheduler npm run ingest -- --source fred
+docker compose exec magpie-scheduler npm run ingest -- --source fred
 
 # Stop / restart
-docker compose stop quantfoundry-scheduler
-docker compose up -d quantfoundry-scheduler
+docker compose stop magpie-scheduler
+docker compose up -d magpie-scheduler
 
 # Rebuild after a Magpie change
 cd ~/GitHub/Magpie && git pull
-cd ~/GitHub/your-ops-repo && docker compose build quantfoundry-scheduler && docker compose up -d quantfoundry-scheduler
+cd ~/GitHub/your-ops-repo && docker compose build magpie-scheduler && docker compose up -d magpie-scheduler
 ```
 
 ### Secrets / env
@@ -112,6 +112,6 @@ This lets consumers distinguish "parquet has a row dated today" from "parquet wa
 
 ## Troubleshooting
 
-- **Nothing wrote last night.** `docker compose logs quantfoundry-scheduler --since 24h` on the server. Look for `started` / `ok` / `failed code=N` lines.
-- **Authentication failures against MinIO.** Confirm `S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` are populated in the container: `docker compose exec quantfoundry-scheduler env | grep S3_`. The credentials need read+write on the `quantfoundry-data` bucket.
+- **Nothing wrote last night.** `docker compose logs magpie-scheduler --since 24h` on the server. Look for `started` / `ok` / `failed code=N` lines.
+- **Authentication failures against MinIO.** Confirm `S3_ENDPOINT_URL`, `S3_ACCESS_KEY`, `S3_SECRET_KEY` are populated in the container: `docker compose exec magpie-scheduler env | grep S3_`. The credentials need read+write on the `magpie-data` bucket.
 - **Stale data after a code change.** The container holds the image built from a git snapshot. Pull + rebuild + restart per "Operating the container".

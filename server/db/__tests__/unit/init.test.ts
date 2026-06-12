@@ -7,7 +7,6 @@ const EXPECTED_TABLES = [
   "audit_intents",
   "audit_orders",
   "audit_fills",
-  "audit_pricing_decisions",
   "portfolio_snapshots",
 ];
 

@@ -18,8 +18,8 @@ The plane has no single runtime — it's a contract surface across three sites: 
 ```mermaid
 flowchart LR
     subgraph live["Live broker MD (per-broker NT bundles)"]
-        SCHWAB["quantfoundry-schwab-nt<br/>SchwabExecutionClient<br/>SchwabMarketDataClient<br/>+ risk-gate + ExecAlgos + strategies"]
-        IBKR["quantfoundry-ibkr-nt<br/>InteractiveBrokersExecutionClient<br/>InteractiveBrokersDataClient<br/>+ risk-gate + ExecAlgos + strategies"]
+        SCHWAB["magpie-schwab-nt<br/>SchwabExecutionClient<br/>SchwabMarketDataClient<br/>+ risk-gate + ExecAlgos + strategies"]
+        IBKR["magpie-ibkr-nt<br/>InteractiveBrokersExecutionClient<br/>InteractiveBrokersDataClient<br/>+ risk-gate + ExecAlgos + strategies"]
     end
 
     subgraph batch["Batch non-broker (write-jobs)"]
@@ -28,7 +28,7 @@ flowchart LR
     end
 
     subgraph store["Storage"]
-        MINIO[("MinIO<br/>s3://quantfoundry-data/")]
+        MINIO[("MinIO<br/>s3://magpie-data/")]
         DUCK[("DuckDB<br/>(write_jobs, catalogs)")]
     end
 
@@ -236,7 +236,7 @@ Per-source costs, rate limits, and auth setup live in [sources.md](sources.md). 
 
 ### 3.3 Submission paths
 
-- **Cron (default)** — the `quantfoundry-scheduler` container submits jobs through the [write-jobs runner](../tdd/write-jobs.md) using a server-host token. Schedule is in [`data/CRON.md`](../../data/CRON.md).
+- **Cron (default)** — the `magpie-scheduler` container submits jobs through the [write-jobs runner](../tdd/write-jobs.md) using a server-host token. Schedule is in [`data/CRON.md`](../../data/CRON.md).
 - **On-demand from GUI** — operator clicks "Backfill X" in Settings → Activity; the page posts to `/api/write-jobs` with the appropriate `kind` (`ingest`, `orchestrate-refresh`, `fmp-backfill`, etc.).
 - **In-process** — server code can call `runner.submit({kind, params}, {actor: "server:..."})` directly without going through HTTP. Same audit, no token check.
 
@@ -249,7 +249,7 @@ The write-jobs runner serializes per-`kind` (one in-flight FMP backfill at a tim
 | Mode  | Value                             | Use                  |
 | ----- | --------------------------------- | -------------------- |
 | Local | `file:///abs/path/to/Magpie/data` | Single-machine dev   |
-| MinIO | `s3://quantfoundry-data`          | Home server, default |
+| MinIO | `s3://magpie-data`          | Home server, default |
 
 MinIO mode requires `S3_ENDPOINT_URL` (`https://s3.example.com`), `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`. See `.env.example`.
 
@@ -320,7 +320,7 @@ For large multi-year datasets, strategies should use DuckDB predicate pushdown t
 ```python
 duckdb.sql("""
     SELECT date, value
-    FROM read_parquet('s3://quantfoundry-data/macro/fred/vixcls.parquet')
+    FROM read_parquet('s3://magpie-data/macro/fred/vixcls.parquet')
     WHERE date >= '2025-01-01'
 """).pl()
 ```
@@ -437,7 +437,7 @@ server/writeJobs/handlers/
   collect-bulk.ts         — MarketData.app chain bulk pull subprocess
 
 scripts/
-  scheduler.ts            — quantfoundry-scheduler container daemon (cron)
+  scheduler.ts            — magpie-scheduler container daemon (cron)
   _collect-bulk-impl.ts   — collect-bulk subprocess body
   _databento-pull-impl.ts — databento-pull subprocess body
 

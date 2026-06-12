@@ -4,11 +4,11 @@
 # §5.1 and CODING-STANDARDS.md "Python Conventions": NautilusTrader strategies,
 # the backtest orchestrator, the walk-forward driver, the signal worker SDK,
 # and shared research helpers. Phase 0 scaffolds the workspace + CI; Phase 0
-# QF-84 lands `quantfoundry-logging` as the first real package; Phase 2+
+# QF-84 lands `magpie-logging` as the first real package; Phase 2+
 # adds the orchestrator and strategy packages.
 
 [project]
-name = "quantfoundry-research-workspace"
+name = "magpie-research-workspace"
 version = "0.0.0"
 description = "Umbrella uv workspace for the Magpie research Python packages."
 license = "MIT"
@@ -29,14 +29,15 @@ dev = [
 
 [tool.uv.workspace]
 members = [
-  "quantfoundry-ibkr-nt",
-  "quantfoundry-logging",
-  "quantfoundry-md-bridge",
-  "quantfoundry-research",
-  "quantfoundry-risk-gate",
-  "quantfoundry-schwab-nt",
-  "quantfoundry-signals",
-  "vol-forecast-spy-1d",
+  "magpie-secrets",
+  "magpie-subjects",
+  "magpie-ibkr-nt",
+  "magpie-logging",
+  "magpie-md-bridge",
+  "magpie-prod-bundle",
+  "magpie-research",
+  "magpie-risk-gate",
+  "magpie-schwab-nt",
 ]
 
 # ── Security overrides ───────────────────────────────────────────────
@@ -84,11 +85,12 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = [
-  "quantfoundry-logging/tests",
-  "quantfoundry-research/tests",
-  "quantfoundry-schwab-nt/tests",
-  "quantfoundry-signals/tests",
-  "vol-forecast-spy-1d/tests",
+  "magpie-secrets/tests",
+  "magpie-subjects/tests",
+  "magpie-logging/tests",
+  "magpie-prod-bundle/tests",
+  "magpie-research/tests",
+  "magpie-schwab-nt/tests",
   "tests",
 ]
 addopts = "-ra -v --strict-markers"

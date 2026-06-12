@@ -1,0 +1,80 @@
+{
+  "uid": "qf-logs-explorer",
+  "title": "Logs Explorer",
+  "tags": ["magpie", "qf-277", "logs"],
+  "timezone": "utc",
+  "schemaVersion": 39,
+  "editable": true,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "service",
+        "type": "query",
+        "datasource": { "type": "loki", "uid": "loki" },
+        "query": { "label": "service", "stream": "", "type": 1 },
+        "includeAll": true,
+        "allValue": ".+",
+        "multi": true,
+        "refresh": 2
+      },
+      {
+        "name": "level",
+        "type": "custom",
+        "query": "trace,debug,info,warn,error",
+        "current": { "text": "All", "value": "$__all" },
+        "includeAll": true,
+        "allValue": ".+",
+        "multi": true
+      },
+      {
+        "name": "correlation_id",
+        "type": "textbox",
+        "label": "correlation_id",
+        "current": { "text": "", "value": "" },
+        "description": "Paste a ULID to reconstruct one position lifecycle (observability.md §1). Leave blank for all."
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "logs",
+      "title": "Logs — service=$service level=$level correlation_id=\"$correlation_id\"",
+      "description": "Click-through target for every metric panel in the other four dashboards. correlation_id is Loki structured metadata (alloy-config.alloy); an empty value matches everything.",
+      "gridPos": { "h": 20, "w": 24, "x": 0, "y": 0 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "options": {
+        "showTime": true,
+        "showLabels": false,
+        "wrapLogMessage": true,
+        "enableLogDetails": true,
+        "dedupStrategy": "none",
+        "sortOrder": "Descending"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{service=~\"$service\", level=~\"$level\"} | correlation_id=~\"${correlation_id:regex}.*\"",
+          "queryType": "range"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Log volume / min by level",
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 20 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": { "defaults": { "unit": "logpm" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (level) (count_over_time({service=~\"$service\", level=~\"$level\"}[1m]))",
+          "legendFormat": "{{level}}"
+        }
+      ]
+    }
+  ]
+}

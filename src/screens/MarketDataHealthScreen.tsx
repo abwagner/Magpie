@@ -7,7 +7,7 @@ import {
   setWriteJobToken,
   submitIngest,
 } from "../lib/api.js";
-import type { BridgeStatus } from "../types/marketdata-health.js";
+import type { BridgeStatus, BridgePolicy } from "../types/marketdata-health.js";
 import type { FreshnessResponse, FreshnessStatus, SourceFreshness } from "../types/catalog.js";
 
 // Settings · Data · Health (QF-55 / QF-296)
@@ -44,6 +44,7 @@ const FRESHNESS_TONE: Record<FreshnessStatus, string> = {
 
 export function MarketDataHealthScreen() {
   const [bridges, setBridges] = useState<BridgeStatus[] | null>(null);
+  const [bridgePolicy, setBridgePolicy] = useState<BridgePolicy | undefined>(undefined);
   const [bridgesError, setBridgesError] = useState<string | null>(null);
   const [bridgesLoading, setBridgesLoading] = useState(true);
 
@@ -58,6 +59,7 @@ export function MarketDataHealthScreen() {
         .then((res) => {
           if (!cancelled) {
             setBridges(res.bridges);
+            setBridgePolicy(res.policy);
             setBridgesError(null);
           }
         })
@@ -108,7 +110,12 @@ export function MarketDataHealthScreen() {
         title="Market data health"
         body={`Live broker bridge status + batch ingestion freshness. Auto-refreshes every ${REFRESH_MS / 1000}s.`}
       />
-      <BridgesPanel bridges={bridges} loading={bridgesLoading} error={bridgesError} />
+      <BridgesPanel
+        bridges={bridges}
+        loading={bridgesLoading}
+        error={bridgesError}
+        policy={bridgePolicy}
+      />
       <BatchFreshnessPanel
         freshness={freshness}
         freshnessError={freshnessError}
@@ -136,9 +143,11 @@ export interface BridgesPanelProps {
   bridges: BridgeStatus[] | null;
   loading: boolean;
   error: string | null;
+  // QF-341 — read-only MD fallback policy header (Settings → Bridges).
+  policy?: BridgePolicy;
 }
 
-export function BridgesPanel({ bridges, loading, error }: BridgesPanelProps) {
+export function BridgesPanel({ bridges, loading, error, policy }: BridgesPanelProps) {
   return (
     <div
       style={{
@@ -151,6 +160,7 @@ export function BridgesPanel({ bridges, loading, error }: BridgesPanelProps) {
       <div className="dim" style={{ fontSize: 11, marginBottom: 10 }}>
         Broker MD bridges
       </div>
+      {policy ? <FallbackPolicyHeader policy={policy} /> : null}
       {error ? (
         <div className="neg" style={{ fontSize: 11 }}>
           Failed to load: {error}
@@ -172,6 +182,7 @@ export function BridgesPanel({ bridges, loading, error }: BridgesPanelProps) {
                   Broker
                 </th>
                 <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>Status</th>
+                <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>Role</th>
                 <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>
                   Last heartbeat
                 </th>
@@ -195,6 +206,50 @@ export function BridgesPanel({ bridges, loading, error }: BridgesPanelProps) {
   );
 }
 
+// QF-341 — read-only fallback policy header. Mirrors the read-only
+// posture of the BrokersScreen adapter cards; the policy is edited in
+// config/brokers.json, not here.
+function FallbackPolicyHeader({ policy }: { policy: BridgePolicy }) {
+  const overrides = Object.entries(policy.methods);
+  return (
+    <div
+      className="dim2"
+      style={{
+        fontSize: 10,
+        marginBottom: 8,
+        padding: "6px 8px",
+        background: "var(--bg-1)",
+        borderRadius: "var(--r-1)",
+      }}
+    >
+      <span>
+        Fallback:{" "}
+        <span className={policy.fallback_enabled ? "pos" : "dim"}>
+          {policy.fallback_enabled ? "enabled" : "disabled"}
+        </span>
+      </span>
+      {policy.priority.length > 0 ? (
+        <span style={{ marginLeft: 12 }}>Priority: {policy.priority.join(" → ")}</span>
+      ) : null}
+      <span style={{ marginLeft: 12 }}>Stale threshold: {policy.heartbeat_stale_ms / 1000}s</span>
+      {overrides.length > 0 ? (
+        <span style={{ marginLeft: 12 }}>
+          Overrides:{" "}
+          {overrides
+            .map(([m, o]) => {
+              const parts: string[] = [];
+              if (o.fallback_enabled !== undefined)
+                parts.push(o.fallback_enabled ? "on" : "off");
+              if (o.priority) parts.push(o.priority.join(">"));
+              return `${m}(${parts.join(", ")})`;
+            })
+            .join(", ")}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
 interface BridgeRowProps {
   bridge: BridgeStatus;
 }
@@ -213,6 +268,13 @@ function BridgeRow({ bridge }: BridgeRowProps) {
 
   const heartbeatTone = bridge.alive ? undefined : "neg";
 
+  const roleLabel =
+    bridge.priority_rank === null
+      ? "—"
+      : bridge.priority_rank === 0
+        ? "primary"
+        : `fallback #${bridge.priority_rank}`;
+
   const errorPct =
     bridge.rpc_count_5m > 0 ? `${(bridge.rpc_error_rate_5m * 100).toFixed(1)}%` : "—";
   const errorTone =
@@ -230,6 +292,16 @@ function BridgeRow({ bridge }: BridgeRowProps) {
         <span className={aliveTone} style={{ fontSize: 11 }}>
           {aliveLabel}
         </span>
+      </td>
+      <td style={{ padding: "8px 8px" }}>
+        <span className="dim" style={{ fontSize: 11 }}>
+          {roleLabel}
+        </span>
+        {bridge.serving_as_fallback ? (
+          <span className="warn" style={{ fontSize: 10, marginLeft: 6 }} aria-label="serving as fallback">
+            serving as fallback
+          </span>
+        ) : null}
       </td>
       <td style={{ padding: "8px 8px" }}>
         <span

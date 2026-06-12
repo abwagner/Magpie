@@ -29,6 +29,7 @@ import type { NatsConnection } from "nats";
 import { StringCodec } from "nats";
 import type { Database } from "duckdb";
 import type { Logger } from "../logger.js";
+import { orders } from "../../src/types/subjects.js";
 
 // ── Wire contract (mirrors risk-gate-architecture.md §3.5) ────────────
 
@@ -144,7 +145,7 @@ export function createEnvelopeRevoker(deps: EnvelopeRevokerDeps): EnvelopeRevoke
   const sleep = deps.sleep ?? ((ms: number) => new Promise<void>((r) => setTimeout(r, ms)));
   const now = deps.now ?? (() => new Date().toISOString());
   const sc = StringCodec();
-  const subject = `orders.gate.revoke.${config.broker}`;
+  const subject = orders.gate.revoke(config.broker);
 
   return {
     async revokeEnvelope(envelopeId: string, reason: RevokeReason): Promise<RevokeResponse> {

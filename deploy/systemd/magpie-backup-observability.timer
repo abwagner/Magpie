@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie observability backup — daily at 03:00 ET
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Unit=magpie-backup-observability.service
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

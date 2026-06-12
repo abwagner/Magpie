@@ -26,10 +26,10 @@ Step-by-step operational guide for setting up, running, and maintaining the trad
 
 ### Software
 
-- [ ] Node.js 20+ (LTS)
-- [ ] Docker and Docker Compose (for NATS, IB Gateway)
+- [ ] Node.js 22+ (LTS) — the `qf-server` image is built on `node:22-bookworm-slim` ([Dockerfile.server](../Dockerfile.server); Alpine breaks duckdb, QF-167). Match it locally.
+- [ ] Docker and Docker Compose (for NATS, IB Gateway, and the `qf-server` container)
 - [ ] Git
-- [ ] **For new dependencies:** see [dependency-admission.md](dependency-admission.md) for the admission workflow (5-step gate: open admission file → CI validates → peer review → pin + document → merge). Skip the gate only on revert-style PRs that go through `git revert`.
+- [ ] **For new dependencies:** pin the exact version, document why in the commit message, and let the pre-commit + CI license/advisory gates run (see [Pre-commit framework](#pre-commit-framework) below). The dependency policy is in [CLAUDE.md](../CLAUDE.md) ("Dependencies").
 
 ### Accounts & credentials
 
@@ -40,7 +40,7 @@ Step-by-step operational guide for setting up, running, and maintaining the trad
 ### Verify
 
 ```bash
-node --version    # 20+
+node --version    # 22+
 docker --version  # any recent
 docker compose version
 git --version
@@ -53,7 +53,7 @@ git --version
 Magpie (this repo) is the **framework** and runs standalone — the GUI,
 data lake, risk engine, and order plane work without any sibling repos. Live
 NautilusTrader strategies and offline backtesting live in **separate**
-repositories (`quantfoundry-strategies`, `quant-optimizer`) that you supply and
+repositories (`magpie-strategies`, `quant-optimizer`) that you supply and
 clone alongside QF; replace `your-org` below with wherever you host them. Skip
 those clones if you only want the framework.
 
@@ -63,7 +63,7 @@ cd ~/code
 git clone https://github.com/your-org/Magpie.git
 # Optional siblings — only if you run Python strategies / backtests:
 # git clone https://github.com/your-org/quant-optimizer.git
-# git clone https://github.com/your-org/quantfoundry-strategies.git
+# git clone https://github.com/your-org/magpie-strategies.git
 
 # Install QF's npm deps
 cd Magpie
@@ -105,7 +105,7 @@ Magpie reads/writes Parquet data through `DATA_URI`, which is either a local fil
 | Mode  | `DATA_URI`                        | When to use                                                                     |
 | ----- | --------------------------------- | ------------------------------------------------------------------------------- |
 | Local | `file:///abs/path/to/Magpie/data` | Single-machine dev, no MinIO available                                          |
-| MinIO | `s3://quantfoundry-data`          | Default for the server; recommended for laptops that want the canonical dataset |
+| MinIO | `s3://magpie-data`          | Default for the server; recommended for laptops that want the canonical dataset |
 
 S3 mode requires four extra vars: `S3_ENDPOINT_URL=<your-s3-endpoint>`, `S3_REGION=us-east-1`, `S3_ACCESS_KEY=…`, `S3_SECRET_KEY=…`. The full annotated list of every environment variable lives in [`.env.example`](../.env.example) — copy it to `.env` and fill in the values you need.
 
@@ -167,7 +167,7 @@ All config files ship with the repo with sensible defaults. Review and adjust fo
 
 ### Key configuration choices
 
-**`config/portfolios.json`** — Declares which broker each portfolio routes through, its initial cash, its risk limits, and reconciliation cadence. Strategies are **not** declared here — they're NT-resident in the `quantfoundry-strategies` repo and enabled / disabled via the lifecycle registry (`server/strategy/lifecycle.ts` per [strategy-deployment-topology.md](tdd/strategy-deployment-topology.md)). There is no `mode` field — paper vs live is a **bundle-credentials distinction**, not a QF-side code-path branch (see §9 Paper trading and §11 Going live).
+**`config/portfolios.json`** — Declares which broker each portfolio routes through, its initial cash, its risk limits, and reconciliation cadence. Strategies are **not** declared here — they're NT-resident in the `magpie-strategies` repo and enabled / disabled via the lifecycle registry (`server/strategy/lifecycle.ts` per [strategy-deployment-topology.md](tdd/strategy-deployment-topology.md)). The optional `mode` field is **operator-facing only**: `paper_local` auto-approves orders (no human in the loop), `manual` parks every order in `pending_approval` for an operator. It does **not** select paper vs live — that is a **bundle-credentials distinction**, not a QF-side code-path branch (see §9 Paper trading and §11 Going live). QF-337: when `mode` is omitted the runtime defaults to `manual` and logs a startup warning; set it explicitly to choose the behavior you want.
 
 **`config/risk_limits.yaml`** — On first boot, the runtime bootstraps this file from `portfolios.json.limits`. After that, this YAML is the source of truth; editing `portfolios.json.limits` post-bootstrap has no effect on running limits.
 
@@ -175,7 +175,7 @@ All config files ship with the repo with sensible defaults. Review and adjust fo
 
 ### `config/market-data.json` — `nt_bridge` block
 
-The `nt_bridge` block gates the Python NT MD bridge (`research/quantfoundry-md-bridge/`).
+The `nt_bridge` block gates the Python NT MD bridge (`research/magpie-md-bridge/`).
 Default is `enabled: false`. Schema + design at
 [`docs/tdd/broker-integration.md` §6.2](tdd/broker-integration.md#62-configmarket-datajson-nt_bridge-block).
 
@@ -196,15 +196,15 @@ Default is `enabled: false`. Schema + design at
   bring-up window. Doesn't introduce risk.
 - `first` — prepend nt-bridge at highest priority. NT becomes canonical, legacy
   is fallback. Flip here after observe-mode metrics confirm parity.
-- `only` — replace legacy entirely. Final state before code-level decommission
-  (M13-08 / M13-09).
+- `only` — replace legacy entirely. Final state before the legacy
+  `server/market-data/adapters/schwab.ts` MD adapter is removed.
 
 **Refuse-to-start guard.** If `enabled: true` and NATS isn't reachable at boot,
 the server logs an error and exits. Same posture as the QF-242 brokers config.
 
 **Staged ramp (Q2 — recommended):**
 
-1. **Bring up the Python services.** Start `quantfoundry-md-bridge.schwab` (and
+1. **Bring up the Python services.** Start `magpie-md-bridge.schwab` (and
    later `.ibkr`) via systemd:
    ```bash
    sudo systemctl enable --now schwab-md-bridge.service
@@ -225,16 +225,23 @@ the server logs an error and exits. Same posture as the QF-242 brokers config.
    (Schwab caps concurrent streamer sessions per app key).
 4. **Flip to `first` after error rate ≤ legacy + 0.1% and p95 latency ≤
    1.2× legacy.** NT becomes canonical; legacy is the safety net.
-5. **Flip to `only` after ≥ 2 trading days stable in `first`.** Final pre-
-   decommission state. M13-08 then deletes the legacy `schwab.ts` adapter.
+5. **Flip to `only` after ≥ 2 trading days stable in `first`.** Final state
+   before the legacy `schwab.ts` MD adapter is removed.
 6. **Repeat steps 1-5 for IBKR.** Important: keep the order broker → MD
    on the same shared `TradingNode` per TDD §7. IB Gateway permits one
-   TWS-API client per client-id; M13-06's bridge module loads into the
-   same process as QF-240's `IbkrBrokerBridge`.
+   TWS-API client per client-id; the IBKR MD bridge module loads into the
+   same per-broker bundle process as the IBKR broker bridge.
 
 **Rollback.** If anything misbehaves, revert `mode` to `observe` (or
-`enabled: false`) and restart. The legacy adapter is unmodified through
-M13-07; only M13-08/M13-09 delete it.
+`enabled: false`) and restart. The legacy adapter is unmodified until the
+`only`-stage cutover removes it.
+
+> **Note (Option B).** This MD-bridge ramp is still default-off
+> (`nt_bridge.enabled: false`) and remains the operator's path. It is distinct
+> from the **order/execution** broker migration, which has landed —
+> order submission now runs entirely through the per-broker NT bundles over
+> NATS ([broker-integration.md](tdd/broker-integration.md)); the legacy
+> in-process order adapters are gone.
 
 ### Verify
 
@@ -248,7 +255,10 @@ node -e "JSON.parse(require('fs').readFileSync('config/market-calendar.json'))"
 
 - [ ] All four config files present and valid JSON
 - [ ] `config/market-calendar.json` has current year's holidays
-- [ ] `config/portfolios.json` mode is `paper_local`
+- [ ] `config/portfolios.json` sets `mode` **explicitly** on the main
+      portfolio. QF-337: an unset `mode` now defaults to `manual` (every
+      order parks for operator approval) and logs a startup warning. Set
+      `"mode": "paper_local"` to auto-approve (the pre-QF-337 default).
 
 ---
 
@@ -273,9 +283,9 @@ A long-running container on the home server (`your-server.example.com`) fires fo
 | `ingest-eia`   | Wednesdays 22:30        | EIA petroleum (post-WPSR)                                   |
 | `ingest-cftc`  | Fridays 20:00           | CFTC COT positions                                          |
 
-The container is defined as the `quantfoundry-scheduler` service in `your-ops-repo/docker-compose.yml` and built from [`Dockerfile.ingest`](../Dockerfile.ingest). The entrypoint is [`scripts/scheduler.ts`](../scripts/scheduler.ts) — edit the `JOBS` array there to change schedules.
+The container is defined as the `magpie-scheduler` service in `your-ops-repo/docker-compose.yml` and built from [`Dockerfile.ingest`](../Dockerfile.ingest). The entrypoint is [`scripts/scheduler.ts`](../scripts/scheduler.ts) — edit the `JOBS` array there to change schedules.
 
-`collect-bulk` writes to `data/chains/{symbol}-YYYY-MM.parquet` (or `s3://quantfoundry-data/chains/...` in S3 mode). For each symbol it determines missing date ranges and forward-fills to yesterday, stopping gracefully on rate limit (429) and resuming the next night. Target range: 2019-01-02 to yesterday (7+ years).
+`collect-bulk` writes to `data/chains/{symbol}-YYYY-MM.parquet` (or `s3://magpie-data/chains/...` in S3 mode). For each symbol it determines missing date ranges and forward-fills to yesterday, stopping gracefully on rate limit (429) and resuming the next night. Target range: 2019-01-02 to yesterday (7+ years).
 
 **Credit budget:** 100,000 credits/day. Each symbol costs ~560 credits for 2+ years of history (~1 credit per trading day). At this rate the collector processes ~170 symbols per night. A full 540-symbol universe with 5-year backfill takes about 8 days to complete, then the nightly job just collects yesterday's data going forward (~540 credits/night).
 
@@ -283,8 +293,8 @@ The container is defined as the `quantfoundry-scheduler` service in `your-ops-re
 
 ```bash
 # On the server
-docker compose logs -f quantfoundry-scheduler                       # tail live
-docker compose exec quantfoundry-scheduler npm run ingest -- --source fred   # force-run
+docker compose logs -f magpie-scheduler                       # tail live
+docker compose exec magpie-scheduler npm run ingest -- --source fred   # force-run
 ```
 
 ### Manual collection
@@ -307,7 +317,7 @@ DRY_RUN=1 ./scripts/collect-nightly.sh
 
 ```bash
 # Watch nightly progress (run on the server)
-docker compose logs -f quantfoundry-scheduler
+docker compose logs -f magpie-scheduler
 
 # Check what's been collected (per-symbol manifest, on the server)
 cat ~/GitHub/Magpie/data/chains/.manifest.json | python3 -m json.tool
@@ -325,19 +335,19 @@ print(f'Contracts: {sum(v.get(\"totalContracts\",0) for v in m.values()):,}')
 du -sh data/chains/
 
 # MinIO mode: list what's in the bucket
-aws s3 ls --endpoint-url https://s3.example.com s3://quantfoundry-data/chains/ | head
+aws s3 ls --endpoint-url https://s3.example.com s3://magpie-data/chains/ | head
 
 # Confirm the container is up
-docker compose ps quantfoundry-scheduler
+docker compose ps magpie-scheduler
 ```
 
 ### Fetching the catalog DB to your laptop
 
-`portfolio.duckdb` is a file-based DB that can't live writeable in MinIO. The server is the canonical writer; it mirrors a snapshot to `s3://quantfoundry-data/duckdb/portfolio.duckdb` after each rebuild. Laptops pull a read copy:
+`portfolio.duckdb` is a file-based DB that can't live writeable in MinIO. The server is the canonical writer; it mirrors a snapshot to `s3://magpie-data/duckdb/portfolio.duckdb` after each rebuild. Laptops pull a read copy:
 
 ```bash
 ./scripts/fetch-catalog.sh
-# Pulls s3://quantfoundry-data/duckdb/portfolio.duckdb → $CATALOG_DB_PATH (default ./data/portfolio.duckdb)
+# Pulls s3://magpie-data/duckdb/portfolio.duckdb → $CATALOG_DB_PATH (default ./data/portfolio.duckdb)
 ```
 
 Run this before `scripts/signal-health.ts` if you want the latest server-rebuilt catalog.
@@ -399,6 +409,61 @@ CLIs and scripts pick it up automatically. The M10-1 cutover supersedes the
 QF-191 hotfix (PR #111) that taught the old script to load `.env` and run
 against `s3://` — the new thin-client script handles both via the dispatcher.
 
+<a id="storing-the-write-token"></a>
+**Issuing the write token (one-time per machine).** The CLI scripts
+(fmp-backfill, ingest, sync-to-s3, …) read `WRITE_JOB_TOKEN` from `.env`. Mint a
+per-actor token once and store its plaintext in `.env`:
+
+```bash
+# Mint a write-job token for this host. Capture the printed plaintext —
+# it is displayed once and only the hash is persisted in the token store.
+npm run issue-write-token -- --actor "$(hostname)" \
+  --scopes 'fmp-backfill,ingest,sync-to-s3,databento-pull,collect-bulk'
+```
+
+**Current setup (`.env.example`, post-QF-354).** The public-release layout
+(commit `0dde1c0`, QF-354) ships `.env.example` instead of a 1Password-injected
+template — there is no `.env.tpl` and no `op inject` step. Copy the example, then
+paste the minted plaintext directly:
+
+```bash
+cp .env.example .env          # first time only
+# Edit .env and set:
+#   WRITE_JOB_TOKEN=<minted-token>
+```
+
+The Schwab refresh-token rotation is handled the same way: `node
+scripts/schwab-auth.js` writes `SCHWAB_REFRESH_TOKEN=` into `.env` for you (no
+`op inject`). After editing, restart the server and confirm the token works with
+a round-trip — e.g. `npm run fmp-backfill -- --help` against the running server,
+or a small dispatch.
+
+**Legacy setup (`.env.tpl` + `op inject`, pre-QF-354).** Only applies if you
+kept a pre-public-release machine whose `.env` is still rendered with
+`op inject -i .env.tpl -o .env`. That template's `WRITE_JOB_TOKEN` line resolves
+a 1Password item you must create yourself — the M10 cutover added the template
+reference (`op://Personal/Magpie Write Token/plaintext`) but does **not**
+mint the vault item. A missing item makes `op inject` fail with `could not
+resolve item UUID` and leaves `.env` stale, so a freshly rotated Schwab refresh
+token never reaches the server. Create the item once, matching the title the
+template actually references:
+
+```bash
+# The .env.tpl shipped at M10-1 (commit cf0055c) reads
+#   op://Personal/Magpie Write Token/plaintext
+# Create that item and store the minted token under a `plaintext` field.
+op item create --category=password --title='Magpie Write Token' --vault=Personal
+op item edit 'Magpie Write Token' --vault=Personal 'plaintext[password]=<minted-token>'
+
+# Re-render .env and restart the server.
+op inject -i .env.tpl -o .env
+```
+
+Keep the title in the template and the 1Password item in sync: if you renamed
+the item to `Magpie Write Token` (post-rebrand), update the `op://…` path in your
+local `.env.tpl` to match. The recommended path off legacy is to migrate to the
+current `.env.example` workflow above and drop the template entirely.
+
 **M10-5: cron generator cutover.** Feed-refresh cron entries no longer shell
 out to the orchestrate CLI. `generateCronEntries()` now emits
 `curl -X POST /api/write-jobs` lines targeting the `orchestrate-refresh` kind:
@@ -412,6 +477,14 @@ CRON_TZ=America/New_York
 The cron host needs a plaintext-token file at the path the curl line reads. The
 token-store JSON only keeps hashes; create a sibling `.token` file with the
 plaintext when you issue (or pull it from your secrets manager and mount on the host).
+
+This `.token` file is a plaintext credential on disk (with potentially broad
+scopes), so lock it down immediately after writing — only the user running the
+cron jobs should be able to read it:
+
+```bash
+chmod 600 "${WRITE_JOB_TOKEN_PATH:-data/secrets/write-job-tokens.token}"
+```
 
 `scripts/scheduler.ts` (the in-container scheduler for collect-bulk / ingest /
 sync-to-s3) is unchanged — its JOBS array invokes `npm run …` which already
@@ -445,19 +518,120 @@ is queued or running.
 Requires `FMP_API_KEY` on the server's process (not the CLI's), `DATA_URI`,
 and a `fmp-backfill`-scoped write token.
 
+### QF server deployment (M10-7 / QF-201, Option B)
+
+The deployment-topology TDD ([deployment-topology.md §4](tdd/deployment-topology.md))
+chose **Option B**: the full QF API server runs always-on on
+`your-server.example.com` (a.k.a. `swagner-server`) as the
+**`magpie-server`** compose service, holding the **sole** MinIO write
+key. The laptop is a thin client (a browser, plus IB Gateway where broker
+constraints require). This is what makes the M10-5 cron `POST /api/write-jobs`
+lines hit a live server and gives M10-6's IAM rotation a single write-capable
+process to fence.
+
+**Why a compose service (not a systemd unit):** the QF API is a long-running
+daemon that the scheduler/cron container and the Prometheus/Alloy scrapers must
+reach over a shared network — the same shape as the existing
+`magpie-scheduler` and the ops-repo `tanker-dashboard` precedents. The
+`deploy/systemd/` units are oneshot `+timer` cron jobs, not daemons (their
+README explicitly defers "the running server" to "managed separately as a
+long-running service"). So the server lands in `docker-compose.yml` as
+`magpie-server`, built from [`Dockerfile.server`](../Dockerfile.server)
+(`npm run server`, node:22-bookworm-slim — Alpine breaks duckdb, QF-167).
+
+Files: [`docker-compose.yml`](../docker-compose.yml) (`magpie-server`
+service + `magpie-server-data` volume), [`Dockerfile.server`](../Dockerfile.server),
+[`deploy/observability/prometheus.yml`](../deploy/observability/prometheus.yml)
+(adds `magpie-server:3001` to the `qf-server` scrape job).
+
+**Env / secret wiring (no secrets in git):** the service reads `.env` via
+`env_file` and pins prod invariants via `environment`:
+
+| Var                                                                    | Source                                     | Notes                                                                     |
+| ---------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------- |
+| `APP_ENV=prod`, `PORT=3001`                                            | compose `environment`                      | Pinned; override of any `.env` value.                                     |
+| `TRADING_MODE`                                                         | `.env` / shell (`${TRADING_MODE:-paper}`)  | `live` also needs broker bundles on the credential host.                  |
+| `NATS_URL`                                                             | compose `environment` (`nats://nats:4222`) | In-compose service DNS.                                                   |
+| `DATA_URI=s3://magpie-data`                                      | `.env`                                     | The MinIO lake.                                                           |
+| `S3_ENDPOINT_URL`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`       | `.env`                                     | The **write** key (M10-6 target). Never commit.                           |
+| `CATALOG_DB_PATH=/data/portfolio.duckdb`                               | compose `environment`                      | On the persistent `magpie-server-data` volume (single-writer file). |
+| `WRITE_JOB_TOKEN_PATH`, `FMP_API_KEY`, `SLACK_WEBHOOK_URL`, `MD_TOKEN` | `.env`                                     | As needed per feature.                                                    |
+| `LOG_FILE=/data/logs/server.log`                                       | compose `environment`                      | Tailed by Alloy for log shipping.                                         |
+
+The token _store_ (`data/secrets/write-job-tokens.json`) and any plaintext
+`.token` file for the M10-5 cron lines are mounted/created on the host, not
+baked into the image (`data/secrets/` is gitignored).
+
+> ⚠️ **Operator-only — runs on `swagner-server`, not from CI / this repo.**
+> The steps below cannot be executed or verified from the development
+> checkout; they are the deploy handoff. They assume a clone of this repo and a
+> filled-in `.env` (with the **write** S3 key) on the server.
+
+```bash
+# On your-server.example.com (swagner-server), in the repo clone:
+
+# 1. Build + start the always-on QF API server.
+docker compose up -d --build magpie-server
+
+# 2. Confirm it is healthy (compose healthcheck hits /api/status).
+docker compose ps magpie-server          # STATUS should show "healthy"
+docker compose logs -f magpie-server      # watch the startup sequence
+
+# 3. Confirm /api/status is reachable on 3001 from the host.
+curl -fsS http://localhost:3001/api/status
+
+# 4. Confirm the scheduler / cron container can reach it over the network
+#    (this is the M10-5 path — the curl-POST cron lines target this server).
+docker compose exec magpie-scheduler \
+  curl -fsS http://magpie-server:3001/api/status
+
+# 5. (M10-6) After IAM rotation, confirm the server still writes and that
+#    no other client can. From the server, submit a tiny write-job and poll:
+curl -fsS -H "Authorization: Bearer $(cat ${WRITE_JOB_TOKEN_PATH:-data/secrets/write-job-tokens.token})" \
+  -H "Content-Type: application/json" -X POST http://localhost:3001/api/write-jobs \
+  -d '{"kind":"orchestrate-refresh","params":{"source":"fred","args":{"series":"DGS10"},"output":"macro/fred/_health.parquet"}}'
+# Then verify a read-only laptop key is rejected on a direct MinIO PutObject.
+```
+
+**Interaction with M10-6 IAM rotation:** once `magpie-server` is the
+only process started with the write key, M10-6 issues a write-scoped MinIO key
+bound to this service and re-issues read-only keys to every other client
+(laptop dev, quant-optimizer, ad-hoc tools). Verification that no other process
+can write is an M10-6 operator step (see migration step 3 in the topology TDD).
+
+**Laptop / dev note:** do **not** bring `magpie-server` up on a developer
+laptop alongside `npm start` — they race for port 3001 and the DuckDB file. Use
+`npm start` for local dev; `magpie-server` is the server-only deploy unit.
+
 ---
 
 ## 6. Starting the system
 
+There are two ways to run the server, and they are not interchangeable:
+
+- **Production** is the always-on `magpie-server` container on
+  `your-server.example.com` — see [§5 "QF server deployment"](#qf-server-deployment-m10-7--qf-201-option-b)
+  (`docker compose up -d --build magpie-server`). That is the process that
+  holds the MinIO write key and serves the built GUI bundle. Under Option B
+  ([deployment-topology.md](tdd/deployment-topology.md)) the laptop does **not**
+  run the server in prod.
+- **Local dev** is `npm start` on a developer machine, against `file://` or a
+  read-only S3 key. This is the workflow below. Do not run `npm start` and the
+  `magpie-server` container on the same host — they race for port 3001 and
+  the DuckDB file.
+
 ```bash
-# Start NATS first (if not already running)
+# Local dev. Start NATS first (if not already running)
 docker compose up -d nats
 
 # Start the trading system (server + GUI dev server)
 npm start
 ```
 
-The server runs via `tsx` (TypeScript execution) on port 3001. Vite dev server for the GUI runs on port 5173.
+In dev the server runs via `tsx` (TypeScript execution) on port 3001, and the
+Vite dev server for the GUI runs on port 5173. In prod the container runs
+`npm run server` directly and serves the pre-built GUI as static assets (no
+Vite, no 5173). The startup sequence and verify steps below apply to both.
 
 ### Startup sequence
 
@@ -505,7 +679,7 @@ curl http://localhost:3001/api/portfolio/main
 
 ## 7. Managing strategies
 
-Strategies are NT-resident — they live in the sibling `quantfoundry-strategies` repo and run inside the per-broker NT bundle (one `TradingNode` per broker, co-tenanting all strategies bound to that broker per [strategy-deployment-topology.md](tdd/strategy-deployment-topology.md)). The TS server maintains the **strategy lifecycle registry** (`server/strategy/lifecycle.ts`) which tracks each strategy's state and surfaces it to the GUI and the gate evaluator.
+Strategies are NT-resident — they live in the sibling `magpie-strategies` repo and run inside the per-broker NT bundle (one `TradingNode` per broker, co-tenanting all strategies bound to that broker per [strategy-deployment-topology.md](tdd/strategy-deployment-topology.md)). The TS server maintains the **strategy lifecycle registry** (`server/strategy/lifecycle.ts`) which tracks each strategy's state and surfaces it to the GUI and the gate evaluator.
 
 Strategy lifecycle states: `registered` → `enabled` → `running` → `paused` → `halted` → `retired`. The GUI's Strategies workspace and the API below are the operator surfaces.
 
@@ -553,7 +727,7 @@ Or via the GUI: each strategy row has explicit transition buttons (Enable / Run 
 
 ### Strategy config and overrides
 
-A strategy's parameters (entry / exit thresholds, sizing, exec-algorithm settings) live in the strategy package itself (`quantfoundry-strategies/<strategy>/config.yaml` or equivalent). Mid-run overrides — most commonly tightening an exit rule's stop threshold — go in `config/strategy_overrides.yaml` per [order-execution.md §5.1](tdd/order-execution.md#51-strategy-declared-exit-rules). Activation of an override is audit-recorded; mid-trading-day changes are intentional friction.
+A strategy's parameters (entry / exit thresholds, sizing, exec-algorithm settings) live in the strategy package itself (`magpie-strategies/<strategy>/config.yaml` or equivalent). Mid-run overrides — most commonly tightening an exit rule's stop threshold — go in `config/strategy_overrides.yaml` per [order-execution.md §5.1](tdd/order-execution.md#51-strategy-declared-exit-rules). Activation of an override is audit-recorded; mid-trading-day changes are intentional friction.
 
 ```bash
 # Inspect the strategy's current effective exit policy (declared + overrides)
@@ -570,7 +744,7 @@ curl http://localhost:3001/api/strategies/<strategy_id>/exit-policy
 
 ## 8. Running backtests
 
-Backtests run in the sibling `quant-optimizer` repo against the shared MinIO data lake. QF does not initiate backtests. Run sweeps directly via the QO CLI on the strategy adapter — see the per-strategy READMEs under `quantfoundry-strategies/`. The GUI's **Backtests** workspace surfaces resulting `wfo_results` archives via [`server/catalog/collectors/qo-runs.ts`](../server/catalog/collectors/qo-runs.ts).
+Backtests run in the sibling `quant-optimizer` repo against the shared MinIO data lake. QF does not initiate backtests. Run sweeps directly via the QO CLI on the strategy adapter — see the per-strategy READMEs under `magpie-strategies/`. The GUI's **Backtests** workspace surfaces resulting `wfo_results` archives via [`server/catalog/collectors/qo-runs.ts`](../server/catalog/collectors/qo-runs.ts).
 
 Per-run backtest metrics (Sharpe, Sortino, drawdown, etc.) for NT / QO sweeps live in `${DATA_URI}/results/qo/<sweep>/wfo_results_*.json`. The catalog collector indexes these into DuckDB so the GUI can list and drill into them without re-scanning the data lake.
 
@@ -706,10 +880,10 @@ The mechanism: stop the paper-credentialed bundle, start the live-credentialed b
 3. **Stop the paper bundle.** On the credential host (typically `your-server`):
 
    ```bash
-   systemctl --user stop quantfoundry-nt-bundle@<broker>
+   systemctl --user stop magpie-nt-bundle@<broker>
    ```
 
-   Or `docker compose stop quantfoundry-nt-bundle-<broker>` if running under compose.
+   Or `docker compose stop magpie-nt-bundle-<broker>` if running under compose.
 
 4. **Switch the bundle's `.env` to live credentials.** Edit the bundle's `.env` file (separate from QF's `.env`):
    - **IBKR**: point at the live IB Gateway port (4002 typical) instead of paper (7497). Also set `BROKER_ENV=live` so the bundle's FIRE-gate check sees the live env per [gui.md §3](tdd/gui.md#3-control-primitives).
@@ -720,10 +894,10 @@ The mechanism: stop the paper-credentialed bundle, start the live-credentialed b
 5. **Start the live bundle.**
 
    ```bash
-   systemctl --user start quantfoundry-nt-bundle@<broker>
+   systemctl --user start magpie-nt-bundle@<broker>
    ```
 
-   Watch the bundle's logs (`journalctl --user -u quantfoundry-nt-bundle@<broker> -f`) for clean broker connection — broker authentication, account snapshot on startup, no recurring reconnect errors.
+   Watch the bundle's logs (`journalctl --user -u magpie-nt-bundle@<broker> -f`) for clean broker connection — broker authentication, account snapshot on startup, no recurring reconnect errors.
 
 6. **Verify the gate is warm.** The gate plugin fails closed during rehydration on bundle start (it rebuilds its in-flight-intent state from `audit_intents` before accepting any RPCs per [risk-gate-architecture.md §5.2](tdd/risk-gate-architecture.md#52-restart-rehydration)). The GUI shows a "gate warming up" banner during this window. See [§13 Troubleshooting → Gate warming up](#13-troubleshooting) for the operator playbook if it doesn't clear quickly.
 
@@ -847,9 +1021,9 @@ indexed in `docs/tdd/observability.md §6` once M15-2 ships.
 
 Dashboards are provisioned from
 `deploy/observability/grafana/provisioning/dashboards/`. The starter
-set (5 dashboards — trading pipeline health, broker & reconciliation,
-portfolio, signal orchestrator freshness, logs explorer with a
-`correlation_id` template variable) ships in M15-3 / QF-277. Until
+set (trading pipeline health, broker & reconciliation, portfolio, and a
+logs explorer with a `correlation_id` template variable) ships in
+M15-3 / QF-277. Until
 then, the Grafana UI is empty but functional; **Explore → Loki** and
 **Explore → Prometheus** work the moment the stack is up.
 
@@ -864,10 +1038,42 @@ Retention (per the 2026-05-20 decision):
 - **Prometheus:** 365 days warm (filesystem). Configured via the
   `--storage.tsdb.retention.time=8760h` CLI flag in
   `docker-compose.yml`.
-- **Older than 365 days:** offsite cold storage via the M15-5 /
-  QF-279 MinIO backup job (write-jobs handler
-  `backup-observability`). Until that ships, older logs / metrics
-  are purged.
+- **Offsite DR:** daily snapshots of the Loki + Prometheus filesystem
+  stores to MinIO via the M15-5 / QF-279 `backup-observability`
+  write-jobs handler (see [backup + restore](#observability-backup-and-restore)
+  below). This is disaster recovery, not the primary archive — the warm
+  filesystem stores above remain the source of truth.
+
+##### Observability backup and restore
+
+The `backup-observability` write-jobs handler snapshots the local
+observability stores to MinIO and prunes old snapshots. It reuses the
+M10 write-jobs chassis, so each run is visible in **Settings → Jobs**.
+
+| Concern     | Value                                                                                                                                              |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cadence     | Daily 03:00 ET — `magpie-scheduler` container cron (`scripts/scheduler.ts`) or the `magpie-backup-observability` systemd timer.        |
+| Sources     | `deploy/observability/data/loki/` and `deploy/observability/data/prometheus/`.                                                                     |
+| Destination | MinIO `s3://<bucket>/observability/<YYYY-MM-DD>/{loki,prometheus}/` (`OBSERVABILITY_BACKUP_BUCKET`, falls back to `S3_BUCKET`).                    |
+| Retention   | 30 daily snapshots, then expired (older date-prefixes are `aws s3 rm`'d by the handler).                                                           |
+| On-demand   | `npm run backup-observability` (CLI thin client) or `POST /api/write-jobs {kind: "backup-observability"}` from the operator GUI (Settings → Jobs). |
+
+Restore procedure (offsite DR — restores a chosen daily snapshot onto a
+fresh host):
+
+1. Stop the observability stack: `npm run observability:down`.
+2. Pick a snapshot date from MinIO:
+   `aws s3 ls s3://<bucket>/observability/ --endpoint-url <S3_ENDPOINT_URL>`.
+3. Restore each store into its bind-mount path (clear any stale local
+   data first):
+   - `aws s3 sync s3://<bucket>/observability/<date>/loki/ deploy/observability/data/loki/ --endpoint-url <S3_ENDPOINT_URL>`
+   - `aws s3 sync s3://<bucket>/observability/<date>/prometheus/ deploy/observability/data/prometheus/ --endpoint-url <S3_ENDPOINT_URL>`
+4. Fix ownership so the containers can read/write the restored data
+   (Loki/Prometheus run as non-root in their images).
+5. Restart the stack: `npm run observability:up`.
+6. Verify in Grafana: **Explore → Loki** and **Explore → Prometheus**
+   return data up to the snapshot date; the gap between the snapshot and
+   "now" is expected and unrecoverable (DR is point-in-time).
 
 #### Audit chain (`data/portfolio.duckdb`)
 
@@ -878,8 +1084,8 @@ write-jobs handler ([write-jobs.md §8](tdd/write-jobs.md#8-registered-handlers)
 
 | Concern     | Value                                                                                                |
 | ----------- | ---------------------------------------------------------------------------------------------------- |
-| Cadence     | Nightly (`0 2 * * *`) via the `quantfoundry-scheduler` container's cron.                             |
-| Destination | MinIO `quantfoundry-backups/audit/`.                                                                 |
+| Cadence     | Nightly (`0 2 * * *`) via the `magpie-scheduler` container's cron.                             |
+| Destination | MinIO `magpie-backups/audit/`.                                                                 |
 | Naming      | `portfolio_<YYYYMMDD>_<HHMMSS>.duckdb`.                                                              |
 | Retention   | 30 daily + 12 monthly (bucket lifecycle policy).                                                     |
 | On-demand   | `POST /api/write-jobs {kind: "backup-audit-chain"}` from the operator GUI (Settings → Data → Audit). |
@@ -888,7 +1094,7 @@ Restore procedure: see [cross-cutting.md §7 Audit-chain backup and
 restore](tdd/cross-cutting.md#audit-chain-backup-and-restore). Summary:
 
 1. Stop the TS server.
-2. `aws s3 cp s3://quantfoundry-backups/audit/portfolio_<chosen>.duckdb data/portfolio.duckdb`.
+2. `aws s3 cp s3://magpie-backups/audit/portfolio_<chosen>.duckdb data/portfolio.duckdb`.
 3. Verify integrity with `duckdb data/portfolio.duckdb "SELECT COUNT(*) FROM audit_fills;"`.
 4. Restart the server; let position-reconciliation surface broker drift on its next cycle.
 5. Operator inspects drift entries and either adds missing fills or accepts the broker's view.
@@ -947,7 +1153,7 @@ See [tdd/alerts.md](tdd/alerts.md) for the live alert routing (channels, rules, 
 
 ### Weekly
 
-- [ ] Verify Schwab refresh token hasn't expired (if Schwab is enabled). The adapter logs a warning if < 24h until expiry.
+- [ ] Verify Schwab refresh token hasn't expired (if Schwab is enabled). The adapter logs a warning if < 24h until expiry. Rotate with `node scripts/schwab-auth.js` — on the current `.env.example` setup the script writes the new token straight into `.env`. (Legacy `.env.tpl` machines only: if the `op inject` render fails with `could not resolve item UUID`, the write-token 1Password item is missing — see [Issuing the write token](#storing-the-write-token).)
 - [ ] Check disk usage: `du -sh data/chains/ data/results/ data/portfolio.duckdb`
 - [ ] Review server logs for repeated warnings
 
@@ -964,22 +1170,17 @@ See [tdd/alerts.md](tdd/alerts.md) for the live alert routing (channels, rules, 
 
 ---
 
-## 12.5. Rollback procedures (polyglot migration)
+## 12.5. Rollback procedures (retired)
 
-Consolidated from the per-phase rollback paragraphs in [polyglot-migration-tdd.md §10](polyglot-migration-tdd.md). Each phase shipped with a rollback path; this section is the operator-side index. Phases 0–5 are completed; some rollbacks are now historical, but the still-actionable ones are flagged.
-
-| Phase                                                                       | Status                                      | Rollback path                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | When to invoke                                                                                                                                                                                                                                                                              |
-| --------------------------------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Phase 0 — mirrors + CI scaffolding**                                      | Historical                                  | Remove mirrors from CI config; revert TDD changes. No production surface.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Only if a mirror operational issue blocks the project. Otherwise no-op.                                                                                                                                                                                                                     |
-| **Phase 1 — `quantfoundry-quant` Rust crate**                               | Historical                                  | Remove the crate publication from the mirror; existing JS callers still work (TS port + JS lived side-by-side during the cutover).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Only if the equivalence harness reveals unreconcilable divergence. In practice the harness was the gate.                                                                                                                                                                                    |
-| **Phase 1.5 — corrected CDF cutover**                                       | Historical (still highest-stakes if redone) | Revert the internal-caller switch in `quantfoundry-quant` (one-line PR per caller); close the equivalence-framework expected-divergence entry as "transition aborted"; restore pre-cutover calibration baselines from the model registry; mark affected strategies as `paused` in the lifecycle registry. The deprecated `cdf` was kept available specifically to make this rollback single-step; QF-140 (2026-05-19) removed it as part of Phase 6 decommissioning, so a future Phase 1.5 redo would not have the same single-step revert.                                                                                                                | Roll back if more than two promoted strategies fail their post-cutover paper cycle for reasons attributable to the math change. Half-corrected math is worse than fully-buggy math.                                                                                                         |
-| **Phase 2 — signal SDK + worker auth + orchestrator skeleton**              | Historical                                  | Disable the server's bearer-auth requirement (config flag, set `QF_SIGNAL_AUTH_REQUIRED=0`); revert `vol-forecast-spy-1d` to its pre-SDK code; leave the orchestrator skeleton in place (no production callers).                                                                                                                                                                                                                                                                                                                                                                                                                                           | Only if the bearer-auth path causes measurable signal-loss vs the unauthenticated baseline.                                                                                                                                                                                                 |
-| **Phase 3 — NautilusTrader for backtests**                                  | Historical — superseded by Phase 6          | The original rollback (redirect `server/backtest/runner.ts` to call `engine.js`; mark migrated Python strategies as `paused`) **no longer applies** — `engine.js` + the runner + the JS strategies are deleted (QF-137). The current backtest path lives in the sibling quant-optimizer repo entirely; QF does not own a backtest runner anymore. If QO produces unreliable results, "rolling back" means pinning QO to an earlier commit in `research/quant-optimizer/` — there is no QF-side fallback. Half-corrected backtest math is best handled by halting promotion (mark candidate strategies `paused`) rather than rebuilding the retired runner. | Roll back if QO produces results that materially differ from manual NT BacktestEngine runs and the operator can't reproduce the divergence. Otherwise pin-QO-to-prior-commit is the only path.                                                                                              |
-| **Phase 4 — broker delegation for live (Schwab NT, IBKR-NT pending QF-19)** | **Active**                                  | Switch the relevant `BrokerAdapter` from the NT-adapter implementation back to the legacy `@stoqey/ib` adapter at `server/order/adapters/ibkr.ts`. The Rust sidecar can be left running idle. Audit chain remains coherent because both paths write fills to the same DuckDB table.                                                                                                                                                                                                                                                                                                                                                                        | Roll back if any production fill diverges materially from what the legacy path would have produced, _or_ if the operator can't reproduce the divergence after investigation.                                                                                                                |
-| **Phase 5 — LP optimizer (Rust+WASM)**                                      | **Active**                                  | Ship the previous build's `javascript-lp-solver`-based Web Worker; leave the Rust crate in the mirror unused. The PyO3 binding has no automated-strategy callers yet so its rollback is no-op.                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Roll back if the WASM module produces solutions that differ from the JS solver in ways that affect Greek Builder UX. **Note:** QF-139 (2026-05-19) dropped `javascript-lp-solver` from `dependency-pins.md`; restoring it would require re-admitting via the dependency-admission workflow. |
-| **Phase 6 — hardening + decommissioning**                                   | **In flight**                               | Cherry-pick a deletion's revert from git history. To "un-decommission" any dropped dep: re-admit to the mirror via the admission workflow.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Don't enter Phase 6 cleanup tickets unless the criteria for that specific item are met. Individual deletions can be reverted one at a time; treat the whole phase as the irreversible step.                                                                                                 |
-
-For the original rationale + decision criteria per phase, see [polyglot-migration-tdd.md §10](polyglot-migration-tdd.md#10-sequencing-and-phases).
+> The per-phase **polyglot-migration** rollback index that lived here has been
+> removed. That migration has fully landed: execution moved into the per-broker
+> NautilusTrader bundles, so the legacy in-process broker adapters
+> (`server/order/adapters/ibkr.ts`, the `@stoqey/ib` path), the JS backtest
+> engine, the signal SDK / orchestrator skeleton, and the Rust execution
+> sidecar it described no longer exist. The infra-level rollback for those is
+> ordinary `git revert` of the landing commit. The one rollback procedure that
+> is still operationally live — rolling back or hot-swapping a **strategy** in a
+> running prod bundle — is §12.6 below.
 
 ---
 
@@ -1014,11 +1215,11 @@ Use when hot-swap isn't viable: new strategy code, new transitive deps, or a dee
 
 **Procedure.**
 
-1. Pre-stage: build the new bundle image in CI. Confirm `cd research/quantfoundry-prod-bundle && uv sync && uv run pytest` is green.
+1. Pre-stage: build the new bundle image in CI. Confirm `cd research/magpie-prod-bundle && uv sync && uv run pytest` is green.
 2. In QF GUI, **halt every co-tenant strategy** on the affected broker (per-strategy Halt buttons, see [order-execution.md §5.3](tdd/order-execution.md#53-per-strategy-operator-halt-block-new-submissions)) so no new submissions fly during the restart. Then **manually liquidate any open positions** that you don't trust to survive a cold restart — multi-select on the position view + typed `LIQUIDATE` ([order-execution.md §5.2](tdd/order-execution.md#52-operator-manual-liquidation)). The framework no longer auto-closes — operator decides per position whether to flatten before restart or trust the strategy's §6 state-recovery flow.
-3. Stop the prod bundle process: `systemctl stop quantfoundry-nt-bundle@<broker>` (or your equivalent unit name).
+3. Stop the prod bundle process: `systemctl stop magpie-nt-bundle@<broker>` (or your equivalent unit name).
 4. Deploy the new image.
-5. Start the unit: `systemctl start quantfoundry-nt-bundle@<broker>`.
+5. Start the unit: `systemctl start magpie-nt-bundle@<broker>`.
 6. Launcher reads the lifecycle registry for enabled strategies, rebuilds the TradingNode with all of them, reconnects to the broker.
 7. Each strategy goes through its §6 state-recovery flow: rebuild positions from broker API, restore decision state from `data/strategy_state/`, warm up indicators from market data history.
 8. Verify in GUI: reconciliation passes for every portfolio, no `audit_orders` rows in unexpected states, no log warnings for "handler over budget" beyond the warm-up window.
@@ -1030,7 +1231,7 @@ Total downtime is typically minutes (broker reconnect + warm-up). The halt + sel
 The prod bundle's `uv.lock` pins each strategy package by version. To roll back one strategy:
 
 ```
-# in research/quantfoundry-prod-bundle/
+# in research/magpie-prod-bundle/
 uv add --upgrade-package cl-scalp==0.3.2  # pin the older version
 uv lock                                    # regenerate lockfile
 # review the diff, ensure no other deps moved
@@ -1133,7 +1334,7 @@ On bundle restart, the QF risk-gate plugin **fails closed** (rejects all orders,
 1. **What the operator sees:** Banner reads "Gate warming up — `<broker>` strategies blocked from submitting until rehydration completes." Strategies bound to the broker show `gate_unavailable_open_blocked` on any submission attempt.
 2. **Normal duration:** under 5 seconds on a healthy machine with NATS local. Anything beyond 30 seconds is a problem.
 3. **If the banner persists:**
-   - [ ] Check the bundle logs (`journalctl --user -u quantfoundry-nt-bundle@<broker> -f`) for the rehydration step — there should be a `gate.rehydrate.complete` event.
+   - [ ] Check the bundle logs (`journalctl --user -u magpie-nt-bundle@<broker> -f`) for the rehydration step — there should be a `gate.rehydrate.complete` event.
    - [ ] Check `audit_intents` is queryable (DuckDB issues above) — corruption would block rehydration entirely.
    - [ ] Check NATS connectivity — the gate cannot signal "ready" without it.
    - [ ] If rehydration is genuinely stuck, halt the affected strategies before unsticking; the gate's fail-closed posture is preferable to letting submissions through against unrehydrated cross-strategy state.

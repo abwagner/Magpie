@@ -7,11 +7,16 @@
 // matches a shape already declared in src/types/ are typed precisely.
 
 import type { Quote, Contract } from "../types/market-data.js";
-import type { Order, Fill, OrderStatus } from "../types/order.js";
+import type { Order, OrderStatus } from "../types/order.js";
 import type { PortfolioSnapshot } from "../types/portfolio.js";
 import type { Strategy, LifecycleAction } from "../types/strategy.js";
 import type { RiskLimits } from "../types/portfolio.js";
-import type { RiskLimitsConfig, WsMessage } from "../types/ws.js";
+import type {
+  RiskLimitsConfig,
+  WorkspaceLayoutOverride,
+  WorkspaceLayoutsConfig,
+  WsMessage,
+} from "../types/ws.js";
 
 interface ImportMetaEnv {
   readonly VITE_API_URL?: string;
@@ -303,6 +308,14 @@ export const getRiskLimits = (): Promise<RiskLimitsConfig> => get("/api/risk/lim
 export const setRiskLimits = (portfolioId: string, limits: RiskLimits): Promise<RiskLimitsConfig> =>
   put(`/api/risk/limits/${encodeURIComponent(portfolioId)}`, limits);
 
+// QF-346: drag-resized workspace panel layouts.
+export const getWorkspaceLayouts = (): Promise<WorkspaceLayoutsConfig> => get("/api/gui/layouts");
+export const setWorkspaceLayout = (
+  workspaceId: string,
+  override: WorkspaceLayoutOverride,
+): Promise<WorkspaceLayoutsConfig> =>
+  put(`/api/gui/layouts/${encodeURIComponent(workspaceId)}`, override);
+
 // Strategy lifecycle
 export const listStrategies = (): Promise<Strategy[]> => get("/api/strategies");
 export const registerStrategy = (input: {
@@ -376,6 +389,29 @@ export interface SchwabAccount {
   type?: string;
 }
 export const getAccounts = (): Promise<{ accounts: SchwabAccount[] }> => get("/api/accounts");
+
+// QF-62: Trading accounts management (QF-248 API)
+export interface Account {
+  id: string;
+  label: string;
+  enabled: boolean;
+  broker: string;
+  last_sync_at: string | null;
+  sync_status: "healthy" | "degraded" | "disconnected";
+}
+
+export const listAccounts = (): Promise<{ accounts: Account[] }> => get("/api/accounts");
+export const createAccount = (input: {
+  id: string;
+  label?: string;
+  enabled?: boolean;
+}): Promise<{ account: Account; restart_required?: boolean }> => post("/api/accounts", input);
+export const disableAccount = (
+  accountId: string,
+): Promise<{ account: Account; restart_required?: boolean }> =>
+  post(`/api/accounts/${encodeURIComponent(accountId)}/disable`);
+export const relinkAccount = (accountId: string): Promise<{ redirect_url: string; account_id: string }> =>
+  post(`/api/accounts/${encodeURIComponent(accountId)}/re-link`);
 
 // Market Data
 export const getMarketDataStatus = (): Promise<unknown> => get("/api/market-data/status");
@@ -578,6 +614,10 @@ export const api = {
   getSources,
   getPositions,
   getAccounts,
+  listAccounts,
+  createAccount,
+  disableAccount,
+  relinkAccount,
   getPortfolio,
   getPortfolioSnapshots,
   systemKill,
@@ -592,6 +632,8 @@ export const api = {
   getTradeJournal,
   getRiskLimits,
   setRiskLimits,
+  getWorkspaceLayouts,
+  setWorkspaceLayout,
   listStrategies,
   registerStrategy,
   transitionStrategy,

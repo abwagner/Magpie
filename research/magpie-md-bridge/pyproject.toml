@@ -1,0 +1,36 @@
+[project]
+name = "magpie-md-bridge"
+version = "0.0.1"
+description = "Market-data NT bridge — Python NATS service fronting Schwab + IBKR market-data adapters for the QF TS server. M13 design at docs/tdd/market-data-via-nt.md."
+requires-python = ">=3.13"
+dependencies = [
+  # NT is the IBKR side's data engine. The Schwab subpackage does not import
+  # NT (its streamer is bespoke) but the IBKR subpackage uses
+  # `nautilus_trader.adapters.interactive_brokers.InteractiveBrokersDataClient`.
+  # Pin >=1.227 — the M13-01 spike validated against 1.227.0; raise the floor
+  # if M13-06 needs a newer feature.
+  "nautilus-trader[ib]>=1.227.0",
+  # NATS-RPC bridge — same client + pin as magpie-schwab-nt's QF-237
+  # bridge and magpie-ibkr-nt's QF-240 bridge.
+  "nats-py>=2.7.0",
+  # Wire types live in magpie-schwab-nt today (broker-agnostic
+  # BrokerExecReport / BrokerOrderStatus / BrokerPosition). The MD wire types
+  # are added to this package in M13-03 and live alongside the bridge code.
+  "magpie-schwab-nt",
+  # Shared NATS subject builders (QF-335) — the marketdata.* subjects.
+  "magpie-subjects",
+]
+
+[tool.uv.sources]
+magpie-schwab-nt = { workspace = true }
+magpie-subjects = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/magpie_md_bridge"]
+
+[tool.mypy]
+strict = true

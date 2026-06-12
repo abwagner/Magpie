@@ -146,4 +146,18 @@ describe("ws-state", () => {
     expect(msg.data.closing_intent_id).toBe("intent-abc");
     expect(msg.data.strategy_id).toBe("alpha");
   });
+
+  it("pushWorkspaceLayouts broadcasts workspace_layout config", () => {
+    const client = mockClient();
+    const ws = createStateWebSocket(server, logger, mockWsServerFactory(client));
+    ws.pushWorkspaceLayouts({
+      version: 1,
+      layouts: { operate: { rows: "1fr 1fr", cols: "320px 1fr" } },
+    });
+
+    expect(client.sent).toHaveLength(1);
+    const msg = JSON.parse(client.sent[0]!);
+    expect(msg.type).toBe("workspace_layout");
+    expect(msg.data.layouts.operate).toEqual({ rows: "1fr 1fr", cols: "320px 1fr" });
+  });
 });

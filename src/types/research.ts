@@ -1,8 +1,8 @@
 // ── Research orchestrator wire types ─────────────────────────────────
 // TS mirrors of the pydantic models in
-// research/quantfoundry-research/src/quantfoundry_research/config.py
+// research/magpie-research/src/magpie_research/config.py
 // and the event shapes published over NATS by
-// research/quantfoundry-research/src/quantfoundry_research/events.py.
+// research/magpie-research/src/magpie_research/events.py.
 //
 // The orchestrator's OpenAPI schema at /openapi.json is authoritative;
 // when fields drift these declarations need to follow. A schema-diff
@@ -71,7 +71,7 @@ export interface JobList {
 // ── Wire envelopes (NATS) ──────────────────────────────────────────
 
 // Subjects published by the orchestrator (mirrors
-// quantfoundry_research/nats.py).
+// magpie_research/nats.py).
 export const RESEARCH_STATUS_SUBJECT_PREFIX = "research.jobs.status.";
 export const RESEARCH_RESULT_SUBJECT_PREFIX = "research.jobs.result.";
 export const DATA_WRITE_RESULTS_SUBJECT = "data.write.results";

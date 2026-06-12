@@ -11,51 +11,20 @@
 // market-data side.
 
 // ── Types ──────────────────────────────────────────────────────────
+// Position shapes + the categorization parser live in the shared
+// module (QF-272) so the NT bridge path and this REST path produce
+// identical /api/positions output. Re-exported here for back-compat
+// with existing importers.
 
-export interface OptionPosition {
-  symbol: string;
-  underlying: string;
-  side: "call" | "put";
-  strike: number;
-  expiration: string;
-  quantity: number;
-  averageCost: number;
-  marketValue: number;
-  dayPnl: number;
-  unrealizedPnl: number;
-  delta: number | null;
-  gamma: number | null;
-  theta: number | null;
-  vega: number | null;
-}
+import {
+  parseSchwabAccountSnapshot,
+  type EquityPosition,
+  type FuturesPosition,
+  type OptionPosition,
+  type SchwabPositions,
+} from "../positions/parse-schwab-positions.js";
 
-export interface EquityPosition {
-  symbol: string;
-  quantity: number;
-  averageCost: number;
-  marketValue: number;
-  dayPnl: number;
-  unrealizedPnl: number;
-}
-
-export interface FuturesPosition {
-  // Full contract symbol (e.g. "/CLM26"). Contract month is encoded
-  // in the third character: F G H J K M N Q U V X Z.
-  symbol: string;
-  // Root (e.g. "/CL"). Useful for grouping all CL contract months.
-  root: string;
-  quantity: number;
-  averageCost: number;
-  marketValue: number;
-  dayPnl: number;
-  unrealizedPnl: number;
-}
-
-export interface SchwabPositions {
-  options: OptionPosition[];
-  equities: EquityPosition[];
-  futures: FuturesPosition[];
-}
+export type { EquityPosition, FuturesPosition, OptionPosition, SchwabPositions };
 
 // ── Auth (shared convention with market-data adapter) ─────────────
 
@@ -136,150 +105,6 @@ async function getAccountHash(): Promise<string> {
   return cachedAccountHash;
 }
 
-// ── Position parsing ──────────────────────────────────────────────
-
-function parseOccSymbol(
-  occ: string,
-): { underlying: string; expiration: string; side: "call" | "put"; strike: number } | null {
-  // OCC format: "SPY   260425P00638000" → underlying=SPY, exp=2026-04-25, side=put, strike=638
-  const trimmed = occ.trim();
-  const match = trimmed.match(/^(\w+)\s+(\d{6})([CP])(\d{8})$/);
-  if (!match) return null;
-  const [, underlying, dateStr, pc, strikeStr] = match;
-  const yy = dateStr!.slice(0, 2);
-  const mm = dateStr!.slice(2, 4);
-  const dd = dateStr!.slice(4, 6);
-  return {
-    underlying: underlying!,
-    expiration: `20${yy}-${mm}-${dd}`,
-    side: pc === "C" ? "call" : "put",
-    strike: parseInt(strikeStr!, 10) / 1000,
-  };
-}
-
-function parseFuturesSymbol(symbol: string): string {
-  // Schwab futures: "/CLM26" → "/CL", "./CLM26" → "/CL"
-  const cleaned = symbol.replace(/^\./, "");
-  const match = cleaned.match(/^(\/\w+)/);
-  return match ? match[1]! : cleaned;
-}
-
-function parseFuturesOptionSymbol(inst: Record<string, unknown>): {
-  underlying: string;
-  expiration: string;
-  side: "call" | "put";
-  strike: number;
-} {
-  // Schwab futures options instrument fields:
-  // symbol: "./CLM26 C85" or similar, putCall: "CALL"/"PUT",
-  // strikePrice: 85, expirationDate: "2026-05-14"
-  const symbol = (inst.symbol as string) ?? "";
-  const underlying = parseFuturesSymbol(symbol.split(/\s/)[0] ?? symbol);
-  const putCall = (inst.putCall as string) ?? "";
-  const strike = (inst.strikePrice as number) ?? 0;
-  const expDate = (inst.expirationDate as string) ?? "";
-  // expirationDate may be ISO "2026-05-14T..." or "2026-05-14"
-  const expiration = expDate.slice(0, 10);
-
-  return {
-    underlying,
-    expiration,
-    side: putCall.toUpperCase().startsWith("P") ? "put" : "call",
-    strike,
-  };
-}
-
-function parsePositions(accountData: unknown): SchwabPositions {
-  const options: OptionPosition[] = [];
-  const equities: EquityPosition[] = [];
-  const futures: FuturesPosition[] = [];
-
-  const raw = accountData as Record<string, unknown>;
-  // Schwab may return under "securitiesAccount" or directly contain "positions"
-  const acct = (raw.securitiesAccount ?? raw) as Record<string, unknown>;
-  const positions = (acct?.positions ?? []) as Array<Record<string, unknown>>;
-
-  for (const pos of positions) {
-    const inst = pos.instrument as Record<string, unknown> | undefined;
-    if (!inst) continue;
-
-    const assetType = inst.assetType as string;
-    const longQty = (pos.longQuantity as number) ?? 0;
-    const shortQty = (pos.shortQuantity as number) ?? 0;
-    const quantity = longQty - shortQty;
-    const avgCost = (pos.averagePrice as number) ?? 0;
-    const mktVal = (pos.marketValue as number) ?? 0;
-    const dayPnl = (pos.currentDayProfitLoss as number) ?? 0;
-    const isOptionLike = assetType === "OPTION" || assetType === "FUTURE_OPTION";
-    const multiplier = isOptionLike ? 100 : 1;
-    const unrealizedPnl = mktVal - avgCost * Math.abs(quantity) * multiplier;
-
-    if (assetType === "OPTION") {
-      const occSym = (inst.symbol as string) ?? "";
-      const parsed = parseOccSymbol(occSym);
-      const putCall = (inst.putCall as string) ?? "";
-
-      options.push({
-        symbol: occSym,
-        underlying: parsed?.underlying ?? (inst.underlyingSymbol as string) ?? "",
-        side: parsed?.side ?? (putCall.toLowerCase().startsWith("p") ? "put" : "call"),
-        strike: parsed?.strike ?? 0,
-        expiration: parsed?.expiration ?? "",
-        quantity,
-        averageCost: avgCost,
-        marketValue: mktVal,
-        dayPnl,
-        unrealizedPnl,
-        delta: null,
-        gamma: null,
-        theta: null,
-        vega: null,
-      });
-    } else if (assetType === "FUTURE_OPTION") {
-      const parsed = parseFuturesOptionSymbol(inst);
-
-      options.push({
-        symbol: (inst.symbol as string) ?? "",
-        underlying: parsed.underlying,
-        side: parsed.side,
-        strike: parsed.strike,
-        expiration: parsed.expiration,
-        quantity,
-        averageCost: avgCost,
-        marketValue: mktVal,
-        dayPnl,
-        unrealizedPnl,
-        delta: null,
-        gamma: null,
-        theta: null,
-        vega: null,
-      });
-    } else if (assetType === "FUTURE") {
-      const fullSymbol = (inst.symbol as string) ?? "";
-      futures.push({
-        symbol: fullSymbol,
-        root: parseFuturesSymbol(fullSymbol),
-        quantity,
-        averageCost: avgCost,
-        marketValue: mktVal,
-        dayPnl,
-        unrealizedPnl,
-      });
-    } else {
-      equities.push({
-        symbol: (inst.symbol as string) ?? "",
-        quantity,
-        averageCost: avgCost,
-        marketValue: mktVal,
-        dayPnl,
-        unrealizedPnl,
-      });
-    }
-  }
-
-  return { options, equities, futures };
-}
-
 // ── Account listing ───────────────────────────────────────────────
 
 export interface SchwabAccount {
@@ -342,13 +167,7 @@ export async function fetchSchwabPositions(accountHash?: string): Promise<Schwab
   const allFutures: FuturesPosition[] = [];
 
   for (const accountData of accounts) {
-    const raw = accountData as Record<string, unknown>;
-    const acct = (raw.securitiesAccount ?? raw) as Record<string, unknown>;
-    const positions = acct?.positions as unknown[];
-
-    if (!positions || !Array.isArray(positions) || positions.length === 0) continue;
-
-    const result = parsePositions(accountData);
+    const result = parseSchwabAccountSnapshot(accountData);
     allOptions.push(...result.options);
     allEquities.push(...result.equities);
     allFutures.push(...result.futures);

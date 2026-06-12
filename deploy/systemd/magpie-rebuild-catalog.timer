@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie signal catalog rebuild — every 6 hours
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:30:00
+Unit=magpie-rebuild-catalog.service
+Persistent=true
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

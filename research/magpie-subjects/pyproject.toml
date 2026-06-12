@@ -1,0 +1,17 @@
+[project]
+name = "magpie-subjects"
+version = "0.0.1"
+description = "Magpie NATS subject builders — Python mirror of src/types/subjects.ts. Single source of truth for the subject strings the broker bridges, MD bridges, and risk-gate plugin construct (registry: docs/tdd/nats-subjects.md)."
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/magpie_subjects"]
+
+# Subject builders are pure string functions — keep the package mypy-strict-clean.
+[tool.mypy]
+strict = true

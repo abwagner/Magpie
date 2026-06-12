@@ -1,7 +1,12 @@
 // ── Order & Execution Types ────────────────────────────────────────
 // Defined in: docs/tdd/order-execution.md
 
-export type ExecutionMode = "paper_local" | "paper_broker" | "manual" | "semi-auto" | "auto";
+// QF-263 (M14-1 Architecture B) — the Order Plane is narrowed to
+// operator manual entry + kill-switch only. The retired auto / semi-auto
+// / paper_broker modes lived in the old auto-execution path now owned by
+// NT strategies. "paper_local" is the in-process fill simulator;
+// "manual" parks every order in pending_approval for an operator.
+export type ExecutionMode = "paper_local" | "manual";
 
 export type OrderStatus =
   | "proposed"
@@ -19,7 +24,15 @@ export type OrderStatus =
   // but rejected asynchronously (exchange halt, locate failure, price
   // band breach, account suspension, etc.). Distinct from `rejected`
   // (pre-submit halt/risk) because the broker_order_id is populated.
-  | "rejected_by_broker";
+  | "rejected_by_broker"
+  // QF-309 — option-lifecycle terminal states (additive per
+  // docs/tdd/portfolio-risk-engine.md §11.3). `expired` (above) covers
+  // worthless expiry; `assigned` is a short option assigned by the
+  // counterparty; `exercised` is a long option auto-exercised at expiry.
+  // All three land as audit_orders rows with source='nt-native' (broker
+  // push) or source='qf' (calendar-swept worthless expiry).
+  | "assigned"
+  | "exercised";
 
 // QF-16 — shared limit-order primitives. Centralized here (rather than
 // in src/types/execution.ts) because they're properties of orders;
@@ -39,6 +52,14 @@ export interface OrderIntent {
   // its own distinct client_order_id. See broker-integration.md §4.1.
   client_order_id?: string;
   portfolio: string;
+  // QF-245 — M12-3: target brokerage account id (the
+  // SchwabAccountConfig.id from config/brokers.json). The strategy
+  // runner resolves it from the portfolio's routing config at
+  // intent-creation time so the Order Plane doesn't have to re-resolve
+  // per submit. Optional: legacy intents leave it unset and the Order
+  // Plane falls back to the portfolio→account map, then the default
+  // account.
+  account_id?: string;
   strategy_id: string;
   action: "open" | "close";
   symbol: string;
@@ -78,6 +99,11 @@ export interface Fill {
   filled_at: string;
   broker: string;
   broker_order_id?: string;
+  // QF-246 — M12-4: originating brokerage account id. Stamped by the
+  // broker adapter on fan-out (from the exec report's account_id, or the
+  // adapter's configured account when the report omits it). Optional:
+  // legacy single-account ("default") fills + paper fills leave it unset.
+  account_id?: string;
   v?: number;
 }
 
@@ -118,6 +144,15 @@ export interface Order {
   // null/0 until the first fill.
   filled_quantity?: number;
   average_fill_price?: number;
+  // QF-247 — M12-5: brokerage account this order routed to (the
+  // SchwabAccountConfig.id from config/brokers.json). Mirrors the
+  // audit_orders.account_id column written at submission time (QF-244).
+  // Optional in the in-memory shape: OPL keeps the authoritative routing
+  // account in its own order_id→account map, but restart recovery stamps
+  // it here from the durable audit row so reconciliation can partition
+  // the walk by account. Legacy single-account ("default") + paper
+  // orders may leave it unset.
+  account_id?: string;
 }
 
 // QF-50 — operator-supplied overrides applied when approving an order
@@ -168,6 +203,10 @@ export interface OrderObservationAdapter {
   // status query return { status: "unknown", ... }.
   getOrderStatus(brokerOrderId: string): Promise<BrokerOrderStatus>;
   getPositions(): Promise<BrokerPosition[]>;
+  // QF-272 — optional account discovery (account number / hash / type).
+  // Only the live brokers that front a real account (NT bridge) implement
+  // it; paper / observation-only adapters omit it and callers fall back.
+  getAccounts?(): Promise<BrokerAccount[]>;
   onFill(callback: (fill: Fill) => void): void;
   // QF-209 — optional. Brokers that surface async rejection (exchange
   // halt, locate failure, price band breach, account suspension) wire
@@ -187,6 +226,12 @@ export interface BrokerRejection {
   // errorCode). Useful for downstream classification but not parsed.
   broker_reason_code?: string;
   rejected_at: string;
+  // QF-246 — M12-4: originating brokerage account id, mirroring Fill's
+  // account_id. The broker adapter stamps it on fan-out (from the exec
+  // report's account_id, or the adapter's configured account when the
+  // report omits it). Optional: legacy single-account ("default") deploys
+  // + paper rejections leave it unset. Drives audit attribution (M12-3).
+  account_id?: string;
 }
 
 export interface SubmitOrderParams {
@@ -207,6 +252,21 @@ export interface BrokerPosition {
   symbol: string;
   direction: string;
   quantity: number;
+  // QF-272 — optional broker-native raw position row. The Schwab NT
+  // bridge forwards the raw `/accounts?fields=positions` row here so the
+  // GUI's /api/positions can run the same categorization parser the REST
+  // fallback uses. Reconciliation ignores it; brokers that don't carry a
+  // raw row (paper) omit it.
+  raw?: Record<string, unknown>;
+}
+
+// QF-272 — account discovery metadata for /api/accounts. Mirrors the
+// Schwab REST `SchwabAccount` shape; served via the NT bridge's
+// `orders.accounts.<broker>` subject (REST fallback when NT is down).
+export interface BrokerAccount {
+  accountNumber: string;
+  hashValue: string;
+  type?: string;
 }
 
 // QF-234 — reply payload for OrderObservationAdapter.getOrderStatus.
@@ -254,4 +314,9 @@ export interface BrokerExecReport {
   // Falls through here when present in the wire payload; observer also
   // reads from NATS headers as the primary source.
   correlation_id?: string | null;
+  // QF-246 — M12-4: originating brokerage account id. The Python bridge
+  // sets it on per-account ("non-default") deploys and omits it for the
+  // legacy single-account deploy; the adapter falls back to its own
+  // configured account when absent. Drives audit attribution (M12-3).
+  account_id?: string;
 }

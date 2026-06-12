@@ -18,6 +18,19 @@ export interface RiskLimitsConfig {
   portfolios: Record<string, RiskLimits>;
 }
 
+// QF-346 — server-persisted drag-resized panel track sizes per
+// workspace. Only the CSS-grid track strings are stored; the template
+// areas + panel mapping stay in src/workspaces/index.ts.
+export interface WorkspaceLayoutOverride {
+  rows: string;
+  cols: string;
+}
+
+export interface WorkspaceLayoutsConfig {
+  version: 1;
+  layouts: Record<string, WorkspaceLayoutOverride>;
+}
+
 // ── System state ──────────────────────────────────────────────────
 
 export interface SchwabTokenStatus {
@@ -27,7 +40,10 @@ export interface SchwabTokenStatus {
 
 export type AppEnvValue = "dev" | "staging" | "prod";
 export type TradingModeValue = "paper" | "live";
-export type ExecutionModeValue = "paper_local" | "paper_broker" | "manual" | "semi-auto" | "auto";
+// QF-263 — narrowed to the two surviving Order Plane modes (operator
+// manual entry + the paper_local fill simulator). Mirrors ExecutionMode
+// in src/types/order.ts.
+export type ExecutionModeValue = "paper_local" | "manual";
 
 export interface SystemBlock {
   app_env?: AppEnvValue;
@@ -58,6 +74,7 @@ export interface SystemState {
   models?: unknown[];
   strategies?: Strategy[];
   risk_limits?: RiskLimitsConfig;
+  workspace_layouts?: WorkspaceLayoutsConfig;
 }
 
 // ── Server → client messages ──────────────────────────────────────
@@ -114,6 +131,13 @@ export interface RiskLimitsMsg {
   data: RiskLimitsConfig;
 }
 
+// QF-346 — pushed after any device writes a drag-resized layout so the
+// other connected devices re-flow their grid live (multi-device sync).
+export interface WorkspaceLayoutMsg {
+  type: "workspace_layout";
+  data: WorkspaceLayoutsConfig;
+}
+
 // QF-351 — emitted when an exit-rule trips on a position; drives the
 // in-flight closing banner so the operator can distinguish a rule-driven
 // close from a manual one. closing_intent_id is the OPL intent the
@@ -137,4 +161,5 @@ export type WsMessage =
   | AlertMsg
   | StrategyUpdateMsg
   | RiskLimitsMsg
+  | WorkspaceLayoutMsg
   | PositionExitRuleMsg;

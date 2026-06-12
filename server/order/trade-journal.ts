@@ -5,7 +5,6 @@
 
 import type { Database } from "duckdb";
 import type { Fill } from "../../src/types/order.js";
-import type { FillPriceResult } from "./fill-model.js";
 import type { Logger } from "../logger.js";
 
 // ── Types ────────────────────────────────────────────────────────

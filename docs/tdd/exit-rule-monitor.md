@@ -10,7 +10,7 @@ Strategies declare hard exits at registration time (`stop_loss_pct`, `target_pct
 
 The monitor exists so a hung strategy can't suppress its own stop. Rule evaluation lives in the QF TS process; strategy code crashing in NT doesn't disable the framework-side exits.
 
-Today (2026-05): per `portfolio-risk-engine.md §2 Per-strategy composite positions + exit-rule monitor` and the §5.1 referenced above, the monitor is **design intent, not implemented**. This doc consolidates the contract so QF-321 can implement against a single spec instead of stitching from §5.1 + the portfolio-risk-engine seam + the Phase D ticket text.
+The monitor is **implemented** and wired live. Code ships in `server/portfolio/exit-rule-monitor.ts` (439 lines, module with the rule evaluation + composite-P&L aggregation + idempotency guard) and is wired into `server/index.ts` (`createExitRuleMonitor(...)`), fed by `exitRuleMonitor?.onPositionUpdate(update)` during portfolio state transitions. QF-321 landed the implementation; QF-350/351 wired the GUI surface.
 
 ## 2. Where the monitor lives
 

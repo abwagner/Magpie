@@ -1,0 +1,31 @@
+{
+  "cadence_hours": 24,
+  "tables": {
+    "audit_intents": {
+      "mode": "archive",
+      "window_days": 90,
+      "archive_bucket": "magpie-data",
+      "archive_prefix": "audit/archive"
+    },
+    "audit_orders": {
+      "mode": "archive",
+      "window_days": 90,
+      "archive_bucket": "magpie-data",
+      "archive_prefix": "audit/archive"
+    },
+    "audit_fills": {
+      "mode": "archive",
+      "window_days": 90,
+      "archive_bucket": "magpie-data",
+      "archive_prefix": "audit/archive"
+    },
+    "drift_alerts": {
+      "mode": "rolling",
+      "window_days": 30
+    },
+    "portfolio_snapshots": {
+      "mode": "rolling",
+      "window_days": 90
+    }
+  }
+}

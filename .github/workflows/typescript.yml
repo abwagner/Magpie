@@ -1,0 +1,69 @@
+name: typescript
+
+# Gates the TypeScript codebase on every PR: tsc --noEmit (strict), ESLint,
+# and the Vitest unit suite. Integration tests (vitest.integration.config.ts)
+# need a live NATS/Docker stack and run elsewhere, so they're out of scope here.
+# Path-filtered to TS sources + their config so doc/Python-only PRs skip it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "server/**"
+      - "scripts/**"
+      - "core/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "eslint.config.js"
+      - "vite.config.js"
+      - "vitest.integration.config.ts"
+      - ".github/workflows/typescript.yml"
+  pull_request:
+    paths:
+      - "src/**"
+      - "server/**"
+      - "scripts/**"
+      - "core/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "eslint.config.js"
+      - "vite.config.js"
+      - "vitest.integration.config.ts"
+      - ".github/workflows/typescript.yml"
+
+concurrency:
+  group: typescript-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: tsc + eslint + vitest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies (frozen lockfile)
+        run: npm ci
+
+      - name: Typecheck (tsc --noEmit)
+        run: npm run typecheck
+
+      - name: Lint (eslint)
+        run: npm run lint
+
+      - name: Unit tests (vitest run)
+        run: npm run test

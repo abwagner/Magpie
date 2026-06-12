@@ -27,6 +27,7 @@
     "collect:bulk": "tsx scripts/collect-bulk.ts",
     "databento:pull": "tsx scripts/databento-pull.ts",
     "scheduler": "tsx scripts/scheduler.ts",
+    "backup-observability": "tsx scripts/backup-observability.ts",
     "snapshot": "node scripts/ibkr-snapshot.js",
     "observability:up": "docker-compose --profile observability up -d",
     "observability:down": "docker-compose --profile observability down",

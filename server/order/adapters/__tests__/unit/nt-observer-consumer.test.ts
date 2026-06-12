@@ -275,4 +275,63 @@ describe("nt-observer-consumer (QF-319)", () => {
     expect(writtenOrders[0]?.correlation_id).toBe("corr-from-body");
     expect(writtenFills[0]?.correlation_id).toBe("corr-from-body");
   });
+
+  // ── QF-246 — account_id audit attribution ──────────────────────────
+  it("stamps the report's account_id onto both the nt-native order and fill rows", async () => {
+    await fakeNats.pumpExecReport(
+      "orders.exec_reports.schwab",
+      makeReport({
+        broker_order_id: "BRK-ACCT-1",
+        intent_id: "INT-ACCT-1",
+        account_id: "acct-123",
+      }),
+    );
+    expect(writtenOrders[0]?.account_id).toBe("acct-123");
+    expect(writtenFills[0]?.account_id).toBe("acct-123");
+  });
+
+  it("stamps the report's account_id onto the order row on rejection", async () => {
+    await fakeNats.pumpExecReport("orders.exec_reports.schwab", {
+      broker: "schwab",
+      broker_order_id: "BRK-REJ-ACCT",
+      event: "rejected",
+      ts: "2026-05-29T15:00:00Z",
+      intent_id: "INT-REJ-ACCT",
+      rejection_reason: "INSUFFICIENT_BUYING_POWER",
+      account_id: "acct-123",
+    });
+    expect(writtenOrders[0]?.account_id).toBe("acct-123");
+  });
+
+  it("defaults account_id to 'default' when the report omits it", async () => {
+    await fakeNats.pumpExecReport(
+      "orders.exec_reports.schwab",
+      makeReport({ broker_order_id: "BRK-NO-ACCT", intent_id: "INT-NO-ACCT" }),
+    );
+    expect(writtenOrders[0]?.account_id).toBe("default");
+    expect(writtenFills[0]?.account_id).toBe("default");
+  });
+
+  // ── QF-246 — per-account exec_reports namespacing ──────────────────
+  it("subscribes to the suffixed exec_reports subject when accountId is set", async () => {
+    const nats = makeFakeNats();
+    const orders: AuditOrderRow[] = [];
+    createNtObserverConsumer({
+      nc: nats as never,
+      config: { broker: "schwab", accountId: "ACCT123" },
+      logger: createTestLogger(),
+      lookupQfOrderId: async () => null,
+      auditOrderWriter: async (row) => {
+        orders.push(row);
+      },
+      auditFillWriter: async () => {},
+    });
+    // pumpExecReport throws if the suffixed subject has no subscriber.
+    await nats.pumpExecReport(
+      "orders.exec_reports.schwab.ACCT123",
+      makeReport({ broker_order_id: "BRK-ACCT", intent_id: "INT-ACCT" }),
+    );
+    expect(orders).toHaveLength(1);
+    expect(orders[0]?.order_id).toBe("BRK-ACCT");
+  });
 });

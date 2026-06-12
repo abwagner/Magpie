@@ -10,14 +10,18 @@
 #   - loki           (port 3100)  (Loki's own /metrics)
 #
 # host.docker.internal resolves to the host gateway (extra_hosts in
-# docker-compose.yml handles the Linux case). QF processes run on the
-# host in Phase 1, not in Docker.
+# docker-compose.yml handles the Linux case) — used when QF runs on the
+# host (laptop dev `npm start`). On your-server.example.com the QF API
+# runs as the `magpie-server` compose service (QF-201), reachable
+# by its service DNS name on the shared compose network. Both targets are
+# listed for qf-server; the one not present in a given environment simply
+# shows DOWN and is ignored.
 
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    cluster: quantfoundry-dev
+    cluster: magpie-dev
 
 scrape_configs:
   - job_name: prometheus
@@ -29,7 +33,9 @@ scrape_configs:
   - job_name: qf-server
     metrics_path: /metrics
     static_configs:
-      - targets: ["host.docker.internal:3001"]
+      # host.docker.internal:3001 — QF on the host (laptop dev).
+      # magpie-server:3001 — QF as a compose service (QF-201 deploy).
+      - targets: ["host.docker.internal:3001", "magpie-server:3001"]
         labels:
           service: qf-server
 

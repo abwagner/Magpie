@@ -6,6 +6,7 @@ import type {
   BrokerRejection,
   Fill,
   OrderIntent,
+  OrderSubmissionAdapter,
   SubmitOrderParams,
 } from "../../../../src/types/order.js";
 import type { PortfolioEngine } from "../../../portfolio/engine.js";
@@ -126,7 +127,6 @@ describe("order plane", () => {
     opts: {
       mode?: string;
       canExecute?: boolean;
-      whitelist?: unknown;
       auditWrites?: Array<{
         status: string;
         risk_violations: string | null;
@@ -141,7 +141,6 @@ describe("order plane", () => {
       logger: createTestLogger(),
       generateId: () => `order-${++idCounter}`,
       mode: (opts.mode ?? "paper_local") as never,
-      whitelist: opts.whitelist as never,
       ...(opts.auditWrites
         ? {
             auditOrderWriter: async (row) => {
@@ -162,12 +161,6 @@ describe("order plane", () => {
       const order = await plane.submit(makeIntent());
       expect(order.status).toBe("submitted");
       expect(order.broker_order_id).toBe("broker-order-1");
-    });
-
-    it("auto-approves in paper_broker mode", async () => {
-      plane = makePlane({ mode: "paper_broker" });
-      const order = await plane.submit(makeIntent());
-      expect(order.status).toBe("submitted");
     });
 
     it("rejects when risk check fails", async () => {
@@ -207,40 +200,49 @@ describe("order plane", () => {
       expect(submittedParams[0]?.client_order_id).toBe("CHILD_TOKEN");
     });
 
+    // QF-337 — broker.submitOrder failure path. The OrderPlane catches a
+    // throwing broker and transitions the order to submission_failed (the
+    // honest terminal state when there is no execution transport, e.g. the
+    // disconnected fallback adapter). Previously untested.
+    it("transitions to submission_failed when broker.submitOrder throws", async () => {
+      const failing: BrokerAdapter = {
+        ...mockBroker(),
+        async submitOrder() {
+          throw new Error("broker unavailable");
+        },
+      };
+      plane = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        broker: failing,
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+      const order = await plane.submit(makeIntent());
+      expect(order.status).toBe("submission_failed");
+      expect(order.completed_at).toBeDefined();
+      expect(plane.getOrder(order.order_id)!.status).toBe("submission_failed");
+    });
+
     it("sets pending_approval in manual mode", async () => {
       plane = makePlane({ mode: "manual" });
       const order = await plane.submit(makeIntent());
       expect(order.status).toBe("pending_approval");
       expect(submitCount).toBe(0);
     });
-  });
 
-  describe("semi-auto whitelist", () => {
-    it("auto-approves matching whitelist", async () => {
-      plane = makePlane({
-        mode: "semi-auto",
-        whitelist: { symbols: ["OPT:SPY:*"], max_qty: 5, strategy_ids: ["test-strategy"] },
-      });
-      const order = await plane.submit(makeIntent());
-      expect(order.status).toBe("submitted");
-    });
-
-    it("requires approval when symbol doesn't match", async () => {
-      plane = makePlane({
-        mode: "semi-auto",
-        whitelist: { symbols: ["OPT:QQQ:*"], max_qty: 5, strategy_ids: ["test-strategy"] },
-      });
-      const order = await plane.submit(makeIntent());
-      expect(order.status).toBe("pending_approval");
-    });
-
-    it("requires approval when qty exceeds whitelist", async () => {
-      plane = makePlane({
-        mode: "semi-auto",
-        whitelist: { symbols: ["OPT:SPY:*"], max_qty: 0, strategy_ids: ["test-strategy"] },
-      });
-      const order = await plane.submit(makeIntent({ quantity: 1 }));
-      expect(order.status).toBe("pending_approval");
+    // QF-263 — the auto-execution modes (auto / semi-auto / paper_broker)
+    // were retired; NT strategies own that path per M14-1 Architecture B.
+    // Any mode other than paper_local now parks the order for an operator
+    // instead of auto-submitting.
+    it("parks any non-paper_local mode in pending_approval (retired auto modes)", async () => {
+      for (const mode of ["paper_broker", "semi-auto", "auto"]) {
+        plane = makePlane({ mode });
+        const order = await plane.submit(makeIntent());
+        expect(order.status).toBe("pending_approval");
+      }
+      expect(submitCount).toBe(0);
     });
   });
 
@@ -797,6 +799,299 @@ describe("order plane", () => {
       expect(auditFills).toHaveLength(2);
       expect(auditFills.map((w) => w.fill_id)).toEqual(["f-1", "f-2"]);
       expect(auditFills.every((w) => w.order_id === order.order_id)).toBe(true);
+    });
+  });
+
+  // ── QF-245 — per-account multi-broker dispatch ────────────────────
+  describe("multi-broker dispatch", () => {
+    interface RecordingAdapter {
+      adapter: OrderSubmissionAdapter;
+      submits: SubmitOrderParams[];
+      cancels: string[];
+    }
+
+    function recordingSubmissionAdapter(name: string): RecordingAdapter {
+      const submits: SubmitOrderParams[] = [];
+      const cancels: string[] = [];
+      let count = 0;
+      return {
+        submits,
+        cancels,
+        adapter: {
+          name,
+          async available() {
+            return true;
+          },
+          async submitOrder(params) {
+            submits.push(params);
+            count++;
+            return `${name}-order-${count}`;
+          },
+          async cancelOrder(id) {
+            cancels.push(id);
+          },
+        },
+      };
+    }
+
+    it("routes portfolio-A intents to adapter-A and portfolio-B to adapter-B", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      const b = recordingSubmissionAdapter("acct-b");
+      const brokers = new Map<string, OrderSubmissionAdapter>([
+        ["a", a.adapter],
+        ["b", b.adapter],
+      ]);
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers,
+        // Portfolio routing fallback maps portfolio → account when the
+        // intent omits account_id.
+        resolvePortfolioAccount: (p) => (p === "port-a" ? "a" : p === "port-b" ? "b" : undefined),
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+
+      const oa = await mb.submit(makeIntent({ portfolio: "port-a", intent_id: "ia" }));
+      const ob = await mb.submit(makeIntent({ portfolio: "port-b", intent_id: "ib" }));
+
+      expect(oa.status).toBe("submitted");
+      expect(ob.status).toBe("submitted");
+      expect(a.submits.map((s) => s.client_order_id)).toEqual(["ia"]);
+      expect(b.submits.map((s) => s.client_order_id)).toEqual(["ib"]);
+    });
+
+    it("prefers an intent-stamped account_id over the portfolio fallback", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      const b = recordingSubmissionAdapter("acct-b");
+      const brokers = new Map<string, OrderSubmissionAdapter>([
+        ["a", a.adapter],
+        ["b", b.adapter],
+      ]);
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers,
+        resolvePortfolioAccount: () => "a",
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+
+      // Portfolio map says "a", but the intent explicitly targets "b".
+      await mb.submit(makeIntent({ portfolio: "port-a", intent_id: "ix", account_id: "b" }));
+      expect(a.submits).toHaveLength(0);
+      expect(b.submits.map((s) => s.client_order_id)).toEqual(["ix"]);
+    });
+
+    it("fails fast with submission_failed + audit row when no adapter resolves", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      const brokers = new Map<string, OrderSubmissionAdapter>([["a", a.adapter]]);
+      const auditWrites: Array<{
+        status: string;
+        account_id: string;
+        broker_rejection_reason: string | null;
+      }> = [];
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers,
+        resolvePortfolioAccount: () => "missing",
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+        auditOrderWriter: async (row) => {
+          auditWrites.push({
+            status: row.status,
+            account_id: row.account_id,
+            broker_rejection_reason: row.broker_rejection_reason,
+          });
+        },
+      });
+
+      const order = await mb.submit(makeIntent({ portfolio: "port-x", intent_id: "iy" }));
+      expect(order.status).toBe("submission_failed");
+      expect(a.submits).toHaveLength(0);
+      const failed = auditWrites.find((w) => w.status === "submission_failed");
+      expect(failed).toBeDefined();
+      expect(failed!.account_id).toBe("missing");
+      expect(failed!.broker_rejection_reason).toBe("no broker configured for account missing");
+    });
+
+    it("attributes audit_orders + audit_fills rows to the routed account", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      let fillCb: ((fill: Fill) => void) | null = null;
+      const observer = {
+        name: "obs",
+        async available() {
+          return true;
+        },
+        async getOrderStatus(brokerOrderId: string) {
+          return {
+            broker_order_id: brokerOrderId,
+            status: "unknown" as const,
+            filled_quantity: 0,
+            average_fill_price: null,
+            rejection_reason: null,
+          };
+        },
+        async getPositions() {
+          return [];
+        },
+        onFill(cb: (fill: Fill) => void) {
+          fillCb = cb;
+        },
+      };
+      const orderRows: Array<{ status: string; account_id: string }> = [];
+      const fillRows: Array<{ fill_id: string; account_id: string }> = [];
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers: new Map<string, OrderSubmissionAdapter>([["a", a.adapter]]),
+        observers: [observer],
+        resolvePortfolioAccount: () => "a",
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+        auditOrderWriter: async (row) => {
+          orderRows.push({ status: row.status, account_id: row.account_id });
+        },
+        auditFillWriter: async (row) => {
+          fillRows.push({ fill_id: row.fill_id, account_id: row.account_id });
+        },
+      });
+
+      const order = await mb.submit(makeIntent({ portfolio: "port-a", intent_id: "iz" }));
+      fillCb!({
+        fill_id: "fill-z",
+        order_id: order.order_id,
+        broker_order_id: order.broker_order_id!,
+        symbol: order.portfolio,
+        direction: "Short",
+        quantity: 1,
+        price: 10,
+        fees: 0,
+        filled_at: new Date().toISOString(),
+        intent_id: "iz",
+        portfolio: "port-a",
+        broker: "acct-a",
+      });
+
+      expect(orderRows.every((r) => r.account_id === "a")).toBe(true);
+      const fz = fillRows.find((r) => r.fill_id === "fill-z");
+      expect(fz?.account_id).toBe("a");
+    });
+
+    it("backward-compat: single-account config routes identically (default account)", async () => {
+      const only = recordingSubmissionAdapter("default");
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        // Synthetic single "default" account, mirroring M12-1's fallback.
+        brokers: new Map<string, OrderSubmissionAdapter>([["default", only.adapter]]),
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+
+      // No account_id on the intent, no portfolio routing → default.
+      const order = await mb.submit(makeIntent({ intent_id: "id" }));
+      expect(order.status).toBe("submitted");
+      expect(only.submits.map((s) => s.client_order_id)).toEqual(["id"]);
+    });
+
+    it("routes cancel to the correct per-account adapter", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      const b = recordingSubmissionAdapter("acct-b");
+      const brokers = new Map<string, OrderSubmissionAdapter>([
+        ["a", a.adapter],
+        ["b", b.adapter],
+      ]);
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers,
+        resolvePortfolioAccount: (p) => (p === "port-a" ? "a" : "b"),
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+
+      const oa = await mb.submit(makeIntent({ portfolio: "port-a", intent_id: "ia" }));
+      await mb.cancel(oa.order_id);
+
+      expect(a.cancels).toHaveLength(1);
+      expect(a.cancels).toEqual([oa.broker_order_id]);
+      expect(b.cancels).toHaveLength(0);
+    });
+
+    it("rehydrateOrder restores account routing for subsequent cancel", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      const b = recordingSubmissionAdapter("acct-b");
+      const brokers = new Map<string, OrderSubmissionAdapter>([
+        ["a", a.adapter],
+        ["b", b.adapter],
+      ]);
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers,
+        resolvePortfolioAccount: (p) => (p === "port-a" ? "a" : "b"),
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+
+      const intent = makeIntent({ portfolio: "port-a", intent_id: "ih" });
+      const order = await mb.submit(intent);
+      // Simulate a post-restart rehydration: the durable broker_order_id is
+      // restored and rehydrateOrder must re-key the account routing so the
+      // subsequent cancel reaches account-A, not account-B.
+      order.broker_order_id = "test-order-1";
+      mb.rehydrateOrder(order, intent);
+      await mb.cancel(order.order_id);
+
+      expect(a.cancels).toContain("test-order-1");
+      expect(b.cancels).toHaveLength(0);
+    });
+
+    it("killSwitch cancels orders via their respective account adapters", async () => {
+      const a = recordingSubmissionAdapter("acct-a");
+      const b = recordingSubmissionAdapter("acct-b");
+      const brokers = new Map<string, OrderSubmissionAdapter>([
+        ["a", a.adapter],
+        ["b", b.adapter],
+      ]);
+      const mb = createOrderPlane({
+        portfolioEngine: mockPortfolioEngine(true),
+        brokers,
+        resolvePortfolioAccount: (p) => (p === "port-a" ? "a" : "b"),
+        fillLog: mockFillLog(),
+        logger: createTestLogger(),
+        generateId: () => `order-${++idCounter}`,
+        mode: "paper_local",
+      });
+
+      const oa = await mb.submit(makeIntent({ portfolio: "port-a", intent_id: "ika" }));
+      const ob = await mb.submit(makeIntent({ portfolio: "port-b", intent_id: "ikb" }));
+      mb.killSwitch("test");
+
+      expect(a.cancels).toEqual([oa.broker_order_id]);
+      expect(b.cancels).toEqual([ob.broker_order_id]);
+    });
+
+    it("throws when constructed with neither broker nor a non-empty brokers map", () => {
+      expect(() =>
+        createOrderPlane({
+          portfolioEngine: mockPortfolioEngine(true),
+          brokers: new Map<string, OrderSubmissionAdapter>(),
+          fillLog: mockFillLog(),
+          logger: createTestLogger(),
+          generateId: () => `order-${++idCounter}`,
+          mode: "paper_local",
+        }),
+      ).toThrow(/requires either/);
     });
   });
 });

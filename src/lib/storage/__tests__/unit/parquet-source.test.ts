@@ -70,12 +70,12 @@ describe("parquet-source", () => {
       const source = createParquetSource({
         mode: "s3",
         localDir: "data/chains",
-        s3Bucket: "quantfoundry-data",
+        s3Bucket: "magpie-data",
         s3Endpoint: "https://s3.example.com",
         s3AccessKey: "ak",
         s3SecretKey: "sk",
       });
-      expect(source.globPattern("SPY")).toBe("s3://quantfoundry-data/chains/SPY-*.parquet");
+      expect(source.globPattern("SPY")).toBe("s3://magpie-data/chains/SPY-*.parquet");
     });
   });
 });

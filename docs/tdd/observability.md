@@ -125,7 +125,7 @@ A subscriber that receives a message **without** an `X-Correlation-Id` header mu
 In-process plumbing varies by runtime:
 
 - **TypeScript** (server / GUI). Use [`AsyncLocalStorage`](https://nodejs.org/api/async_context.html#class-asynclocalstorage) on the server. The logger reads from the current async context; explicit `correlation_id` arguments are accepted but discouraged once context is established.
-- **Python** (per-broker NT bundles: risk-gate plugin, ExecAlgorithm plugins, NT strategies, MD bridges, broker bridges). Use [`contextvars.ContextVar`](https://docs.python.org/3/library/contextvars.html). The `qf_logging` helper ([§5.2](#52-python-qf_logging)) reads from the ContextVar; explicit `correlation_id=` kwargs are accepted and override.
+- **Python** (per-broker NT bundles: risk-gate plugin, ExecAlgorithm plugins, NT strategies, MD bridges, broker bridges). Use [`contextvars.ContextVar`](https://docs.python.org/3/library/contextvars.html). The `magpie_logging` helper ([§5.2](#52-python--magpie_logging)) reads from the ContextVar; explicit `correlation_id=` kwargs are accepted and override.
 
 ### 4.4 Backtest mode
 
@@ -154,14 +154,14 @@ await withCorrelationId(req.headers["x-correlation-id"] ?? newUlid(), async () =
 
 The `withCorrelationId` wrapper is mandatory at every external entry point (HTTP handler, NATS subscriber, scheduled job). Outbound calls (NATS publish, HTTP fetch) read the current value via `currentCorrelationId()` and propagate it on the wire as `X-Correlation-Id`. Thin `publishWithContext` / `fetchWithContext` wrappers automate that for the common cases.
 
-### 5.2 Python — `quantfoundry_logging`
+### 5.2 Python — `magpie_logging`
 
-Package at `research/quantfoundry-logging/` (uv workspace member). Loaded by every Python process inside a per-broker NT bundle: the QF risk-gate plugin, the QF ExecAlgorithm plugins, every NT strategy bound to that broker, the broker bridge, and the MD bridge.
+Package at `research/magpie-logging/` (uv workspace member). Loaded by every Python process inside a per-broker NT bundle: the QF risk-gate plugin, the QF ExecAlgorithm plugins, every NT strategy bound to that broker, the broker bridge, and the MD bridge.
 
 Public API:
 
 ```python
-from quantfoundry_logging import (
+from magpie_logging import (
     get_logger,
     with_correlation_id,
     current_correlation_id,
@@ -185,7 +185,7 @@ NATS subscribers in the bundle use a small `subscribe_with_context` wrapper that
 The TS and Python helpers ship with a shared golden test: each runtime emits a fixed event (`event = "parity.smoke"`, `correlation_id = "01PARITYHARNESS0000000000A"`, `payload = {answer: 42, label: "fixed"}`) and the byte-level JSON output must be identical modulo `ts`. The test is the gate that prevents schema drift between runtimes.
 
 - **Test**: [`research/tests/test_logging_parity.py`](../../research/tests/test_logging_parity.py) — pytest, shells out to both harnesses.
-- **Python harness**: `research/quantfoundry-logging/src/quantfoundry_logging/parity_harness.py`, runnable as `python -m quantfoundry_logging.parity_harness`.
+- **Python harness**: `research/magpie-logging/src/magpie_logging/parity_harness.py`, runnable as `python -m magpie_logging.parity_harness`.
 - **TS harness**: `scripts/log-parity-harness.ts`, runnable as `npx tsx scripts/log-parity-harness.ts`.
 
 Locally, a missing TS toolchain (no `node_modules/.bin/tsx`) skips the corresponding assertion with a clear reason. In CI, both are present and the test must pass.
@@ -237,7 +237,7 @@ Sampling decisions live in the component TDD, not here. The framework's only rul
 - Never log raw broker order parameters that include account numbers. Account numbers are replaced with the internal `portfolio` identifier.
 - Operator email addresses and external user identifiers are replaced with the internal `user_id` (ULID).
 
-Redaction happens in the helper packages, not at the call site. Adding a field name to the redaction list is a config change in the TS logger or `quantfoundry_logging`.
+Redaction happens in the helper packages, not at the call site. Adding a field name to the redaction list is a config change in the TS logger or `magpie_logging`.
 
 ---
 
@@ -245,14 +245,22 @@ Redaction happens in the helper packages, not at the call site. Adding a field n
 
 Every component TDD listed below carries a §10 (Observability) section that names its events, payloads, and emission triggers. The framework spec here doesn't enumerate them.
 
-| Component                                                                 | Status of §10                                                              |
-| ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [order-execution.md](order-execution.md)                                  | **Done** — OrderPlane + working-order monitor metrics.                     |
-| [portfolio-risk-engine.md §10](portfolio-risk-engine.md#10-observability) | **Done** — worked example.                                                 |
-| [greek-builder.md](greek-builder.md)                                      | Pending.                                                                   |
-| [gui.md](gui.md)                                                          | Pending.                                                                   |
-| [risk-gate-architecture.md](risk-gate-architecture.md)                    | Pending — gate is design intent; §10 lands with the implementation.        |
-| [exec-algorithms.md](exec-algorithms.md)                                  | Pending — catalog is deliberately empty; §10 lands per algo as algos ship. |
+| Component                                                                 | Status of §10                                                                                                          |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [order-execution.md §6](order-execution.md#6-metrics)                     | **Done** — OrderPlane metrics.                                                                                        |
+| [portfolio-risk-engine.md §10](portfolio-risk-engine.md#10-observability) | **Done** — worked example.                                                                                            |
+| [greek-builder.md §6](greek-builder.md#6-observability)                   | **Done** — client-side surfaces + proposed central-stream event catalog.                                             |
+| [order-flow.md §8](order-flow.md#8-observability)                         | **Done** — audit-chain write events across both flows (the acceptance-test path).                                    |
+| [broker-integration.md §10](broker-integration.md#10-observability)       | **Done** — TS-side MD/order adapters + Python-bundle event families.                                                 |
+| [risk-gate-architecture.md §10](risk-gate-architecture.md#10-observability)| **Done** — gate-evaluator event catalog; degraded-mode logging in [§4.3](risk-gate-architecture.md#43-observability-of-degraded-mode). |
+| [drift-detector.md §8](drift-detector.md#8-observability)                 | **Done** — fast/slow-tier events + metrics.                                                                          |
+| [write-jobs.md §12](write-jobs.md#12-observability)                       | **Done** — runner/handler events + metrics.                                                                          |
+| [gui.md §11.5](gui.md#115-observability)                                  | **Done** — server-side WS-bridge events; browser-side deferred (same constraint as greek-builder).                   |
+| [alerts.md §7](alerts.md#7-producer-callsites)                            | **Done** — the alert producer catalog _is_ this component's observability surface; log-channel events match the common schema ([alerts.md §12](alerts.md#12-cross-references)). |
+| [exec-algorithms.md §11](exec-algorithms.md#11-what-this-doc-does-not-cover)| Deferred by design — per-algo catalog lands as each algo is speced; cross-cutting conventions still apply.           |
+| [nats-subjects.md](nats-subjects.md)                                      | N/A — a subject registry, not an emitting component; subjects are the correlation-bearing transport, not log events. |
+| [backtest-gate.md](backtest-gate.md)                                      | N/A — correlation handling covered in [§4.4](#44-backtest-mode); deterministic per-bar IDs, no live log stream.      |
+| [cross-cutting.md §8](cross-cutting.md#8-observability-framework)         | **Done** — documents the framework itself (this doc's self-contained summary for cross-cutting reviewers).           |
 
 ---
 
@@ -260,7 +268,7 @@ Every component TDD listed below carries a §10 (Observability) section that nam
 
 In the prod deployment, multiple NT strategies share one TradingNode process per broker ([strategy-deployment-topology.md §2](strategy-deployment-topology.md#2-the-two-live-deployment-modes)). Process-level resource accounting (free in dev where each strategy is its own process) no longer attributes anything to a specific strategy. Logs and metrics need to carry that attribution explicitly.
 
-**Structured logs.** Free. Every NT event already carries `StrategyId`; the `quantfoundry_logging` Python helper extracts it and emits the `strategy_id` field at the top level alongside `correlation_id`. Dashboards filter by `strategy_id` the same way they filter by `component`.
+**Structured logs.** Free. Every NT event already carries `StrategyId`; the `magpie_logging` Python helper extracts it and emits the `strategy_id` field at the top level alongside `correlation_id`. Dashboards filter by `strategy_id` the same way they filter by `component`.
 
 **Handler-latency attribution.** The bundle launcher installs a `StrategyTimingMiddleware` on the TradingNode's MessageBus that wraps each strategy's `on_bar` / `on_quote` / `on_trade_tick` / `on_event` handler with a stopwatch:
 
@@ -331,7 +339,7 @@ For the current pipeline running across one TS process and one Python NT bundle 
 
 **What a revisit would consider:**
 
-1. **OpenTelemetry SDK adoption** — `@opentelemetry/api` (TS), `opentelemetry-api` (Python). The SDKs handle context propagation across `async`/`await`, NATS headers, and HTTP headers — replacing the hand-rolled per-runtime `correlation_id` plumbing in [§5](#5-per-runtime-helper-packages) with the OTel spec. Per-runtime helper packages (`server/logger.ts`, `quantfoundry_logging`) would thin out to OTel adapters.
+1. **OpenTelemetry SDK adoption** — `@opentelemetry/api` (TS), `opentelemetry-api` (Python). The SDKs handle context propagation across `async`/`await`, NATS headers, and HTTP headers — replacing the hand-rolled per-runtime `correlation_id` plumbing in [§5](#5-per-runtime-helper-packages) with the OTel spec. Per-runtime helper packages (`server/logger.ts`, `magpie_logging`) would thin out to OTel adapters.
 2. **Tempo as the trace store** — one more service in the Grafana Compose stack (`deploy/observability/`), one more datasource in Grafana. Tempo ingests OTLP directly.
 3. **Whether OTel should also subsume metrics + logs.** OTel can carry all three pillars; the OTel Collector translates and forwards to Prometheus / Loki / Tempo. _Probable answer: no_ — `prom-client` and the existing JSON logger are working and the OTel logs API is still less mature than the trace + metrics APIs.
 

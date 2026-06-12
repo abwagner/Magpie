@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie IMF PortWatch ingest — Tue 09:30 ET
+
+[Timer]
+OnCalendar=Tue *-*-* 09:30:00
+Unit=magpie-ingest@portwatch.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

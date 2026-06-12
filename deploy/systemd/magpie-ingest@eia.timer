@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie EIA petroleum ingest — Wed 22:30 ET (after WPSR release)
+
+[Timer]
+OnCalendar=Wed *-*-* 22:30:00
+Unit=magpie-ingest@eia.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

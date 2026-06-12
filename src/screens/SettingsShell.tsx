@@ -14,15 +14,16 @@ import { AuditLogScreen } from "./AuditLogScreen.js";
 import { ExportsScreen } from "./ExportsScreen.js";
 import { FundamentalsScreen } from "./FundamentalsScreen.js";
 import { JobsScreen } from "./JobsScreen.js";
+import { AccountsScreen } from "./AccountsScreen.js";
 import DataCatalogTab from "../components/DataCatalogTab.js";
 import BacktestsTab from "../components/BacktestsTab.js";
 
 // Settings is a left-rail nav grouped into Risk · Data · Models ·
 // System · Activity, matching the design's information
-// architecture. Phase 4 ships the four sections that have backend
-// surfaces today (Risk Limits, Brokers, Signals manifest, Audit
-// log); the rest are rendered as "lands later" placeholders so the
-// nav still reads as the full IA.
+// architecture. Sections with a backend surface render their screen;
+// the rest are rendered as "lands later" placeholders so the nav still
+// reads as the full IA. (The Signals manifest section was removed with
+// the Arch-A signal subsystem — QF-261 / QF-265.)
 
 type SectionId =
   | "limits"
@@ -32,7 +33,6 @@ type SectionId =
   | "marketdata"
   | "mdHealth"
   | "fundamentals"
-  | "signals"
   | "strategies"
   | "backtests"
   | "quality"
@@ -70,7 +70,6 @@ const NAV: NavGroup[] = [
   {
     group: "Models",
     items: [
-      { id: "signals", label: "Signals", ready: true },
       { id: "strategies", label: "Strategies", ready: true },
       { id: "backtests", label: "Backtests", ready: true },
       { id: "quality", label: "Quality thresholds", ready: true },
@@ -79,7 +78,7 @@ const NAV: NavGroup[] = [
   {
     group: "System",
     items: [
-      { id: "accounts", label: "Accounts" },
+      { id: "accounts", label: "Accounts", ready: true },
       { id: "environments", label: "Environments", ready: true },
       { id: "secrets", label: "Secrets", ready: true },
       { id: "jobs", label: "Jobs", ready: true },
@@ -103,7 +102,6 @@ const VALID_SECTIONS = new Set<SectionId>([
   "marketdata",
   "mdHealth",
   "fundamentals",
-  "signals",
   "strategies",
   "backtests",
   "quality",
@@ -234,8 +232,6 @@ function Content({ section }: { section: SectionId }) {
       return <FundamentalsScreen />;
     case "jobs":
       return <JobsScreen />;
-    case "signals":
-      return <Placeholder section={section} />;
     case "strategies":
       return <StrategiesConfigScreen />;
     case "backtests":
@@ -246,6 +242,8 @@ function Content({ section }: { section: SectionId }) {
       );
     case "audit":
       return <AuditLogScreen />;
+    case "accounts":
+      return <AccountsScreen />;
     case "environments":
       return <EnvironmentsScreen />;
     case "secrets":

@@ -121,8 +121,11 @@ export interface SubscriptionManagerOpts {
   // QF-205 — comparator + book-candidate provider drive the preemption
   // policy when all sources are at budget. Both optional; without
   // them, the manager falls back to the QF-28 behavior (deny with
-  // all_sources_full_no_preemption_won). The provider is typically
-  // the WorkingOrderMonitor's getBookCandidate.
+  // all_sources_full_no_preemption_won). The provider was originally
+  // the legacy WorkingOrderMonitor's getBookCandidate; that monitor was
+  // retired (QF-283 / QF-339), so production wires a permanently-null
+  // stub (server/index.ts) and the preemption path stays dormant until
+  // a future NT-side candidate source re-arms it.
   bookBudgetComparator?: PriorityComparator;
   getBookCandidate?: (symbol: string) => BookCandidate | null;
   // QF-29 — when both `config.max_queue_depth > 0` AND

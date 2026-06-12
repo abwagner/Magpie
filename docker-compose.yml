@@ -11,6 +11,63 @@ services:
       - nats-data:/data
     restart: unless-stopped
 
+  # ── QF API server (QF-201 / M10-7, Option B) ────────────────────────
+  # The always-on, write-capable QF API + state WebSocket on port 3001.
+  # Per the deployment-topology TDD (docs/tdd/deployment-topology.md §4)
+  # this is the single process that holds the MinIO write key (M10-6
+  # single-writer target). The scheduler / cron container's
+  # `POST /api/write-jobs` lines (M10-5) reach it over this network.
+  #
+  # OPERATOR NOTE: this service is meant to run on your-server.example.com
+  # (a.k.a. swagner-server). On a dev laptop you normally use `npm start`
+  # instead — bringing this up locally would race the laptop server for
+  # port 3001 and the DuckDB file. See docs/RUNBOOK.md §"QF server
+  # deployment (M10-7)". Secrets arrive via env_file (.env), never baked
+  # into the image.
+  magpie-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    image: magpie-server:latest
+    ports:
+      # 3001 must be reachable by the scheduler/cron container and by the
+      # Prometheus/Alloy scrapers (deploy/observability/*, job qf-server).
+      - "3001:3001"
+    env_file:
+      # Provides DATA_URI, S3_* (write key on the server), NATS_URL,
+      # WRITE_JOB_TOKEN_PATH, FMP_API_KEY, SLACK_WEBHOOK_URL, etc. The
+      # file is gitignored; copy from .env.example and fill in. The
+      # `environment` block below pins the non-secret prod invariants.
+      - .env
+    environment:
+      # `environment` overrides any same-key value from env_file, so these
+      # pin the prod invariants regardless of what a copied .env carries.
+      - APP_ENV=prod
+      - TRADING_MODE=${TRADING_MODE:-paper}
+      - PORT=3001
+      # In-compose NATS service hostname. Defaults to the `nats` service;
+      # override via a NATS_URL in the shell/.env that runs `compose up`.
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      # portfolio.duckdb is single-writer and file-based; keep it on the
+      # mounted volume so it survives container rebuilds.
+      - CATALOG_DB_PATH=/data/portfolio.duckdb
+      # Structured server log for Alloy to tail (deploy/observability).
+      - LOG_FILE=/data/logs/server.log
+    volumes:
+      # Persistent home for the canonical portfolio.duckdb + the
+      # write-job token store + structured logs. Survives `up -d --build`.
+      - magpie-server-data:/data
+    depends_on:
+      - nats
+    healthcheck:
+      # /api/status is the existing liveness route (server/index.ts).
+      test: ["CMD", "curl", "-fsS", "http://localhost:3001/api/status"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
   # ── Observability stack (M15-1) ─────────────────────────────────────
   # Opt-in via the `observability` profile so a default `docker-compose
   # up` keeps the dev surface minimal:
@@ -84,6 +141,9 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=false
     volumes:
       - ./deploy/observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      # Dashboard JSON lives apart from the provider config (QF-277); the
+      # provider's options.path points here, not at the provisioning dir.
+      - ./deploy/observability/grafana/dashboards:/etc/grafana/dashboards:ro
       - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
@@ -92,6 +152,7 @@ services:
 
 volumes:
   nats-data:
+  magpie-server-data:
   prometheus-data:
   loki-data:
   alloy-data:

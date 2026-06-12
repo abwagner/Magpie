@@ -1,0 +1,17 @@
+[Unit]
+Description=Magpie data ingest — %I
+Documentation=https://github.com/your-org/Magpie/blob/main/data/CRON.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/magpie/Magpie
+EnvironmentFile=/srv/magpie/.env
+ExecStart=/usr/bin/npm run --silent ingest -- --source %i
+StandardOutput=append:/srv/magpie/logs/ingest-%i.log
+StandardError=inherit
+Nice=10
+
+[Install]
+WantedBy=default.target

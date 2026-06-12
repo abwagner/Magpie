@@ -4,7 +4,7 @@
 // http://localhost:8080) and proxies are TBD; for now we hit it
 // directly. Configurable via VITE_RESEARCH_API_URL.
 //
-// Endpoints (defined in research/quantfoundry-research/.../routes.py):
+// Endpoints (defined in research/magpie-research/.../routes.py):
 //   POST   /jobs                    → JobAccepted (202)
 //   GET    /jobs?state=<state>      → JobList
 //   GET    /jobs/{job_id}           → JobStatus (404 on missing)

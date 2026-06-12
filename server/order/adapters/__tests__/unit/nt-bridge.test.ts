@@ -263,6 +263,46 @@ describe("nt-bridge adapter (QF-233)", () => {
       const positions = await adapter.getPositions();
       expect(positions).toEqual([{ symbol: "SPY", direction: "long", quantity: 100 }]);
     });
+
+    it("carries the raw Schwab row through (QF-272)", async () => {
+      fakeNats.setReplier("orders.positions.schwab", () => [
+        {
+          symbol: "AAPL",
+          direction: "Long",
+          quantity: 5,
+          raw: { instrument: { assetType: "EQUITY", symbol: "AAPL" }, marketValue: 500 },
+        },
+      ]);
+      const positions = await adapter.getPositions();
+      expect(positions[0]!.raw).toEqual({
+        instrument: { assetType: "EQUITY", symbol: "AAPL" },
+        marketValue: 500,
+      });
+    });
+
+    it("throws when the bridge replies with an error object", async () => {
+      fakeNats.setReplier("orders.positions.schwab", () => ({
+        error: "list_positions failed",
+      }));
+      await expect(adapter.getPositions()).rejects.toThrow(/list_positions failed/);
+    });
+  });
+
+  describe("getAccounts (QF-272)", () => {
+    it("returns BrokerAccount[] from the reply", async () => {
+      fakeNats.setReplier("orders.accounts.schwab", () => [
+        { accountNumber: "123", hashValue: "HASH", type: "MARGIN" },
+      ]);
+      const accounts = await adapter.getAccounts!();
+      expect(accounts).toEqual([{ accountNumber: "123", hashValue: "HASH", type: "MARGIN" }]);
+    });
+
+    it("throws when the bridge replies with an error object", async () => {
+      fakeNats.setReplier("orders.accounts.schwab", () => ({
+        error: "list_accounts failed",
+      }));
+      await expect(adapter.getAccounts!()).rejects.toThrow(/list_accounts failed/);
+    });
   });
 
   describe("exec_reports subscription", () => {
@@ -313,6 +353,34 @@ describe("nt-bridge adapter (QF-233)", () => {
       });
     });
 
+    it("stamps the adapter's account_id on fanned-out rejections (QF-246)", async () => {
+      const received: BrokerRejection[] = [];
+      adapter.onRejection?.((r) => received.push(r));
+      await fakeNats.pumpExecReport("orders.exec_reports.schwab", {
+        broker: "schwab",
+        broker_order_id: "BRK-99",
+        event: "rejected",
+        ts: "2026-05-19T20:31:00.000Z",
+        rejection_reason: "price band breach",
+      });
+      // Default-account adapter → account_id "default".
+      expect(received[0]?.account_id).toBe("default");
+    });
+
+    it("prefers the exec report's account_id over the adapter's on rejections (QF-246)", async () => {
+      const received: BrokerRejection[] = [];
+      adapter.onRejection?.((r) => received.push(r));
+      await fakeNats.pumpExecReport("orders.exec_reports.schwab", {
+        broker: "schwab",
+        broker_order_id: "BRK-99",
+        event: "rejected",
+        ts: "2026-05-19T20:31:00.000Z",
+        rejection_reason: "price band breach",
+        account_id: "ACCT123",
+      });
+      expect(received[0]?.account_id).toBe("ACCT123");
+    });
+
     it("drops 'cancelled' and 'submitted' reports (informational only — OrderPlane drives those locally)", async () => {
       const fills: Fill[] = [];
       const rejections: BrokerRejection[] = [];
@@ -347,6 +415,102 @@ describe("nt-bridge adapter (QF-233)", () => {
       });
       expect(fills.length).toBe(1);
       expect(fills[0]?.broker_order_id).toBe("BRK-after-malformed");
+    });
+
+    it("stamps the adapter's account_id on fanned-out fills (QF-246)", async () => {
+      const received: Fill[] = [];
+      adapter.onFill((f) => received.push(f));
+      await fakeNats.pumpExecReport("orders.exec_reports.schwab", {
+        broker: "schwab",
+        broker_order_id: "BRK-1",
+        event: "fill",
+        ts: "2026-05-19T20:30:00.000Z",
+        fill: { fill_id: "F-3", price: 1, quantity: 1, fees: 0 },
+      });
+      // Default-account adapter → account_id "default".
+      expect(received[0]?.account_id).toBe("default");
+    });
+  });
+
+  // ── QF-246 — per-account subject namespacing ───────────────────────
+  describe("per-account subject namespacing (QF-246)", () => {
+    it("targets suffixed subjects when accountId is set", async () => {
+      const acct = createNtBridgeAdapter(
+        fakeNats as never,
+        { broker: "schwab", accountId: "ACCT123", submitTimeoutMs: 100, queryTimeoutMs: 100 },
+        createTestLogger(),
+      );
+      let observed: unknown = null;
+      fakeNats.setReplier("orders.submit.schwab.ACCT123", (req) => {
+        observed = req;
+        return { broker_order_id: "BRK-A", accepted: true };
+      });
+      const id = await acct.submitOrder({
+        client_order_id: "I1",
+        symbol: "X",
+        direction: "Long",
+        quantity: 1,
+        orderType: "market",
+      });
+      expect(id).toBe("BRK-A");
+      expect(observed).not.toBeNull();
+    });
+
+    it("keeps bare subjects for the default account (backward-compat)", async () => {
+      const def = createNtBridgeAdapter(
+        fakeNats as never,
+        { broker: "schwab", accountId: "default", submitTimeoutMs: 100, queryTimeoutMs: 100 },
+        createTestLogger(),
+      );
+      fakeNats.setReplier("orders.submit.schwab", () => ({
+        broker_order_id: "BRK-D",
+        accepted: true,
+      }));
+      const id = await def.submitOrder({
+        client_order_id: "I2",
+        symbol: "X",
+        direction: "Long",
+        quantity: 1,
+        orderType: "market",
+      });
+      expect(id).toBe("BRK-D");
+    });
+
+    it("stamps the account_id on fills from the suffixed exec_reports subject", async () => {
+      const acct = createNtBridgeAdapter(
+        fakeNats as never,
+        { broker: "schwab", accountId: "ACCT123" },
+        createTestLogger(),
+      );
+      const received: Fill[] = [];
+      acct.onFill((f) => received.push(f));
+      await fakeNats.pumpExecReport("orders.exec_reports.schwab.ACCT123", {
+        broker: "schwab",
+        broker_order_id: "BRK-2",
+        event: "fill",
+        ts: "2026-05-19T20:30:00.000Z",
+        fill: { fill_id: "F-4", price: 1, quantity: 1, fees: 0 },
+      });
+      expect(received[0]?.account_id).toBe("ACCT123");
+    });
+
+    it("prefers the report's own account_id over the adapter's config", async () => {
+      const acct = createNtBridgeAdapter(
+        fakeNats as never,
+        { broker: "schwab", accountId: "ACCT123" },
+        createTestLogger(),
+      );
+      const received: Fill[] = [];
+      acct.onFill((f) => received.push(f));
+      await fakeNats.pumpExecReport("orders.exec_reports.schwab.ACCT123", {
+        broker: "schwab",
+        broker_order_id: "BRK-3",
+        event: "fill",
+        ts: "2026-05-19T20:30:00.000Z",
+        account_id: "OTHER",
+        fill: { fill_id: "F-5", price: 1, quantity: 1, fees: 0 },
+      });
+      expect(received[0]?.account_id).toBe("OTHER");
     });
   });
 });

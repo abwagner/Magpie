@@ -16,7 +16,7 @@ For the system design of how these sources are used, see: [Data Plane TDD](data-
 
 **How each source plugs in:**
 
-- **Schwab + IBKR live MD** flow through Python NT bridges (`quantfoundry-md-bridge.schwab`, `quantfoundry-ibkr-nt`) and publish on `marketdata.*` NATS subjects. The TS-side `MarketDataService` is a NATS consumer (no direct REST/TWS calls from Node). Each broker bridge is independent — there is no cross-broker fallback. Architecture: [data-plane.md §2](data-plane.md#2-live-broker-market-data); wire contract: [broker-integration.md §3.3](../tdd/broker-integration.md#33-market-data-md-bridge--ts-md-service).
+- **Schwab + IBKR live MD** flow through Python NT bridges (`magpie-md-bridge.schwab`, `magpie-ibkr-nt`) and publish on `marketdata.*` NATS subjects. The TS-side `MarketDataService` is a NATS consumer (no direct REST/TWS calls from Node). Each broker bridge is independent — there is no cross-broker fallback. Architecture: [data-plane.md §2](data-plane.md#2-live-broker-market-data); wire contract: [broker-integration.md §3.3](../tdd/broker-integration.md#33-market-data-md-bridge--ts-md-service).
 - **MarketData.app** is reserved for the offline historical-chain collection script (per [collection.md](collection.md)). It does not participate in the live MD path; treat it as a batch ETL source.
 - **All other sources** (FRED, EIA, CFTC, FMP, Databento, etc.) are batch ingestion through the orchestrator-adapter pattern; see [data-plane.md §3](data-plane.md#3-non-broker-batch-ingestion).
 
@@ -144,7 +144,7 @@ The `[marketdata]` log line emitted by [`src/lib/marketdata-api.js`](../../src/l
 | Host                                    | `127.0.0.1`                          | `IBKR_HOST`                         |
 | Port                                    | `4002` (Gateway), `7497` (TWS paper) | `IBKR_PORT`                         |
 | Client ID (snapshot script)             | `1`                                  | `IBKR_CLIENT_ID`                    |
-| Client ID (quantfoundry-ibkr-nt bridge) | `2`                                  | configured in the bridge's launcher |
+| Client ID (magpie-ibkr-nt bridge) | `2`                                  | configured in the bridge's launcher |
 
 **Important:** The snapshot script and the NT bridge use different client IDs to avoid conflicts. IB Gateway supports multiple concurrent client connections but each must have a unique ID.
 
@@ -205,7 +205,7 @@ The snapshot script handles this by batching 50 contracts at a time with 200ms d
 
 **Account type:** Standard brokerage account.
 **Cost:** Free with account.
-**Auth:** OAuth 2.0 with refresh token. Access tokens expire every 30 minutes (auto-refreshed by the Schwab bridges — `quantfoundry-schwab-nt` for orders, `quantfoundry-md-bridge.schwab` for market data; both share a `SchwabAuth` helper). Refresh tokens expire every **7 days** and must be re-issued by completing the Authorization Code flow.
+**Auth:** OAuth 2.0 with refresh token. Access tokens expire every 30 minutes (auto-refreshed by the Schwab bridges — `magpie-schwab-nt` for orders, `magpie-md-bridge.schwab` for market data; both share a `SchwabAuth` helper). Refresh tokens expire every **7 days** and must be re-issued by completing the Authorization Code flow.
 
 ### Credentials
 
@@ -249,7 +249,7 @@ First run generates a self-signed cert at `scripts/.schwab-auth-*.pem` (gitignor
 
 ### Rate limits
 
-- Not publicly documented. Conservative throttling (~1 request/sec) is the default in the Schwab adapter; rate-limit handling lives in [`research/quantfoundry-schwab-nt/`](../../research/quantfoundry-schwab-nt/).
+- Not publicly documented. Conservative throttling (~1 request/sec) is the default in the Schwab adapter; rate-limit handling lives in [`research/magpie-schwab-nt/`](../../research/magpie-schwab-nt/).
 
 ### Data provided
 
@@ -295,4 +295,4 @@ The dominant ongoing cost is the MarketData.app subscription. IBKR data fees are
 
 Both scripts write to the same `data/chains/` directory with the same Parquet schema. The `source` column in the Parquet file identifies which script produced each row (`"marketdata"` or `"ibkr"`).
 
-**Live cron schedule** runs in the `quantfoundry-scheduler` Docker container on the home server, not via host crontab. The container schedules `npm run collect:bulk` (MarketData chains), `npm run ingest -- --source {fred,eia,cftc}` (macro), and `npm run databento:pull` (futures). Full job list + schedules + operator commands in [`data/CRON.md`](../../data/CRON.md). For ad-hoc one-off backfills, the `npm run collect` / `npm run snapshot` commands above can still be invoked manually.
+**Live cron schedule** runs in the `magpie-scheduler` Docker container on the home server, not via host crontab. The container schedules `npm run collect:bulk` (MarketData chains), `npm run ingest -- --source {fred,eia,cftc}` (macro), and `npm run databento:pull` (futures). Full job list + schedules + operator commands in [`data/CRON.md`](../../data/CRON.md). For ad-hoc one-off backfills, the `npm run collect` / `npm run snapshot` commands above can still be invoked manually.

@@ -1,0 +1,21 @@
+[Unit]
+Description=Magpie observability backup — Loki+Prometheus snapshot to MinIO (QF-279)
+Documentation=https://github.com/your-org/Magpie/blob/main/server/writeJobs/handlers/backup-observability.ts
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/magpie/Magpie
+EnvironmentFile=/srv/magpie/.env
+# Submits a `backup-observability` write-job to the local dispatch API,
+# which spawns scripts/_backup-observability-impl.ts server-side. Reuses
+# the M10 write-jobs chassis so the run shows up in Settings → Jobs.
+# OBSERVABILITY_BACKUP_BUCKET (or S3_BUCKET) selects the MinIO target.
+ExecStart=/usr/bin/npm run --silent backup-observability
+StandardOutput=append:/srv/magpie/logs/backup-observability.log
+StandardError=inherit
+Nice=10
+
+[Install]
+WantedBy=default.target

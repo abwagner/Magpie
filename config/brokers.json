@@ -1,5 +1,5 @@
 {
-  "_doc": "Active-broker selection for the QF Order Plane. Defaults are wired in server/order/brokers-config.ts; missing keys here use those defaults. Schwab routes through the Python NT bridge (QF-237) over NATS — flipping enabled=true requires a running quantfoundry-schwab-nt service on the credential host and a reachable NATS connection (refuses-to-start guard in server/index.ts §8). Multi-account shape added in QF-243; the legacy single-object shape (brokers.schwab.enabled) is still accepted and synthesises a default account.",
+  "_doc": "Active-broker selection for the QF Order Plane. Defaults are wired in server/order/brokers-config.ts; missing keys here use those defaults. Schwab routes through the Python NT bridge (QF-237) over NATS — flipping enabled=true requires a running magpie-schwab-nt service on the credential host and a reachable NATS connection (refuses-to-start guard in server/index.ts §8). Multi-account shape added in QF-243; the legacy single-object shape (brokers.schwab.enabled) is still accepted and synthesises a default account.",
   "schwab": {
     "accounts": [
       {
@@ -8,5 +8,11 @@
         "enabled": false
       }
     ]
+  },
+  "marketdata": {
+    "_doc": "Cross-broker market-data fallback policy (QF-341, docs/tdd/marketdata-fallback.md §2). Opt-in: fallback_enabled=false is today's behavior (BridgeUnavailableError, no failover). priority documents the ratified order (IBKR primary, Schwab fallback) for when the operator flips fallback_enabled=true. Applies only to read-only marketdata.rpc.{quote,chain,expirations,candles}; never to orders.",
+    "fallback_enabled": false,
+    "priority": ["ibkr", "schwab"],
+    "heartbeat_stale_ms": 30000
   }
 }

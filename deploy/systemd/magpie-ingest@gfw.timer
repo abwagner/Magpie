@@ -1,0 +1,11 @@
+[Unit]
+Description=Magpie Global Fishing Watch ingest — daily 04:30
+
+[Timer]
+OnCalendar=*-*-* 04:30:00
+Unit=magpie-ingest@gfw.service
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

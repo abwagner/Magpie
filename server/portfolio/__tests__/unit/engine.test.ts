@@ -160,4 +160,129 @@ describe("PortfolioEngine", () => {
       expect(engine.getState("main").halted).toBe(false);
     });
   });
+
+  // ── QF-309 — option lifecycle settlement ──────────────────────────
+  describe("settleLifecycle", () => {
+    function engineWithShortCall() {
+      const engine = createPortfolioEngine({ logger });
+      engine.initPortfolio("main", makeConfig());
+      engine.applyFill(
+        "main",
+        makeFill({
+          fill_id: "OPT:SPY:2026-05-16:C:500",
+          symbol: "OPT:SPY:2026-05-16:C:500",
+          direction: "Short",
+          quantity: 1,
+          price: 3,
+          fees: 0,
+        }),
+      );
+      return engine;
+    }
+
+    it("worthless expiry closes the option and realizes the short premium", () => {
+      const engine = engineWithShortCall();
+      const cashBefore = engine.getState("main").cash;
+      const result = engine.settleLifecycle("main", {
+        option_symbol: "OPT:SPY:2026-05-16:C:500",
+        kind: "expired",
+        option_close_price: 0,
+        settlement_type: "cash",
+        cash_delta: 0,
+        asof: "2026-05-16T20:00:00Z",
+      });
+      expect(result.option_closed).toBe(true);
+      // Short sold at 3, closes at 0 → realized +3.
+      expect(result.realized_pnl).toBeCloseTo(3);
+      expect(engine.getState("main").total_realized_pnl).toBeCloseTo(3);
+      expect(engine.getState("main").cash).toBeCloseTo(cashBefore);
+      expect(engine.getState("main").positions).toHaveLength(0);
+    });
+
+    it("physical assignment closes the option and opens the underlying leg", () => {
+      const engine = engineWithShortCall();
+      const result = engine.settleLifecycle("main", {
+        option_symbol: "OPT:SPY:2026-05-16:C:500",
+        kind: "assigned",
+        option_close_price: 0,
+        settlement_type: "physical",
+        cash_delta: null,
+        asof: "2026-05-16T20:00:00Z",
+        underlying: {
+          symbol: "EQ:SPY",
+          direction: "Short", // assigned short call → deliver shares (short)
+          quantity: 100,
+          price: 500,
+        },
+      });
+      expect(result.option_closed).toBe(true);
+      expect(result.underlying_position_id).not.toBeNull();
+      const positions = engine.getState("main").positions;
+      expect(positions.find((p) => p.symbol.startsWith("OPT:"))).toBeUndefined();
+      expect(positions.find((p) => p.symbol === "EQ:SPY")).toMatchObject({
+        direction: "Short",
+        quantity: 100,
+        entry_price: 500,
+      });
+      // Derived cash: realized option P&L (+3) + selling 100 shares @500.
+      expect(result.cash_delta).toBeCloseTo(3 + 500 * 100);
+    });
+
+    it("nets the underlying leg against an opposite existing position", () => {
+      const engine = createPortfolioEngine({ logger });
+      engine.initPortfolio("main", makeConfig());
+      // Existing long 100 SPY (covered call scenario).
+      engine.applyFill(
+        "main",
+        makeFill({
+          fill_id: "EQ:SPY",
+          symbol: "EQ:SPY",
+          direction: "Long",
+          quantity: 100,
+          price: 480,
+          fees: 0,
+        }),
+      );
+      engine.applyFill(
+        "main",
+        makeFill({
+          fill_id: "OPT:SPY:2026-05-16:C:500",
+          symbol: "OPT:SPY:2026-05-16:C:500",
+          direction: "Short",
+          quantity: 1,
+          price: 3,
+          fees: 0,
+        }),
+      );
+      engine.settleLifecycle("main", {
+        option_symbol: "OPT:SPY:2026-05-16:C:500",
+        kind: "assigned",
+        option_close_price: 0,
+        settlement_type: "physical",
+        cash_delta: null,
+        asof: "2026-05-16T20:00:00Z",
+        underlying: { symbol: "EQ:SPY", direction: "Short", quantity: 100, price: 500 },
+      });
+      // Short 100 nets the long 100 → flat on the underlying.
+      const positions = engine.getState("main").positions;
+      expect(positions.find((p) => p.symbol === "EQ:SPY")).toBeUndefined();
+    });
+
+    it("is a no-op-with-audit when the option position is unknown", () => {
+      const engine = createPortfolioEngine({ logger });
+      engine.initPortfolio("main", makeConfig());
+      const result = engine.settleLifecycle("main", {
+        option_symbol: "OPT:UNKNOWN:2026-05-16:C:500",
+        kind: "assigned",
+        option_close_price: 0,
+        settlement_type: "physical",
+        cash_delta: null,
+        asof: "2026-05-16T20:00:00Z",
+        underlying: { symbol: "EQ:SPY", direction: "Long", quantity: 100, price: 500 },
+      });
+      expect(result.option_closed).toBe(false);
+      // §11.7: still opens the underlying leg the broker reports.
+      expect(engine.getState("main").positions.find((p) => p.symbol === "EQ:SPY")).toBeDefined();
+    });
+  });
 });

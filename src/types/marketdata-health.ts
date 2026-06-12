@@ -66,8 +66,24 @@ export interface BridgeStatus {
   rpc_latency_p50_ms: number | null;
   /** p99 RPC latency in ms over the last 5-minute window. null if no calls. */
   rpc_latency_p99_ms: number | null;
+  // QF-341 — MD fallback liveness (marketdata-fallback.md §4.2).
+  /** Rank in the ratified MD priority order (0 = primary), or null if the
+   *  broker isn't listed in marketdata.priority. */
+  priority_rank: number | null;
+  /** True when this broker is currently serving as a fallback target. */
+  serving_as_fallback: boolean;
+}
+
+/** Read-only fallback policy header for Settings → Bridges (QF-341). */
+export interface BridgePolicy {
+  fallback_enabled: boolean;
+  priority: string[];
+  heartbeat_stale_ms: number;
+  methods: Record<string, { fallback_enabled?: boolean; priority?: string[] }>;
 }
 
 export interface BridgesResponse {
   bridges: BridgeStatus[];
+  /** The ratified fallback policy (QF-341); absent when not wired. */
+  policy?: BridgePolicy;
 }

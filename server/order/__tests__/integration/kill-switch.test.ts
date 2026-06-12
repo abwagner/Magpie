@@ -7,7 +7,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createOrderPlane, type OrderPlane } from "../../plane.js";
 import { createPortfolioEngine, type PortfolioEngine } from "../../../portfolio/engine.js";
 import { createFillLog } from "../../fill-log.js";
-import { createPaperAdapter } from "../../adapters/paper.js";
+import { createFakeBroker } from "../fixtures/fake-broker.js";
 import { createTestLogger } from "../../../__tests__/helpers/test-logger.js";
 import { testPortfolioConfig } from "../../../__tests__/helpers/fixtures.js";
 import { join } from "node:path";
@@ -43,20 +43,11 @@ function setup() {
   engine.initPortfolio("main", testPortfolioConfig());
 
   const fillLog = createFillLog(join(tempDir, "main.jsonl"));
-  const mockMarketData = {
-    async getQuote() {
-      return { bid: 12, ask: 13, mid: 12.5, last: 12.5, volume: 1000 };
-    },
-  };
-  const broker = createPaperAdapter(
-    { slippage: 0.75 },
-    mockMarketData,
-    () => `paper-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-  );
+  const broker = createFakeBroker({ autoFill: true });
 
   orderPlane = createOrderPlane({
     portfolioEngine: engine,
-    broker,
+    broker: broker.adapter,
     fillLog,
     logger,
     generateId: () => `order-${Date.now()}-${Math.random().toString(36).slice(2)}`,

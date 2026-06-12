@@ -8,9 +8,9 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: ^docs/design_handoff_quantfoundry/
+        exclude: ^docs/design_handoff_magpie/
       - id: end-of-file-fixer
-        exclude: ^docs/design_handoff_quantfoundry/
+        exclude: ^docs/design_handoff_magpie/
       - id: check-yaml
       - id: check-json
       - id: check-merge-conflict
@@ -38,7 +38,7 @@ repos:
     hooks:
       - id: prettier
         types_or: [javascript, ts, jsx, tsx, json, yaml, markdown]
-        exclude: ^docs/design_handoff_quantfoundry/
+        exclude: ^docs/design_handoff_magpie/
 
   # ── tsc --noEmit (project-wide type check) ───────────────────────
   # Local hook because tsc must see the whole project, not single files.

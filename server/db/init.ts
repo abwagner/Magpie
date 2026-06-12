@@ -9,11 +9,11 @@ import type { Database } from "duckdb";
 const TABLES = [
   // Audit trail: audit_intents
   // QF-214 — originating_signal_json holds the FULL Signal payload at
-  // intent-write time. Denormalized (some redundancy with audit_signals)
-  // so restart recovery can rebuild the working-order monitor's
-  // per-task originating Signal without joining across an evolving
-  // audit_signals payload schema. Null when the intent had no upstream
-  // signal (rare; manual-mode orders + legacy paths).
+  // intent-write time. Self-contained so restart recovery can rebuild the
+  // per-task originating Signal without an external join. Null when the
+  // intent had no upstream signal (rare; manual-mode orders + legacy
+  // paths). The Arch-A audit_signals table this once denormalized against
+  // was retired in QF-261.
   // QF-319 — source identifies which surface wrote the row (Model A,
   // writer-identity sourcing per docs/tdd/order-flow.md §4.2). `qf` =
   // OPL on operator manual entry / liquidation / exit-rule close;
@@ -182,29 +182,6 @@ const TABLES = [
   `ALTER TABLE audit_fills ADD COLUMN IF NOT EXISTS correlation_id VARCHAR`,
   // QF-244 — account_id on existing installs (M12-2 backfill).
   `ALTER TABLE audit_fills ADD COLUMN IF NOT EXISTS account_id VARCHAR DEFAULT 'default'`,
-
-  // Audit trail: audit_pricing_decisions (QF-42)
-  // Per TDD §3.4 — one row per pricing decision. An intent may produce
-  // multiple decisions over its lifetime (working policy repegs), so
-  // decision_id is the PK and intent_id is the foreign key.
-  // `inputs_json` is a JSON blob containing the quote snapshot and
-  // signal age/horizon at decision time — preserving the inputs makes
-  // every decision replayable from the audit row alone.
-  `CREATE TABLE IF NOT EXISTS audit_pricing_decisions (
-    decision_id          VARCHAR PRIMARY KEY,
-    intent_id            VARCHAR NOT NULL REFERENCES audit_intents(intent_id),
-    strategy_id          VARCHAR NOT NULL,
-    strategy_chosen      VARCHAR NOT NULL,
-    profile_source       VARCHAR NOT NULL,
-    inputs_json          VARCHAR NOT NULL,
-    order_type           VARCHAR NOT NULL,
-    limit_price          DOUBLE,
-    limit_price_pre_snap DOUBLE,
-    time_in_force        VARCHAR NOT NULL,
-    working_policy_id    VARCHAR NOT NULL,
-    reasoning            VARCHAR NOT NULL,
-    created_at           TIMESTAMP NOT NULL
-  )`,
 
   // Portfolio: portfolio_snapshots
   `CREATE TABLE IF NOT EXISTS portfolio_snapshots (

@@ -1,6 +1,6 @@
 // ── NT-bridge Market-Data Adapter ─────────────────────────────────────
 // TS-side client for the QF↔Python MD-bridge NATS contract. The Python
-// MD bridge (research/quantfoundry-md-bridge/) is the server; this is
+// MD bridge (research/magpie-md-bridge/) is the server; this is
 // the TS adapter that slots into mdAdapterList alongside the existing
 // schwab.ts / ibkr.ts / databento.ts / marketdata.ts adapters.
 //
@@ -23,6 +23,8 @@ import type {
   TradeCallback,
 } from "../../../src/types/market-data.js";
 import type { Logger } from "../../logger.js";
+import type { AlertRouter } from "../../alerts/router.js";
+import { marketdata } from "../../../src/types/subjects.js";
 
 // ── Config ─────────────────────────────────────────────────────────
 
@@ -39,6 +41,18 @@ export interface NtBridgeMdConfig {
   // Adapter marks itself unhealthy if no heartbeat in > this. Defaults
   // to 30s per TDD §3.1.
   heartbeatStaleMs?: number;
+}
+
+export interface NtBridgeMdAdapter extends MarketDataAdapter {
+  // QF-336 — set the alert router after construction (for bridge heartbeat
+  // unavailable/recovered alerts). Called from server/index.ts after the
+  // alertRouter is created.
+  setAlertRouter(router: AlertRouter): void;
+  // QF-341 — exact age (ms) since the last heartbeat, or null if none has
+  // ever been seen. Replaces the QF-296 health-endpoint stub that returned
+  // null unconditionally (TDD §4.2). Reads the same closure `available()`
+  // uses, so the liveness number and the routing decision never diverge.
+  lastHeartbeatAgeMs(): number | null;
 }
 
 const DEFAULT_QUOTE_TIMEOUT_MS = 2_000;
@@ -103,7 +117,7 @@ export function createNtBridgeMdAdapter(
   nc: NatsConnection,
   config: NtBridgeMdConfig,
   logger: Logger,
-): MarketDataAdapter {
+): NtBridgeMdAdapter {
   const broker = config.broker;
   const quoteTimeoutMs = config.quoteTimeoutMs ?? DEFAULT_QUOTE_TIMEOUT_MS;
   const expirationsTimeoutMs = config.expirationsTimeoutMs ?? DEFAULT_EXPIRATIONS_TIMEOUT_MS;
@@ -115,6 +129,8 @@ export function createNtBridgeMdAdapter(
 
   const sc = StringCodec();
   let lastHeartbeatMs = 0;
+  let bridgeWasAvailable = false;
+  let alertRouter: AlertRouter | undefined;
 
   // Per-(stream, symbol) fan-out registries. Multiple consumers can
   // subscribe to the same symbol; we hold one upstream NATS sub per
@@ -125,21 +141,75 @@ export function createNtBridgeMdAdapter(
   const bookFanouts = new Map<string, FanoutEntry<BookCallback>>();
 
   // ── Heartbeat ──
-  const heartbeatSub = nc.subscribe(`marketdata.${broker}.heartbeat`);
+  const heartbeatSub = nc.subscribe(marketdata.heartbeat(broker));
   void (async () => {
     for await (const msg of heartbeatSub) {
       try {
         const hb = JSON.parse(sc.decode(msg.data)) as HeartbeatPayload;
-        lastHeartbeatMs = Date.now();
+        const now = Date.now();
+        lastHeartbeatMs = now;
         logger.debug("nt-bridge-md: heartbeat", {
           broker,
           last_upstream_success_ts: hb.last_upstream_success_ts,
         });
+        // Fire bridge.recovered alert on transition from unavailable → available
+        if (!bridgeWasAvailable && alertRouter) {
+          bridgeWasAvailable = true;
+          void alertRouter
+            .record({
+              type: `bridge.recovered.${broker}`,
+              level: "info",
+              message: `Bridge ${broker} recovered — heartbeat received`,
+              payload: {
+                broker,
+              },
+            })
+            .catch((err) => {
+              logger.warn("nt-bridge-md: bridge recovered alert failed", {
+                error: String(err),
+                broker,
+              });
+            });
+        }
       } catch (err) {
         logger.warn("nt-bridge-md: malformed heartbeat payload", {
           broker,
           error: String(err),
         });
+      }
+    }
+  })();
+
+  // ── Heartbeat stale monitor ──
+  // Check periodically if the bridge has become unavailable (no heartbeat
+  // within heartbeatStaleMs). Fire bridge.unavailable alert on transition.
+  void (async () => {
+    while (!nc.isClosed()) {
+      await new Promise((resolve) => setTimeout(resolve, 5000)); // Check every 5 seconds
+      if (lastHeartbeatMs === 0) continue; // Skip until first heartbeat
+      const now = Date.now();
+      const isNowAvailable = now - lastHeartbeatMs <= heartbeatStaleMs;
+      if (bridgeWasAvailable && !isNowAvailable) {
+        bridgeWasAvailable = false;
+        if (alertRouter) {
+          void alertRouter
+            .record({
+              type: `bridge.unavailable.${broker}`,
+              level: "warning",
+              message: `Bridge ${broker} unavailable — no heartbeat for ${heartbeatStaleMs}ms`,
+              payload: {
+                broker,
+                heartbeat_stale_ms: heartbeatStaleMs,
+                last_heartbeat_age_ms: now - lastHeartbeatMs,
+              },
+            })
+            .catch((err) => {
+              logger.warn("nt-bridge-md: bridge unavailable alert failed", {
+                error: String(err),
+                broker,
+              });
+            });
+        }
       }
     }
   })();
@@ -189,7 +259,7 @@ export function createNtBridgeMdAdapter(
 
   // ── Streaming fan-out builder ──
   function makeStreamSubject(stream: StreamKind, symbol: string): string {
-    return `marketdata.${stream}.${broker}.${symbol}`;
+    return marketdata.stream(stream, broker, symbol);
   }
 
   function ensureQuoteFanout(symbol: string): FanoutEntry<QuoteCallback> {
@@ -324,7 +394,7 @@ export function createNtBridgeMdAdapter(
     async stockQuote(symbol: string): Promise<Quote | null> {
       const result = await safeRequest<QuoteReply>(
         "quote",
-        `marketdata.rpc.quote.${broker}`,
+        marketdata.rpc.quote(broker),
         { symbol },
         quoteTimeoutMs,
         (r) => r.quote,
@@ -336,7 +406,7 @@ export function createNtBridgeMdAdapter(
     async expirations(symbol: string): Promise<string[] | null> {
       const result = await safeRequest<ExpirationsReply>(
         "expirations",
-        `marketdata.rpc.expirations.${broker}`,
+        marketdata.rpc.expirations(broker),
         { symbol },
         expirationsTimeoutMs,
         (r) => r.expirations,
@@ -348,7 +418,7 @@ export function createNtBridgeMdAdapter(
     async chain(symbol: string, expiration: string): Promise<Contract[] | null> {
       const result = await safeRequest<ChainReply>(
         "chain",
-        `marketdata.rpc.chain.${broker}`,
+        marketdata.rpc.chain(broker),
         { symbol, expiration },
         chainTimeoutMs,
         (r) => r.chain,
@@ -364,7 +434,7 @@ export function createNtBridgeMdAdapter(
     ): Promise<Contract[] | null> {
       const result = await safeRequest<ChainReply>(
         "historical_chain",
-        `marketdata.rpc.historical_chain.${broker}`,
+        marketdata.rpc.historicalChain(broker),
         { symbol, date, expiration },
         historicalChainTimeoutMs,
         (r) => r.chain,
@@ -387,7 +457,7 @@ export function createNtBridgeMdAdapter(
       if (frequency) payload.frequency = frequency;
       const result = await safeRequest<CandlesReply>(
         "candles",
-        `marketdata.rpc.candles.${broker}`,
+        marketdata.rpc.candles(broker),
         payload,
         candlesTimeoutMs,
         (r) => r.candles,
@@ -409,6 +479,15 @@ export function createNtBridgeMdAdapter(
     subscribeBook(symbols: string[], callback: BookCallback): Subscription | null {
       if (symbols.length === 0) return null;
       return makeStreamSubscription(symbols, ensureBookFanout, bookFanouts, callback);
+    },
+
+    setAlertRouter(router: AlertRouter): void {
+      alertRouter = router;
+    },
+
+    lastHeartbeatAgeMs(): number | null {
+      if (lastHeartbeatMs === 0) return null;
+      return Date.now() - lastHeartbeatMs;
     },
   };
 }

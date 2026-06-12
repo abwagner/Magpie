@@ -1,6 +1,6 @@
 // ── Black-Scholes & Black-76 pricing (display surface) ────────────
 // The browser/Node side of QF's options pricing. Quantitative
-// backtesting and live trading use the Rust quantfoundry-quant crate
+// backtesting and live trading use the Rust magpie-quant crate
 // (via PyO3 or WASM) — this file is the display surface (PayoffDiag,
 // vol-surface curves, edge→Greeks, Greek Builder LP, etc.).
 //
@@ -33,7 +33,7 @@ export interface OptionApi {
 
 // ── erf via Abramowitz & Stegun 7.1.26 ────────────────────────────
 // |error| < 7.5e-8 for any input. Same approximation the Rust
-// quantfoundry-quant crate uses (`erf_as_7_1_26` in
+// magpie-quant crate uses (`erf_as_7_1_26` in
 // core/qf-quant/src/normal.rs), so JS↔Rust pricing diverges only
 // at floating-point ULP scale.
 

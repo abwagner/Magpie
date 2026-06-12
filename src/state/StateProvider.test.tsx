@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   applyMessage,
   applyAlertToOutstanding,
+  applyExitRuleTrip,
+  type ExitRuleTrip,
   type OutstandingQuoteAlert,
 } from "./StateProvider.js";
-import type { SystemState, WsMessage } from "../types/ws.js";
+import type { PositionExitRuleMsg, SystemState, WsMessage } from "../types/ws.js";
 
 const SNAP: SystemState = {
   type: "snapshot",
@@ -153,5 +155,62 @@ describe("applyAlertToOutstanding", () => {
     };
     const next = applyAlertToOutstanding(empty, noSymbol);
     expect(next).toBe(empty);
+  });
+});
+
+// QF-322 — exit-rule trip reducer.
+describe("applyExitRuleTrip", () => {
+  const clock = () => "2026-05-20T12:00:00Z";
+
+  function trip(over: Partial<PositionExitRuleMsg["data"]> = {}): PositionExitRuleMsg {
+    return {
+      type: "position_exit_rule",
+      data: {
+        position_id: "pos-1",
+        rule: "stop_loss",
+        closing_intent_id: "intent-1",
+        strategy_id: "straddle-spy",
+        ...over,
+      },
+    };
+  }
+
+  it("prepends a stamped trip onto the ring", () => {
+    const next = applyExitRuleTrip([], trip(), clock);
+    expect(next).toHaveLength(1);
+    expect(next[0]?.position_id).toBe("pos-1");
+    expect(next[0]?.ts).toBe("2026-05-20T12:00:00Z");
+  });
+
+  it("keeps most-recent-first ordering across trips", () => {
+    const after1 = applyExitRuleTrip([], trip({ position_id: "pos-1" }), clock);
+    const after2 = applyExitRuleTrip(
+      after1,
+      trip({ position_id: "pos-2", closing_intent_id: "intent-2" }),
+      clock,
+    );
+    expect(after2.map((t) => t.position_id)).toEqual(["pos-2", "pos-1"]);
+  });
+
+  it("dedupes a re-broadcast of the same close (intent + position)", () => {
+    const after1 = applyExitRuleTrip([], trip(), clock);
+    const after2 = applyExitRuleTrip(after1, trip(), clock);
+    expect(after2).toBe(after1);
+  });
+
+  it("keeps distinct legs of one intent as separate trips", () => {
+    const after1 = applyExitRuleTrip([], trip({ position_id: "leg-a" }), clock);
+    const after2 = applyExitRuleTrip(after1, trip({ position_id: "leg-b" }), clock);
+    expect(after2).toHaveLength(2);
+  });
+
+  it("caps the ring at 50 entries", () => {
+    let ring: ExitRuleTrip[] = [];
+    for (let i = 0; i < 60; i++) {
+      ring = applyExitRuleTrip(ring, trip({ closing_intent_id: `intent-${i}` }), clock);
+    }
+    expect(ring).toHaveLength(50);
+    // Newest first → the last-applied intent leads.
+    expect(ring[0]?.closing_intent_id).toBe("intent-59");
   });
 });

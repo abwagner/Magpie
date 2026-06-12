@@ -7,23 +7,18 @@ import { StringCodec } from "nats";
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createNtBridgeMdAdapter } from "../../nt-bridge-md.js";
+import { createNtBridgeMdAdapter, type NtBridgeMdAdapter } from "../../nt-bridge-md.js";
 import { createTestLogger } from "../../../../__tests__/helpers/test-logger.js";
-import type {
-  L2Book,
-  MarketDataAdapter,
-  Quote,
-  TradePrint,
-} from "../../../../../src/types/market-data.js";
+import type { L2Book, Quote, TradePrint } from "../../../../../src/types/market-data.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Shared parity fixtures from M13-03 (`research/quantfoundry-md-bridge/
+// Shared parity fixtures from M13-03 (`research/magpie-md-bridge/
 // tests/fixtures/wire/`). Both runtimes parse the same JSON so any drift
 // breaks both sides at once.
 const FIXTURES_DIR = resolve(
   __dirname,
-  "../../../../../research/quantfoundry-md-bridge/tests/fixtures/wire",
+  "../../../../../research/magpie-md-bridge/tests/fixtures/wire",
 );
 function loadFixture<T>(name: string): T {
   return JSON.parse(readFileSync(resolve(FIXTURES_DIR, `${name}.json`), "utf-8")) as T;
@@ -178,7 +173,7 @@ async function withHeartbeat(fakeNats: FakeNats): Promise<void> {
 
 describe("nt-bridge-md adapter (QF-252)", () => {
   let fakeNats: FakeNats;
-  let adapter: MarketDataAdapter;
+  let adapter: NtBridgeMdAdapter;
 
   beforeEach(() => {
     fakeNats = makeFakeNats();
@@ -224,6 +219,15 @@ describe("nt-bridge-md adapter (QF-252)", () => {
       expect(await localAdapter.available()).toBe(true);
       await new Promise((r) => setTimeout(r, 80));
       expect(await localAdapter.available()).toBe(false);
+    });
+
+    it("lastHeartbeatAgeMs is null before any heartbeat, then a number (QF-341)", async () => {
+      expect(adapter.lastHeartbeatAgeMs()).toBeNull();
+      await withHeartbeat(fakeNats);
+      const age = adapter.lastHeartbeatAgeMs();
+      expect(age).not.toBeNull();
+      expect(age).toBeGreaterThanOrEqual(0);
+      expect(age).toBeLessThan(30_000);
     });
 
     it("ignores malformed heartbeat payloads without crashing the loop", async () => {

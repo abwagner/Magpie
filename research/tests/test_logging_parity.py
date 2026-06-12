@@ -1,4 +1,4 @@
-"""Cross-runtime golden parity test for ``qf-logging`` / ``quantfoundry_logging``
+"""Cross-runtime golden parity test for ``qf-logging`` / ``magpie_logging``
 / ``server/logger.ts``.
 
 Runs each runtime's parity harness — a small program that emits the same
@@ -67,12 +67,12 @@ def _run_rust_harness() -> dict[str, object]:
 
 def _run_python_harness() -> dict[str, object]:
     # We're already running inside the workspace venv (pytest invoked via
-    # `uv run pytest`), so `python -m quantfoundry_logging.parity_harness`
+    # `uv run pytest`), so `python -m magpie_logging.parity_harness`
     # works as long as we use sys.executable to pick up the same interpreter.
     import sys
 
     result = subprocess.run(
-        [sys.executable, "-m", "quantfoundry_logging.parity_harness"],
+        [sys.executable, "-m", "magpie_logging.parity_harness"],
         capture_output=True,
         text=True,
         check=True,

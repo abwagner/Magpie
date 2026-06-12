@@ -1,8 +1,8 @@
 // ── Restart Recovery (QF-214) ─────────────────────────────────────────
 // Rebuilds the OrderPlane's in-memory state from audit_orders + audit_intents
 // after a server restart. Without this, restart mid-trading-day loses the
-// entire active order book; with it, the active book + working-order
-// monitor index are re-hydrated from durable storage.
+// entire active order book; with it, the active book is re-hydrated from
+// durable storage.
 //
 // Defined in: docs/tdd/order-flow.md §3 (state machine) + this ticket.
 //
@@ -10,10 +10,11 @@
 //   * OrderPlane rehydration. Query audit_orders for non-terminal rows;
 //     join with audit_intents; populate OrderPlane's internal maps via
 //     the new `rehydrate()` method.
-//   * Working-order monitor rehydration. After OrderPlane rebuilds, walk
-//     its active orders, parse `audit_intents.originating_signal_json`,
-//     and call `monitor.addTask()` for each cancel_on_signal_invalidate
-//     order.
+//   * Working-order rehydration originally re-armed the legacy
+//     working-order monitor here; that monitor was retired (QF-283 /
+//     QF-339) and its repeg/cancel-on-signal-invalidate responsibility
+//     moved to the NautilusTrader ExecAlgorithm. OrderPlane rehydration
+//     is now self-contained.
 //
 // Reconciliation (QF-230):
 //   * Broker reconciliation — after rehydrateOrderPlane, walks every
@@ -42,10 +43,10 @@ import type {
 
 type OrderDirection = OrderIntent["direction"];
 import type { OrderPlane } from "./plane.js";
+import type { OrderPlaneMetrics } from "./metrics.js";
 import type { AlertRouter } from "../alerts/router.js";
 
 // Terminal states — these orders are done and don't need rehydrating.
-// Mirrors the set in working-order-monitor.ts's attachOrderUpdateLifecycle.
 const TERMINAL_STATUSES = new Set<OrderStatus>([
   "filled",
   "cancelled",
@@ -75,6 +76,10 @@ interface RawOrderRow {
   completed_at: string | null;
   broker_order_id: string | null;
   operator_edits: string | null;
+  // QF-244 — nullable in the row shape because the column is added via
+  // additive ALTER (DEFAULT 'default') on existing installs. Rehydration
+  // falls back to the synthetic "default" account for pre-M12-2 rows.
+  account_id: string | null;
 }
 
 interface RawIntentRow {
@@ -225,6 +230,12 @@ function rehydrateOrder(row: RawOrderRow): Order {
   const completed = parseIso(row.completed_at);
   if (completed) order.completed_at = completed;
   if (row.broker_order_id) order.broker_order_id = row.broker_order_id;
+  // QF-247 — restore the routing account from the audit row so OrderPlane
+  // rehydration re-attaches the order to its per-account adapter and
+  // reconciliation partitions it under the right account_id. Pre-M12-2
+  // rows (account_id null) fall through to OrderPlane's default-account
+  // resolution.
+  if (row.account_id) order.account_id = row.account_id;
   const edits = parseOperatorEdits(row.operator_edits);
   if (edits) order.operator_edits = edits;
   return order;
@@ -267,7 +278,7 @@ export async function rehydrateOrderPlane(
     db,
     `SELECT order_id, intent_id, client_order_id, broker, execution_mode, status,
             created_at, risk_checked_at, approved_at, submitted_at,
-            completed_at, broker_order_id, operator_edits
+            completed_at, broker_order_id, operator_edits, account_id
      FROM audit_orders
      WHERE status NOT IN (${placeholders})`,
     terminalList,
@@ -368,13 +379,33 @@ export interface ReconciliationStats {
 // Orders QF doesn't have an audit_orders row for are invisible to QF
 // (intentional — see broker-integration.md §2.3); this walk only
 // reconciles orders QF originated.
-export async function reconcileOrdersWithBroker(
-  orderPlane: OrderPlane,
-  broker: OrderObservationAdapter,
-  logger: Logger,
-  alertRouter?: AlertRouter,
-): Promise<ReconciliationStats> {
-  const stats: ReconciliationStats = {
+//
+// QF-247 (M12-5) — multi-account dispatch. With M12-3's per-account
+// `brokers` map, each rehydrated order's broker_order_id only means
+// something to the adapter for *its* account. Pass `accounts` to
+// partition the walk by account_id and look up the right adapter via
+// brokers.get(accountId). The legacy single-adapter signature still
+// works (single-account deploys + the QF-230 tests) and routes every
+// candidate through that one adapter.
+
+// QF-247 — multi-account reconciliation targets. `brokers` maps
+// account_id → the observation adapter for that account (the same map
+// OrderPlane.submit dispatches on in M12-3). `defaultAccountId` is the
+// account assumed for rehydrated orders that carry no account_id (legacy
+// rows). `metrics` is optional; when present, missing-adapter skips bump
+// broker_reconcile_skipped_total.
+export interface ReconcileTargets {
+  brokers: Map<string, OrderObservationAdapter>;
+  defaultAccountId?: string;
+  metrics?: Pick<OrderPlaneMetrics, "brokerReconcileSkippedTotal">;
+}
+
+function isReconcileTargets(x: OrderObservationAdapter | ReconcileTargets): x is ReconcileTargets {
+  return (x as ReconcileTargets).brokers instanceof Map;
+}
+
+function emptyStats(): ReconciliationStats {
+  return {
     checked: 0,
     working: 0,
     filled_synthesized: 0,
@@ -383,6 +414,15 @@ export async function reconcileOrdersWithBroker(
     unknown: 0,
     errors: 0,
   };
+}
+
+export async function reconcileOrdersWithBroker(
+  orderPlane: OrderPlane,
+  target: OrderObservationAdapter | ReconcileTargets,
+  logger: Logger,
+  alertRouter?: AlertRouter,
+): Promise<ReconciliationStats> {
+  const stats = emptyStats();
 
   const candidates = orderPlane.listOrders().filter((o) => {
     if (TERMINAL_STATUSES.has(o.status)) return false;
@@ -390,94 +430,148 @@ export async function reconcileOrdersWithBroker(
     return true;
   });
 
+  // QF-247 — resolve the adapter for each candidate by account. Single-
+  // adapter (legacy) callers route everything through the one broker;
+  // multi-account callers look up brokers.get(order.account_id).
+  const multi = isReconcileTargets(target) ? target : null;
+  const singleAdapter = multi ? null : (target as OrderObservationAdapter);
+  const defaultAccountId = multi?.defaultAccountId ?? "default";
+
   for (const order of candidates) {
-    stats.checked++;
-    let brokerStatus: BrokerOrderStatus;
-    try {
-      brokerStatus = await broker.getOrderStatus(order.broker_order_id!);
-    } catch (err) {
-      stats.errors++;
-      logger.error("reconcile: getOrderStatus failed", {
-        order_id: order.order_id,
-        broker_order_id: order.broker_order_id,
-        error: String(err),
+    const accountId = order.account_id ?? defaultAccountId;
+    const broker = multi ? multi.brokers.get(accountId) : singleAdapter;
+    if (!broker) {
+      // QF-247 — an account that has non-terminal audit_orders rows but no
+      // configured adapter (e.g. disabled in brokers.json since those rows
+      // were written). Log + skip rather than crash; the order stays in
+      // its last-known in-memory state until the account is re-enabled.
+      multi?.metrics?.brokerReconcileSkippedTotal.inc({
+        reason: "adapter_missing",
+        account_id: accountId,
       });
-      continue;
-    }
-
-    if (brokerStatus.status === "unknown") {
-      stats.unknown++;
-      logger.warn("reconcile: broker reports unknown for order QF tracks", {
+      logger.warn("reconcile: no broker adapter for account; skipping order", {
         order_id: order.order_id,
+        account_id: accountId,
         broker_order_id: order.broker_order_id,
       });
       continue;
     }
-    if (brokerStatus.status === "working") {
-      stats.working++;
-      continue;
-    }
-
-    if (brokerStatus.status === "filled" || brokerStatus.status === "partial_fill") {
-      const localQty = order.filled_quantity ?? 0;
-      const brokerQty = brokerStatus.filled_quantity;
-      const diff = brokerQty - localQty;
-      if (diff <= 0) {
-        // Broker reports filled but QF already has the audit row; no-op.
-        // (Happens when QF wrote the audit_fills before crashing without
-        // updating audit_orders to the matching terminal status — rare.)
-        continue;
-      }
-      const price = brokerStatus.average_fill_price ?? 0;
-      const syntheticFill: Fill = {
-        fill_id: `recon-${order.order_id}-${Date.now()}`,
-        order_id: order.order_id,
-        intent_id: order.intent_id,
-        portfolio: order.portfolio,
-        symbol: "", // enrichment happens in handleBrokerFill via the matched order
-        direction: "",
-        quantity: diff,
-        price,
-        fees: 0,
-        filled_at: new Date().toISOString(),
-        broker: order.broker,
-        broker_order_id: order.broker_order_id!,
-      };
-      orderPlane.applyReconciledFill(syntheticFill);
-      stats.filled_synthesized++;
-      logger.warn("reconcile: synthesized missing fill from broker", {
-        order_id: order.order_id,
-        missing_quantity: diff,
-        broker_avg_price: price,
-      });
-      continue;
-    }
-
-    if (brokerStatus.status === "cancelled") {
-      await orderPlane.cancel(order.order_id, { reason: "reconciled_at_startup" });
-      stats.cancelled_synthesized++;
-      logger.warn("reconcile: synthesized cancel from broker", {
-        order_id: order.order_id,
-      });
-      continue;
-    }
-
-    if (brokerStatus.status === "rejected") {
-      const syntheticRejection: BrokerRejection = {
-        broker_order_id: order.broker_order_id!,
-        reason: brokerStatus.rejection_reason ?? "reconciled_at_startup",
-        rejected_at: new Date().toISOString(),
-      };
-      orderPlane.applyReconciledRejection(syntheticRejection);
-      stats.rejected_synthesized++;
-      logger.warn("reconcile: synthesized broker rejection", {
-        order_id: order.order_id,
-        reason: syntheticRejection.reason,
-      });
-      continue;
-    }
+    await reconcileOneOrder(orderPlane, broker, order, logger, stats);
   }
 
+  finalizeReconciliation(stats, logger, alertRouter);
+  return stats;
+}
+
+// QF-230 — reconcile a single rehydrated order against its broker
+// adapter, mutating `stats` per the policy table above. Extracted from
+// the walk loop (QF-247) so the multi-account dispatcher can reuse it.
+async function reconcileOneOrder(
+  orderPlane: OrderPlane,
+  broker: OrderObservationAdapter,
+  order: Order,
+  logger: Logger,
+  stats: ReconciliationStats,
+): Promise<void> {
+  stats.checked++;
+  let brokerStatus: BrokerOrderStatus;
+  try {
+    brokerStatus = await broker.getOrderStatus(order.broker_order_id!);
+  } catch (err) {
+    stats.errors++;
+    logger.error("reconcile: getOrderStatus failed", {
+      order_id: order.order_id,
+      broker_order_id: order.broker_order_id,
+      error: String(err),
+    });
+    return;
+  }
+
+  if (brokerStatus.status === "unknown") {
+    stats.unknown++;
+    logger.warn("reconcile: broker reports unknown for order QF tracks", {
+      order_id: order.order_id,
+      broker_order_id: order.broker_order_id,
+    });
+    return;
+  }
+  if (brokerStatus.status === "working") {
+    stats.working++;
+    return;
+  }
+
+  if (brokerStatus.status === "filled" || brokerStatus.status === "partial_fill") {
+    const localQty = order.filled_quantity ?? 0;
+    const brokerQty = brokerStatus.filled_quantity;
+    const diff = brokerQty - localQty;
+    if (diff <= 0) {
+      // Broker reports filled but QF already has the audit row; no-op.
+      // (Happens when QF wrote the audit_fills before crashing without
+      // updating audit_orders to the matching terminal status — rare.)
+      return;
+    }
+    const price = brokerStatus.average_fill_price ?? 0;
+    const syntheticFill: Fill = {
+      fill_id: `recon-${order.order_id}-${Date.now()}`,
+      order_id: order.order_id,
+      intent_id: order.intent_id,
+      portfolio: order.portfolio,
+      symbol: "", // enrichment happens in handleBrokerFill via the matched order
+      direction: "",
+      quantity: diff,
+      price,
+      fees: 0,
+      filled_at: new Date().toISOString(),
+      broker: order.broker,
+      broker_order_id: order.broker_order_id!,
+      // QF-247 — attribute the synthesized fill to the order's account so
+      // audit_fills.account_id matches the originating account.
+      ...(order.account_id !== undefined ? { account_id: order.account_id } : {}),
+    };
+    orderPlane.applyReconciledFill(syntheticFill);
+    stats.filled_synthesized++;
+    logger.warn("reconcile: synthesized missing fill from broker", {
+      order_id: order.order_id,
+      account_id: order.account_id,
+      missing_quantity: diff,
+      broker_avg_price: price,
+    });
+    return;
+  }
+
+  if (brokerStatus.status === "cancelled") {
+    await orderPlane.cancel(order.order_id, { reason: "reconciled_at_startup" });
+    stats.cancelled_synthesized++;
+    logger.warn("reconcile: synthesized cancel from broker", {
+      order_id: order.order_id,
+    });
+    return;
+  }
+
+  if (brokerStatus.status === "rejected") {
+    const syntheticRejection: BrokerRejection = {
+      broker_order_id: order.broker_order_id!,
+      reason: brokerStatus.rejection_reason ?? "reconciled_at_startup",
+      rejected_at: new Date().toISOString(),
+    };
+    orderPlane.applyReconciledRejection(syntheticRejection);
+    stats.rejected_synthesized++;
+    logger.warn("reconcile: synthesized broker rejection", {
+      order_id: order.order_id,
+      reason: syntheticRejection.reason,
+    });
+    return;
+  }
+}
+
+// QF-230 — log the pass + emit the restart_recovery alert. Extracted
+// (QF-247) so the multi-account walk emits exactly one summary alert
+// covering every account, not one per adapter.
+function finalizeReconciliation(
+  stats: ReconciliationStats,
+  logger: Logger,
+  alertRouter?: AlertRouter,
+): void {
   logger.info("restart-recovery: broker reconciliation complete", { ...stats });
 
   if (alertRouter && stats.checked > 0) {
@@ -504,6 +598,4 @@ export async function reconcileOrdersWithBroker(
         logger.warn("reconcile: alert dispatch failed", { error: String(err) });
       });
   }
-
-  return stats;
 }

@@ -43,7 +43,10 @@ try {
       if (key && val !== undefined && !process.env[key]) process.env[key] = val;
     }
   }
-} catch {}
+} catch {
+  // Best-effort .env load; absent or unreadable file is fine (env may be
+  // provided by the process environment directly).
+}
 
 // The chains storage layer (and other data adapters) resolve URIs through
 // DATA_URI / DATA_DIR. Default DATA_DIR to the repo's data/ root if neither
@@ -55,6 +58,7 @@ if (!process.env.DATA_URI && !process.env.DATA_DIR) {
 
 // ── Existing modules ────────────────────────────────────────────────────
 import { createStorage } from "./storage.js";
+import type { StoreContract } from "./storage.js";
 import { dataUri, joinUri } from "./orchestrator/storage.js";
 import * as dataSources from "./data-sources.js";
 import { startLoad, getLoadStatus, cancelLoad } from "./loader.js";
@@ -64,13 +68,18 @@ import { createLogger } from "./logger.js";
 import { initDatabase } from "./db/init.js";
 import { loadCalendar, createCalendar } from "./calendar/index.js";
 import { createPortfolioEngine } from "./portfolio/engine.js";
+import { createOptionLifecycleSweeper } from "./portfolio/option-lifecycle-sweeper.js";
+import { createOptionLifecycleScheduler } from "./portfolio/option-lifecycle-scheduler.js";
+import { createBrokerEventsConsumer } from "./portfolio/broker-events-consumer.js";
 import { createOrderPlane } from "./order/plane.js";
 import { createFillLog } from "./order/fill-log.js";
-import { createPaperAdapter } from "./order/adapters/paper.js";
+import { createDisconnectedAdapter } from "./order/adapters/disconnected.js";
 import { createNtBridgeAdapter } from "./order/adapters/nt-bridge.js";
 import { createNtObserverConsumer } from "./order/adapters/nt-observer-consumer.js";
 import { loadBrokersConfig } from "./order/brokers-config.js";
 import { liquidatePositions } from "./api/positions.js";
+import { createAccountsApi } from "./api/accounts.js";
+import { getStrategyMonitor } from "./api/strategy-monitor.js";
 import { createGateHandler, createDefaultEvaluator } from "./risk/gate-handler.js";
 import { createAuditIntentWriter } from "./order/audit-intent.js";
 import { createStoreQuery } from "./store/query.js";
@@ -87,6 +96,8 @@ import { createStateWebSocket } from "./ws-state.js";
 import { StrategyStore } from "./strategy/lifecycle.js";
 import { StrategyConfigStore } from "./strategy/config-store.js";
 import { RiskLimitsStore } from "./risk/limits.js";
+import { WorkspaceLayoutStore } from "./gui/workspace-layout.js";
+import type { WorkspaceLayoutOverride } from "./gui/workspace-layout.js";
 import { QualityThresholdsStore } from "./risk/quality_thresholds.js";
 import { RiskPoliciesStore } from "./risk/policies.js";
 import { createExportsApi } from "./exports/api.js";
@@ -107,7 +118,11 @@ const ROOT_DIR = resolve(__dirname, "..");
 // ── Environment ────────────────────────────────────────────────────────
 // APP_ENV: "dev" (default) or "prod"
 // TRADING_MODE: "paper" (default) or "live"
-// Safety: live trading requires prod environment. dev+live is forced to dev+paper.
+// QF-337 — TRADING_MODE is a display/telemetry label only; it no longer
+// selects a broker adapter (there is no paper adapter). Paper-vs-live is
+// a deploy-target distinction owned by which credentials the NT bundle
+// connects to. The dev+live→paper safety gate below stays as a guard so
+// the surfaced label can never read "live" outside prod.
 
 const rawAppEnv = (process.env.APP_ENV || "dev").toLowerCase();
 const rawTradingMode = (process.env.TRADING_MODE || "paper").toLowerCase();
@@ -134,7 +149,7 @@ const logger = createLogger("server", (process.env.LOG_LEVEL ?? "info") as LogLe
 
 // portfolio.duckdb is a file-based DuckDB DB and stays local even when the
 // rest of the data lives on MinIO. The cron rebuild on your-server.example.com
-// writes to /srv/quantfoundry/portfolio.duckdb via this env override and
+// writes to /srv/magpie/portfolio.duckdb via this env override and
 // uploads to MinIO; laptops fetch into the default location for read-only use.
 const dbPath = process.env.CATALOG_DB_PATH || resolve(ROOT_DIR, "data", "portfolio.duckdb");
 const db = new duckdb.Database(dbPath);
@@ -240,6 +255,10 @@ try {
 // Both callbacks (onPositionUpdate, onEvalComplete) run long after boot so
 // all references are valid by call time.
 let exitRuleMonitor: ExitRuleMonitor | null = null;
+// Forward declaration assigned once during the boot sequence (see comment
+// above); `let` with a definite-assignment assertion is required because the
+// value isn't available at declaration, so prefer-const doesn't apply.
+// eslint-disable-next-line prefer-const
 let strategyStore!: StrategyStore;
 
 const portfolioEngine = createPortfolioEngine({
@@ -260,26 +279,41 @@ for (const [id, cfg] of Object.entries(portfolioConfigs) as [string, PortfolioCo
 const mainPortfolio = Object.keys(portfolioConfigs)[0] ?? "main";
 const fillLog = createFillLog(resolve(ROOT_DIR, "data", "fills", `${mainPortfolio}.jsonl`));
 
-const portfolioConfig = (portfolioConfigs[mainPortfolio] ?? {}) as Partial<PortfolioConfig> & {
-  slippage?: number;
-};
-const paperAdapter = createPaperAdapter(
-  { slippage: portfolioConfig.slippage },
-  {
-    getQuote: async (symbol) => {
-      const q = await dataSources.stockQuote(symbol);
-      return { bid: q.bid ?? 0, ask: q.ask ?? 0, mid: q.mid ?? 0 };
-    },
-  },
-  () => ulid(),
-);
+// QF-337 — the in-process paper fill simulator (createPaperAdapter +
+// fill-model) is retired. When no broker is enabled in brokers.json the
+// OrderPlane holds the disconnected fallback adapter: it satisfies the
+// BrokerAdapter contract but refuses submits (orders land in
+// submission_failed). To execute orders locally, run the
+// paper-credentialed NT bundle (strategy-deployment-topology.md §2),
+// which enables a broker and wires the real nt-bridge adapter below.
+const disconnectedAdapter = createDisconnectedAdapter();
 
-import type { ExecutionMode } from "../src/types/order.js";
-// Force paper mode unless prod+live
-const effectiveMode: ExecutionMode =
-  TRADING_MODE === "live" && APP_ENV === "prod"
-    ? ((portfolioConfigs[mainPortfolio]?.mode ?? "paper_local") as ExecutionMode)
-    : "paper_local";
+import type {
+  BrokerAdapter,
+  ExecutionMode,
+  OrderSubmissionAdapter,
+  OrderObservationAdapter,
+} from "../src/types/order.js";
+// Execution mode is operator-facing only now (paper_local auto-approves,
+// manual parks for approval). Paper-vs-live is a deploy-target decision
+// made by which broker/credentials the NT bundle connects to, not a TS
+// branch. Default to the portfolio's configured mode (or "manual").
+//
+// QF-337 — behavior change: QF-263 forced every order to "paper_local"
+// (auto-approve, no human in the loop) by default. Now an unconfigured
+// portfolio defaults to "manual" (parks for operator approval). A deploy
+// that relied on the implicit auto-approve must set "mode" explicitly in
+// portfolios.json. Warn loudly at startup when no mode is configured so
+// the safer-but-different default is never silent.
+const configuredMode = portfolioConfigs[mainPortfolio]?.mode;
+const effectiveMode: ExecutionMode = (configuredMode ?? "manual") as ExecutionMode;
+if (configuredMode === undefined) {
+  logger.warn(
+    "no execution mode configured for main portfolio; defaulting to 'manual' (orders park for operator approval). " +
+      "QF-263 previously auto-approved via 'paper_local' — set 'mode' explicitly in portfolios.json to restore auto-approval.",
+    { portfolio: mainPortfolio, default_mode: "manual" },
+  );
+}
 
 import { createTradeJournal } from "./order/trade-journal.js";
 const tradeJournal = createTradeJournal(db, logger.child("trade-journal"));
@@ -300,18 +334,52 @@ const tradeInspector = createTradeInspector(db, logger.child("trade-inspector"))
 import { createOrderPlaneMetrics } from "./order/metrics.js";
 const orderPlaneMetrics = createOrderPlaneMetrics();
 
-// QF-242 — active-broker selection. brokers.json controls whether the
-// NT-bridge (QF-237) services Schwab submits, or paper stays as the
-// active broker. Defaults to paper. Enabling Schwab requires NATS up
-// + the Python bridge running on the credential host (refuses to
-// start otherwise — the bridge.available() probe + the explicit
-// natsConn check below catch a misconfigured deploy).
-const brokersConfig = loadBrokersConfig(resolve(ROOT_DIR, "config"), logger.child("brokers"));
-// QF-243 — multi-account schema. v1 wires a single Schwab adapter from
-// the first enabled account; per-portfolio account routing is M12-3+.
-const schwabAccount = brokersConfig.schwab.accounts.find((a) => a.enabled);
+// QF-242 / QF-337 — active-broker selection. brokers.json controls
+// whether the NT-bridge (QF-237) services Schwab submits. With no broker
+// enabled the OrderPlane holds the disconnected fallback (no execution
+// transport; submits fail) — the in-process paper adapter is retired.
+// Enabling Schwab requires NATS up + the Python bridge running on the
+// credential host (refuses to start otherwise — the bridge.available()
+// probe + the explicit natsConn check below catch a misconfigured deploy).
+// QF-245 — validate portfolio→account routing hints against the loaded
+// broker config so a portfolios.json typo refuses to start rather than
+// silently misrouting. Built from each portfolio's optional account_id.
+const portfolioRouting = Object.entries(portfolioConfigs).map(([portfolioId, cfg]) => ({
+  portfolioId,
+  ...(cfg.account_id !== undefined ? { accountId: cfg.account_id } : {}),
+}));
+const brokersConfig = loadBrokersConfig(
+  resolve(ROOT_DIR, "config"),
+  logger.child("brokers"),
+  portfolioRouting,
+);
+// QF-243 — multi-account schema. QF-245 (M12-3) wires one NT-bridge
+// adapter per ENABLED Schwab account into a per-account `brokers` map so
+// OrderPlane.submit routes each intent to the account its portfolio
+// resolves to. The first enabled account doubles as the legacy single
+// broker (`activeBroker`): it's the observation anchor (its exec_reports
+// subscription feeds OPL's fill/rejection handlers) and the default
+// route for intents that don't resolve a specific account.
+//
+// NOTE: the NT-bridge subjects are still keyed on broker only
+// ("orders.submit.schwab"); per-account subject namespacing lands in
+// M12-4 (QF-246). Until then every adapter shares the same subjects, so
+// we register exactly one observation anchor to avoid double-dispatch.
+const enabledSchwabAccounts = brokersConfig.schwab.accounts.filter((a) => a.enabled);
+const schwabAccount = enabledSchwabAccounts[0];
 
-let activeBroker = paperAdapter;
+// QF-337 — when no broker is enabled, the disconnected fallback adapter
+// is the active broker (submits fail; no in-process paper simulator).
+let activeBroker: BrokerAdapter = disconnectedAdapter;
+const brokers = new Map<string, OrderSubmissionAdapter>();
+// QF-247 — per-account observation map for restart reconciliation. Holds
+// the same adapters as `brokers` but typed as OrderObservationAdapter
+// (getOrderStatus lives on the observation contract). reconcileOrdersWith-
+// Broker partitions rehydrated orders by account_id and looks each one's
+// adapter up here. Stays empty in broker-less deploys (reconciliation
+// falls back to the single activeBroker — the disconnected adapter).
+const reconcileBrokers = new Map<string, OrderObservationAdapter>();
+let defaultAccountId = "default";
 if (schwabAccount) {
   if (natsConn === null || natsConn.isClosed()) {
     logger.error("brokers.schwab.enabled=true but NATS is not connected; refusing to start", {
@@ -319,29 +387,46 @@ if (schwabAccount) {
     });
     process.exit(1);
   }
-  const schwabAdapter = createNtBridgeAdapter(
-    natsConn,
-    {
-      broker: "schwab",
-      ...(schwabAccount.submit_timeout_ms !== undefined
-        ? { submitTimeoutMs: schwabAccount.submit_timeout_ms }
-        : {}),
-      ...(schwabAccount.query_timeout_ms !== undefined
-        ? { queryTimeoutMs: schwabAccount.query_timeout_ms }
-        : {}),
-    },
-    logger.child("nt-bridge-schwab"),
-  );
-  const schwabAvailable = await schwabAdapter.available();
-  if (!schwabAvailable) {
-    logger.error(
-      "brokers.schwab.enabled=true but the NT bridge isn't available; refusing to start",
-      { broker: "schwab" },
+  for (const account of enabledSchwabAccounts) {
+    const adapter = createNtBridgeAdapter(
+      natsConn,
+      {
+        broker: "schwab",
+        // QF-246 — bind the adapter to this account's per-account subjects.
+        // The "default" account keeps the bare un-suffixed subjects.
+        accountId: account.id,
+        ...(account.submit_timeout_ms !== undefined
+          ? { submitTimeoutMs: account.submit_timeout_ms }
+          : {}),
+        ...(account.query_timeout_ms !== undefined
+          ? { queryTimeoutMs: account.query_timeout_ms }
+          : {}),
+      },
+      logger.child(`nt-bridge-schwab-${account.id}`),
     );
-    process.exit(1);
+    const available = await adapter.available();
+    if (!available) {
+      logger.error(
+        "brokers.schwab.enabled=true but the NT bridge isn't available; refusing to start",
+        { broker: "schwab", account_id: account.id },
+      );
+      process.exit(1);
+    }
+    brokers.set(account.id, adapter);
+    // QF-247 — the NT-bridge adapter is a full BrokerAdapter, so it also
+    // satisfies OrderObservationAdapter for the reconciliation walk.
+    reconcileBrokers.set(account.id, adapter);
+    logger.info("Schwab NT-bridge wired for account", {
+      broker: "schwab",
+      account_id: account.id,
+      label: account.label,
+    });
+    // First enabled account is the observation anchor + default route.
+    if (account.id === schwabAccount.id) {
+      activeBroker = adapter;
+      defaultAccountId = account.id;
+    }
   }
-  logger.info("Schwab NT-bridge wired as active broker", { broker: "schwab" });
-  activeBroker = schwabAdapter;
 }
 
 // ── QF-319 — audit observer consumer ──────────────────────────────────
@@ -370,16 +455,20 @@ const lookupQfOrderId = async (brokerOrderId: string): Promise<string | null> =>
 // a planned future broker. Access it through the index signature below.
 const brokersConfigExtra = brokersConfig as unknown as Record<string, { enabled?: boolean }>;
 if (natsConn !== null && !natsConn.isClosed()) {
-  if (schwabAccount) {
+  // QF-246 — one audit observer per enabled Schwab account so the
+  // nt-native audit chain sees each per-account bridge's exec_reports
+  // (orders.exec_reports.schwab.<account_id>). The "default" account
+  // keeps the bare subject for the legacy single-account deploy.
+  for (const account of enabledSchwabAccounts) {
     createNtObserverConsumer({
       nc: natsConn,
-      config: { broker: "schwab" },
-      logger: logger.child("nt-observer-schwab"),
+      config: { broker: "schwab", accountId: account.id },
+      logger: logger.child(`nt-observer-schwab-${account.id}`),
       lookupQfOrderId,
       auditOrderWriter,
       auditFillWriter,
     });
-    logger.info("audit observer wired", { broker: "schwab" });
+    logger.info("audit observer wired", { broker: "schwab", account_id: account.id });
   }
   if (brokersConfigExtra["ibkr"]?.enabled) {
     createNtObserverConsumer({
@@ -426,9 +515,103 @@ if (natsConn !== null && !natsConn.isClosed()) {
   }
 }
 
+// ── QF-248 — Accounts API (CRUD + sync status) ──────────────────────────
+// Per-account tracking: maps account_id → last successful sync timestamp (ms).
+// Updated when fills/rejections arrive from broker adapters; used by
+// /api/accounts to derive sync_status ("healthy"|"degraded"|"disconnected").
+const lastSyncTimes = new Map<string, number>();
+
+// Callback to update sync time on fill/rejection events
+const recordAccountSync = (accountId: string | undefined) => {
+  const id = accountId ?? defaultAccountId;
+  lastSyncTimes.set(id, Date.now());
+};
+
+// ── QF-309 — option lifecycle handling ───────────────────────────────
+// Calendar sweeper (worthless-expiry settlement at close/open) + the
+// broker-events consumer (assignment/exercise pushes). Both mutate the
+// position ledger via PortfolioEngine.settleLifecycle and write the audit
+// chain. Per docs/tdd/portfolio-risk-engine.md §11.
+//
+// Sweeper attributes worthless-expiry audit rows to the first enabled
+// broker (the expiry isn't broker-driven but audit_orders.broker is NOT
+// NULL); falls back to the bridge broker constant. Spot is the position's
+// last-quoted underlying price (PortfolioEngine.updateQuote keeps it on
+// current_price); null when no quote → deferred to the open sweep.
+const lifecycleBroker = schwabAccount ? "schwab" : "ibkr";
+const lifecycleSweeper = createOptionLifecycleSweeper({
+  calendar,
+  logger: logger.child("option-lifecycle-sweeper"),
+  engine: portfolioEngine,
+  auditIntentWriter: createAuditIntentWriter(db, logger.child("audit-intents-lifecycle")),
+  auditOrderWriter,
+  broker: lifecycleBroker,
+  spotFor: (portfolioId, position) => {
+    const pos = portfolioEngine
+      .getState(portfolioId)
+      .positions.find((p) => p.position_id === position.position_id);
+    // current_price tracks the underlying spot via updateQuote. 0 means
+    // "never quoted" → defer rather than mis-classify as worthless.
+    return pos && pos.current_price > 0 ? pos.current_price : null;
+  },
+});
+
+// US equity options expire 16:00 ET on the US_EQUITY calendar; index/
+// futures-options corner cases get the next-open recovery sweep.
+const lifecycleScheduler = createOptionLifecycleScheduler({
+  calendar,
+  logger: logger.child("option-lifecycle-scheduler"),
+  sweeper: lifecycleSweeper,
+  exchange: "US_EQUITY",
+  portfolioIds: () => Object.keys(portfolioConfigs),
+  positionsFor: (portfolioId) => portfolioEngine.getState(portfolioId).positions,
+});
+lifecycleScheduler.start();
+
+// Broker-events consumer: one per enabled broker, mutating the main
+// portfolio's ledger. v1 routes all broker events to mainPortfolio; the
+// QF-244 account→portfolio map can refine this later.
+if (natsConn !== null && !natsConn.isClosed()) {
+  const lifecycleAuditIntentWriter = createAuditIntentWriter(
+    db,
+    logger.child("audit-intents-broker-events"),
+  );
+  if (schwabAccount) {
+    createBrokerEventsConsumer({
+      nc: natsConn,
+      config: { broker: "schwab", portfolioId: mainPortfolio },
+      logger: logger.child("broker-events-schwab"),
+      engine: portfolioEngine,
+      auditIntentWriter: lifecycleAuditIntentWriter,
+      auditOrderWriter,
+    });
+    logger.info("broker-events consumer wired", { broker: "schwab" });
+  }
+  if (brokersConfigExtra["ibkr"]?.enabled) {
+    createBrokerEventsConsumer({
+      nc: natsConn,
+      config: { broker: "ibkr", portfolioId: mainPortfolio },
+      logger: logger.child("broker-events-ibkr"),
+      engine: portfolioEngine,
+      auditIntentWriter: lifecycleAuditIntentWriter,
+      auditOrderWriter,
+    });
+    logger.info("broker-events consumer wired", { broker: "ibkr" });
+  }
+}
+
 const orderPlane = createOrderPlane({
   portfolioEngine,
+  // QF-245 — `broker` stays the observation anchor + legacy fallback.
+  // When Schwab is enabled, `brokers` carries the per-account submission
+  // adapters and submit() routes on the intent's resolved account.
   broker: activeBroker,
+  ...(brokers.size > 0 ? { brokers } : {}),
+  // Legacy intents (no account_id) fall back to the portfolio's
+  // configured account, then the default. Strategy runners that stamp
+  // account_id on the intent bypass this.
+  resolvePortfolioAccount: (portfolioId) => portfolioConfigs[portfolioId]?.account_id,
+  defaultAccountId,
   fillLog,
   logger: logger.child("order"),
   generateId: () => ulid(),
@@ -437,6 +620,19 @@ const orderPlane = createOrderPlane({
   auditOrderWriter,
   auditFillWriter,
   metrics: orderPlaneMetrics,
+  // QF-248 — record sync time on fills (account discovery health)
+  onFill: (fill) => {
+    recordAccountSync(fill.account_id);
+  },
+});
+
+const accountsApi = createAccountsApi({
+  logger: logger.child("accounts-api"),
+  configDir: resolve(ROOT_DIR, "config"),
+  brokersConfig,
+  brokers,
+  reconcileBrokers,
+  lastSyncTimes,
 });
 
 // ── QF-351 — Exit-Rule Monitor ──────────────────────────────────────────
@@ -459,9 +655,9 @@ exitRuleMonitor = createExitRuleMonitor({
   },
   onTripAlert: (strategyId, rule) => {
     void alertRouter.record({
-      type: "exit_rule_tripped",
+      type: `position.exit_rule_tripped.${rule}.${strategyId}`,
       level: "warning",
-      message: `Exit rule tripped: ${rule} for strategy ${strategyId}`,
+      message: `Exit rule ${rule} tripped for strategy ${strategyId}`,
       payload: { strategy_id: strategyId, rule },
     });
   },
@@ -529,6 +725,11 @@ import { createAdapter as createIbkrAdapter } from "./market-data/adapters/ibkr.
 import { createAdapter as createDatabentoAdapter } from "./market-data/adapters/databento.js";
 import { createNtBridgeMdAdapter } from "./market-data/adapters/nt-bridge-md.js";
 import { parseNtBridgeMdConfig } from "./market-data/nt-bridge-md-config.js";
+import {
+  createFallbackSelector,
+  type FallbackSelector,
+} from "./market-data/fallback-selector.js";
+import type { BridgePolicy } from "./market-data/health.js";
 import { createMetricsRegistry } from "./market-data/metrics.js";
 // QF-221: book-budget allocator + priority comparator + L2 subscription
 // manager. Per QF-28 / QF-205 / QF-204, these compose to cap per-source
@@ -558,6 +759,7 @@ const legacyMdAdapters = [databentoAdapter, createIbkrAdapter(), schwabAdapter, 
 //   only    — replace legacy entirely
 // Operator changes mode by editing the block + restarting the server.
 let mdAdapterList = legacyMdAdapters;
+let ntAdaptersForAlertWiring: Array<ReturnType<typeof createNtBridgeMdAdapter>> = [];
 let ntBridgeMdConfig: NtBridgeMdConfig = { enabled: false, brokers: [], mode: "observe" };
 try {
   const mdConfigRaw = JSON.parse(
@@ -601,6 +803,7 @@ if (ntBridgeMdConfig.enabled) {
     );
     ntAdapters.push(adapter);
   }
+  ntAdaptersForAlertWiring = ntAdapters;
   switch (ntBridgeMdConfig.mode) {
     case "observe":
       mdAdapterList = [...legacyMdAdapters, ...ntAdapters];
@@ -618,6 +821,32 @@ if (ntBridgeMdConfig.enabled) {
     adapter_names: mdAdapterList.map((a) => a.name),
   });
 }
+
+// QF-341 — cross-broker MD fallback selector. Built over the per-broker
+// nt-bridge-md adapters (keyed by broker), governed by the marketdata
+// block in config/brokers.json. The alert router is wired below (after
+// it is constructed) via selector.setAlertRouter; until fallback is
+// opt-in-enabled in config, the selector is a no-op passthrough. The
+// per-method dispatch entrypoints are layered onto the post-rewrite
+// per-broker RPC surface as that surface lands; the selector + policy +
+// liveness/alerts are the load-bearing substrate (TDD §3/§4/§5).
+const mdFallbackPolicy: BridgePolicy = {
+  fallback_enabled: brokersConfig.marketdata.fallback_enabled,
+  priority: brokersConfig.marketdata.priority,
+  heartbeat_stale_ms: brokersConfig.marketdata.heartbeat_stale_ms,
+  methods: brokersConfig.marketdata.methods,
+};
+const mdAdaptersByBroker = new Map<string, (typeof ntAdaptersForAlertWiring)[number]>();
+for (const adapter of ntAdaptersForAlertWiring) {
+  // adapter.name === "nt-bridge/<broker>"; key on the broker suffix.
+  const broker = adapter.name.replace(/^nt-bridge\//, "");
+  mdAdaptersByBroker.set(broker, adapter);
+}
+const mdFallbackSelector: FallbackSelector = createFallbackSelector({
+  adapters: mdAdaptersByBroker,
+  config: brokersConfig.marketdata,
+  logger: logger.child("md-fallback"),
+});
 
 // QF-55: single shared metrics registry. Service wraps adapters with it
 // at factory time; api factory consumes it via /api/data/sources/health.
@@ -652,7 +881,7 @@ const bookBudgetAllocator = createBookBudgetAllocator({
   comparator: WorkingOrderPriorityComparator,
 });
 import type { BookCandidate } from "./market-data/book-budget.js";
-let getBookCandidateImpl: (symbol: string) => BookCandidate | null = (_symbol: string) => null;
+const getBookCandidateImpl: (symbol: string) => BookCandidate | null = (_symbol: string) => null;
 const bookSubscriptionManager = createSubscriptionManager(
   mdAdapterList,
   // The subscription manager wants a Cache; the existing market-data
@@ -730,6 +959,14 @@ if (modelMarketData) {
     adapters: mdAdapterList,
     logger: logger.child("market-data-api"),
     metrics: mdMetrics,
+    // QF-272 — route /api/positions + /api/accounts through the live NT
+    // broker when one is wired (Schwab). With no broker enabled the
+    // disconnected fallback is unavailable, so keep the REST path.
+    ...(activeBroker === disconnectedAdapter ? {} : { broker: activeBroker }),
+    // QF-341 — surface the MD fallback policy + live fallback state on
+    // /api/marketdata/bridges (Settings → Bridges).
+    fallbackPolicy: mdFallbackPolicy,
+    brokersServingAsFallback: () => mdFallbackSelector.brokersServingAsFallback(),
   });
 }
 
@@ -791,6 +1028,16 @@ try {
 // is ready (runner init precedes router creation in the boot sequence).
 writeJobsModule.runner.setAlertRouter(alertRouter);
 
+// QF-336: wire alertRouter into NT bridge MD adapters for bridge
+// heartbeat unavailable/recovered alerts.
+for (const adapter of ntAdaptersForAlertWiring) {
+  adapter.setAlertRouter(alertRouter);
+}
+
+// QF-341: wire alertRouter into the MD fallback selector for
+// bridge.fallback_active.<broker> / bridge.fallback_cleared.<broker>.
+mdFallbackSelector.setAlertRouter(alertRouter);
+
 // ── 11c. Freshness Monitor (QF-295) ────────────────────────────────────
 // Periodic tick (~5 min) that calls computeFreshness() and fires
 // ingest.stale.<source> / ingest.recovered.<source> via alertRouter.
@@ -832,9 +1079,19 @@ try {
 // the missing fill / cancel / rejection transitions. Best-effort:
 // reconciliation failures don't block startup.
 try {
+  // QF-247 — multi-account reconciliation. When per-account adapters are
+  // wired (Schwab enabled), partition the walk by account_id and look up
+  // each order's adapter from reconcileBrokers; an account with rows but
+  // no adapter is logged + skipped (broker_reconcile_skipped_total).
+  // Broker-less deploys keep the single-adapter path (the disconnected
+  // activeBroker) so single-account behaviour is identical to QF-230.
+  const reconcileTarget =
+    reconcileBrokers.size > 0
+      ? { brokers: reconcileBrokers, defaultAccountId, metrics: orderPlaneMetrics }
+      : activeBroker;
   const reconStats = await reconcileOrdersWithBroker(
     orderPlane,
-    paperAdapter,
+    reconcileTarget,
     logger.child("restart-recovery"),
     alertRouter,
   );
@@ -979,7 +1236,14 @@ function matchRoute(method: string | undefined, pathname: string): Route | null 
   m = pathname.match(/^\/api\/positions\/([^/]+)\/liquidate$/);
   if (m && method === "POST")
     return { handler: "positionLiquidate", id: decodeURIComponent(m[1]!) };
-  if (pathname === "/api/accounts" && method === "GET") return { handler: "accounts" };
+
+  // QF-248 — accounts CRUD + per-account sync status
+  if (pathname === "/api/accounts" && method === "GET") return { handler: "accountsList" };
+  if (pathname === "/api/accounts" && method === "POST") return { handler: "accountsCreate" };
+  m = pathname.match(/^\/api\/accounts\/([^/]+)\/disable$/);
+  if (m && method === "POST") return { handler: "accountsDisable", id: decodeURIComponent(m[1]!) };
+  m = pathname.match(/^\/api\/accounts\/([^/]+)\/re-link$/);
+  if (m && method === "POST") return { handler: "accountsReLink", id: decodeURIComponent(m[1]!) };
 
   // Market data (unified Schwab/IBKR/MD fallback chain)
   if (pathname === "/api/market-data/status" && method === "GET") return { handler: "mdStatus" };
@@ -1022,6 +1286,13 @@ function matchRoute(method: string | undefined, pathname: string): Route | null 
   if (pathname === "/api/risk/limits" && method === "GET") return { handler: "riskLimitsGet" };
   m = pathname.match(/^\/api\/risk\/limits\/([^/]+)$/);
   if (m && method === "PUT") return { handler: "riskLimitsSet", id: decodeURIComponent(m[1]!) };
+
+  // QF-346: drag-resized workspace panel layouts (GUI).
+  if (pathname === "/api/gui/layouts" && method === "GET")
+    return { handler: "workspaceLayoutsGet" };
+  m = pathname.match(/^\/api\/gui\/layouts\/([^/]+)$/);
+  if (m && method === "PUT")
+    return { handler: "workspaceLayoutSet", id: decodeURIComponent(m[1]!) };
 
   // QF-61: alerts router (Settings → Activity → Alerts).
   if (pathname === "/api/alerts/rules" && method === "GET") return { handler: "alertsRulesGet" };
@@ -1085,6 +1356,11 @@ function matchRoute(method: string | undefined, pathname: string): Route | null 
   m = pathname.match(/^\/api\/strategies\/([^/]+)\/drift-baseline$/);
   if (m && method === "PUT")
     return { handler: "strategiesDriftBaselinePin", id: decodeURIComponent(m[1]!) };
+
+  // QF-356: per-strategy monitoring (fills + P&L).
+  m = pathname.match(/^\/api\/strategies\/([^/]+)\/monitor$/);
+  if (m && method === "GET")
+    return { handler: "strategiesMonitor", id: decodeURIComponent(m[1]!) };
 
   // Write-job dispatch (M10-1)
   m = pathname.match(/^\/api\/write-jobs\/([A-Za-z0-9-]+)$/);
@@ -1241,7 +1517,12 @@ const server = createServer(async (req, res) => {
         // Store to Parquet for future use (skip futures — different storage path)
         if (contracts?.length && !route.symbol!.startsWith("/")) {
           const today = new Date().toISOString().slice(0, 10);
-          storage.storeChain(route.symbol!, today, contracts, "live").catch(() => {});
+          // MDContract types numeric fields as nullable; StoreContract requires
+          // them. Cast preserves the pre-migration (untyped .js) behavior — real
+          // chains populate these fields. See QF-343.
+          storage
+            .storeChain(route.symbol!, today, contracts as unknown as StoreContract[], "live")
+            .catch(() => {});
         }
         result = contracts;
         break;
@@ -1311,12 +1592,22 @@ const server = createServer(async (req, res) => {
         result = { results: outcomes };
         break;
       }
-      case "accounts":
-        if (marketDataApi) {
-          await marketDataApi.handleAccounts(req, res);
-          return;
-        }
-        json(res, 503, { error: "Market data service unavailable" });
+
+      // QF-248 — Accounts CRUD + sync status
+      case "accountsList":
+        await accountsApi.handleList(req, res);
+        return;
+
+      case "accountsCreate":
+        await accountsApi.handleCreate(req, res);
+        return;
+
+      case "accountsDisable":
+        await accountsApi.handleDisable(route.id!, req, res);
+        return;
+
+      case "accountsReLink":
+        await accountsApi.handleReLink(route.id!, req, res);
         return;
 
       case "mdStatus":
@@ -1435,7 +1726,7 @@ const server = createServer(async (req, res) => {
         result = {
           app_env: APP_ENV,
           trading_mode: TRADING_MODE,
-          execution_mode: portfolioConfigs[mainPortfolio]?.mode ?? "paper_local",
+          execution_mode: effectiveMode,
           halted: orderPlane.isHalted(),
           halt_reason: null,
           nats_connected: natsConn !== null && !natsConn.isClosed(),
@@ -1488,6 +1779,23 @@ const server = createServer(async (req, res) => {
           throw new Error("body required");
         }
         result = await riskLimitsStore.setPortfolio(route.id!, body as unknown as RiskLimits);
+        break;
+      }
+
+      // ── QF-346: workspace panel layouts ──────────────────────────────
+      case "workspaceLayoutsGet":
+        result = workspaceLayoutStore.get();
+        break;
+
+      case "workspaceLayoutSet": {
+        const body = await readBody(req);
+        if (!body || typeof body !== "object") {
+          throw new Error("body required");
+        }
+        result = await workspaceLayoutStore.setLayout(
+          route.id!,
+          body as unknown as WorkspaceLayoutOverride,
+        );
         break;
       }
 
@@ -1744,6 +2052,14 @@ const server = createServer(async (req, res) => {
         break;
       }
 
+      case "strategiesMonitor": {
+        // QF-356: per-strategy monitoring panel. Returns recent fills +
+        // trade P&L records + total realized P&L from the audit tables
+        // (trade_journal + audit_fills/audit_orders).
+        result = await getStrategyMonitor(db, route.id!);
+        break;
+      }
+
       case "tradeJournal": {
         const portfolio = url.searchParams.get("portfolio") || undefined;
         const status = url.searchParams.get("status") || "all";
@@ -1897,7 +2213,7 @@ try {
           system: {
             app_env: APP_ENV,
             trading_mode: TRADING_MODE,
-            execution_mode: portfolioConfigs[mainPortfolio]?.mode ?? "paper_local",
+            execution_mode: effectiveMode,
             halted: orderPlane.isHalted(),
             nats_connected: natsConn !== null && !natsConn.isClosed(),
             sources_available: dataSources
@@ -1909,12 +2225,16 @@ try {
           models: [],
           strategies: strategyStore.list(),
           risk_limits: riskLimitsStore.get(),
+          workspace_layouts: workspaceLayoutStore.get(),
         };
         // Add portfolio states
         for (const id of Object.keys(portfolioConfigs)) {
           try {
             snapshot.portfolios[id] = portfolioEngine.getState(id);
-          } catch {}
+          } catch {
+            // Skip portfolios whose state can't be built this frame; the
+            // snapshot stays partial rather than failing the whole WS send.
+          }
         }
         ws.send(JSON.stringify(snapshot));
       });
@@ -1984,6 +2304,29 @@ try {
   await riskLimitsStore.load();
 } catch (e) {
   logger.warn("Risk limits load failed", {
+    error: e instanceof Error ? e.message : String(e),
+  });
+}
+
+// ── Workspace layout store (data/workspace-layouts.json) ──────────────────
+// QF-346. Holds the operator's drag-resized panel track sizes per
+// workspace. Read via GET /api/gui/layouts, written via PUT
+// /api/gui/layouts/<workspace>. Every write pushes a `workspace_layout`
+// WS message so a second connected device re-flows its grid live, and
+// the snapshot carries the layouts so a fresh page load starts from the
+// persisted sizes (multi-device sync). The file is single-operator,
+// matching the rest of the system's actor model.
+const workspaceLayoutStore = new WorkspaceLayoutStore({
+  path: resolve(ROOT_DIR, "data/workspace-layouts.json"),
+  logger: logger.child("workspace-layout"),
+  onChange: (cfg) => {
+    if (stateWs) stateWs.pushWorkspaceLayouts(cfg);
+  },
+});
+try {
+  await workspaceLayoutStore.load();
+} catch (e) {
+  logger.warn("Workspace layouts load failed", {
     error: e instanceof Error ? e.message : String(e),
   });
 }

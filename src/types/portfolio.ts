@@ -72,10 +72,14 @@ export interface RiskLimits {
 export interface PortfolioConfig {
   mode: string;
   broker: string;
+  // QF-245 — M12-3: target brokerage account id for this portfolio's
+  // orders. Matches a SchwabAccountConfig.id in config/brokers.json.
+  // Optional: when unset the Order Plane routes to the first enabled
+  // (default) account, preserving single-account behaviour.
+  account_id?: string;
   initial_cash: number;
   limits: RiskLimits;
   strategies: Record<string, StrategyConfig>;
-  semi_auto_whitelist?: SemiAutoWhitelist;
   reconciliation: ReconciliationConfig;
   approval_timeout_seconds: number;
 }
@@ -85,12 +89,6 @@ export interface StrategyConfig {
   config: Record<string, unknown>;
   signal_interests: string[];
   signal_staleness_seconds: number;
-}
-
-export interface SemiAutoWhitelist {
-  symbols: string[];
-  max_qty: number;
-  strategy_ids: string[];
 }
 
 export interface ReconciliationConfig {

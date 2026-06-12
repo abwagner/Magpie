@@ -37,6 +37,11 @@ export interface OrderPlaneMetrics {
   // Observed at terminal-state transition (created_at → completed_at).
   // terminal_state ∈ {filled, cancelled, rejected, rejected_by_broker}.
   orderLifecycleDurationSeconds: Histogram<"portfolio" | "terminal_state" | "broker">;
+  // QF-247 — restart reconciliation skipped an account's orders because
+  // no broker adapter resolved for that account_id (e.g. the account was
+  // disabled in brokers.json but audit_orders still carries rows from a
+  // prior enabled period). reason ∈ {adapter_missing}.
+  brokerReconcileSkippedTotal: Counter<"reason" | "account_id">;
 }
 
 // Order lifecycle spans from ~ms (immediate broker fills) to hours
@@ -92,6 +97,13 @@ export function createOrderPlaneMetrics(registry?: Registry): OrderPlaneMetrics 
     registers: [reg],
   });
 
+  const brokerReconcileSkippedTotal = new Counter({
+    name: "broker_reconcile_skipped_total",
+    help: "Restart reconciliation skipped an account's orders (no adapter resolved).",
+    labelNames: ["reason", "account_id"] as const,
+    registers: [reg],
+  });
+
   return {
     registry: reg,
     ordersSubmittedTotal,
@@ -100,5 +112,6 @@ export function createOrderPlaneMetrics(registry?: Registry): OrderPlaneMetrics 
     ordersRejectedByBrokerTotal,
     ordersCancelledTotal,
     orderLifecycleDurationSeconds,
+    brokerReconcileSkippedTotal,
   };
 }

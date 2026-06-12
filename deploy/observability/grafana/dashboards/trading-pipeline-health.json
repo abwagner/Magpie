@@ -1,0 +1,282 @@
+{
+  "uid": "qf-trading-pipeline",
+  "title": "Trading Pipeline Health",
+  "tags": ["magpie", "qf-277", "pipeline"],
+  "timezone": "utc",
+  "schemaVersion": 39,
+  "editable": true,
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "portfolio",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(orders_submitted_total, portfolio)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 2
+      },
+      {
+        "name": "broker",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(orders_filled_total, broker)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 2
+      }
+    ]
+  },
+  "links": [
+    {
+      "title": "Logs Explorer",
+      "type": "dashboards",
+      "tags": ["qf-277", "logs"],
+      "asDropdown": false,
+      "icon": "doc"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Orders submitted / min",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(orders_submitted_total{portfolio=~\"$portfolio\"}[5m])) * 60",
+          "legendFormat": "submitted"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Orders filled / min",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(orders_filled_total{portfolio=~\"$portfolio\",broker=~\"$broker\",partial=\"false\"}[5m])) * 60",
+          "legendFormat": "filled (final)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Pre-submit rejections / min by reason",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (reason) (rate(orders_rejected_total{portfolio=~\"$portfolio\"}[5m])) * 60",
+          "legendFormat": "{{reason}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Order lifecycle seconds (p50 / p95 / p99)",
+      "description": "Quantiles over order_lifecycle_duration_seconds — created_at to terminal-state completed_at.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(order_lifecycle_duration_seconds_bucket{portfolio=~\"$portfolio\",broker=~\"$broker\"}[5m])))",
+          "legendFormat": "p50"
+        },
+        {
+          "refId": "B",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(order_lifecycle_duration_seconds_bucket{portfolio=~\"$portfolio\",broker=~\"$broker\"}[5m])))",
+          "legendFormat": "p95"
+        },
+        {
+          "refId": "C",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(order_lifecycle_duration_seconds_bucket{portfolio=~\"$portfolio\",broker=~\"$broker\"}[5m])))",
+          "legendFormat": "p99"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Broker rejection rate / min by reason code",
+      "description": "Async broker rejections (orders_rejected_by_broker_total). A trending rise pages on-call.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (broker, broker_reason_code) (rate(orders_rejected_by_broker_total{portfolio=~\"$portfolio\",broker=~\"$broker\"}[5m])) * 60",
+          "legendFormat": "{{broker}} / {{broker_reason_code}}"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Cancels (last 1h) by reason",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"]
+        },
+        "colorMode": "value"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (reason) (increase(orders_cancelled_total{portfolio=~\"$portfolio\"}[1h]))",
+          "legendFormat": "{{reason}}"
+        }
+      ]
+    }
+  ]
+}

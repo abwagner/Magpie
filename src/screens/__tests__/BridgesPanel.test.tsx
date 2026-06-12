@@ -21,6 +21,8 @@ const SCHWAB_ALIVE: BridgeStatus = {
   rpc_error_rate_5m: 0,
   rpc_latency_p50_ms: 38,
   rpc_latency_p99_ms: 120,
+  priority_rank: 1,
+  serving_as_fallback: false,
 };
 
 const IBKR_ALIVE: BridgeStatus = {
@@ -31,6 +33,8 @@ const IBKR_ALIVE: BridgeStatus = {
   rpc_error_rate_5m: 0.02,
   rpc_latency_p50_ms: 55,
   rpc_latency_p99_ms: 200,
+  priority_rank: 0,
+  serving_as_fallback: false,
 };
 
 const SCHWAB_DOWN: BridgeStatus = {
@@ -41,6 +45,8 @@ const SCHWAB_DOWN: BridgeStatus = {
   rpc_error_rate_5m: 0,
   rpc_latency_p50_ms: null,
   rpc_latency_p99_ms: null,
+  priority_rank: 1,
+  serving_as_fallback: false,
 };
 
 const IBKR_DOWN: BridgeStatus = {
@@ -51,6 +57,8 @@ const IBKR_DOWN: BridgeStatus = {
   rpc_error_rate_5m: 0,
   rpc_latency_p50_ms: null,
   rpc_latency_p99_ms: null,
+  priority_rank: 0,
+  serving_as_fallback: false,
 };
 
 // ── State transitions ─────────────────────────────────────────────

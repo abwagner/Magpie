@@ -345,8 +345,8 @@ export async function resolveBaseline(
   }
 
   // ── Tier 3: computed from historical fills ─────────────────────
-  let computedRange: SpecRange | null = null;
-  let source: BaselineSource = "computed_historical";
+  let computedRange: SpecRange | null;
+  const source: BaselineSource = "computed_historical";
 
   try {
     computedRange = await computeHistoricalRange(strategyId, metric, db, windowDays);

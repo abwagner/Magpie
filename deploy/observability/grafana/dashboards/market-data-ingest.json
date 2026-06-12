@@ -1,0 +1,220 @@
+{
+  "uid": "qf-market-data-ingest",
+  "title": "Market-Data Ingest",
+  "tags": ["magpie", "qf-277", "market-data"],
+  "timezone": "utc",
+  "schemaVersion": 39,
+  "editable": true,
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "service",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(qf_http_requests_total, service)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 2
+      }
+    ]
+  },
+  "links": [
+    {
+      "title": "Logs Explorer",
+      "type": "dashboards",
+      "tags": ["qf-277", "logs"],
+      "asDropdown": false,
+      "icon": "doc"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "L2 book-budget denials / min by reason",
+      "description": "marketdata_book_budget_denied_total — source unavailability, budget exhaustion, or preemption.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (reason) (rate(marketdata_book_budget_denied_total[5m])) * 60",
+          "legendFormat": "{{reason}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "L2 subscriptions reclaimed / min",
+      "description": "marketdata_book_budget_reevaluation_reclaim_total — preempted L2 books re-acquired by the re-evaluation loop.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(rate(marketdata_book_budget_reevaluation_reclaim_total[5m])) * 60",
+          "legendFormat": "reclaimed"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Backpressure event drops / min by kind",
+      "description": "marketdata_subscription_dropped_events_total. kind=trade should always be 0 — any non-zero trade drop alerts.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "opm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (kind) (rate(marketdata_subscription_dropped_events_total[5m])) * 60",
+          "legendFormat": "{{kind}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "HTTP request latency p95 by route",
+      "description": "qf_http_request_duration_seconds — server request tail latency. Orchestrator freshness-lag and write-jobs queue-depth gauges named in the original ticket reference subsystems retired in QF-261/QF-281/QF-339; see README §Known gaps.",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (route, le) (rate(qf_http_request_duration_seconds_bucket{service=~\"$service\"}[5m])))",
+          "legendFormat": "{{route}} p95"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "HTTP requests / min by status",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqpm",
+          "links": [
+            {
+              "title": "Drill into logs (Logs Explorer)",
+              "url": "/d/qf-logs-explorer/logs-explorer?${__url_time_range}&var-correlation_id=",
+              "targetBlank": false
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (status) (rate(qf_http_requests_total{service=~\"$service\"}[5m])) * 60",
+          "legendFormat": "{{status}}"
+        }
+      ]
+    }
+  ]
+}

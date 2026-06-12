@@ -14,6 +14,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createOrderPlane, type OrderPlane } from "../../plane.js";
 import { rehydrateOrderPlane, reconcileOrdersWithBroker } from "../../restart-recovery.js";
 import { createAuditOrderWriter } from "../../audit-orders.js";
+import { createOrderPlaneMetrics } from "../../metrics.js";
 import { createAuditFillWriter, buildFillRow } from "../../audit-fills.js";
 import { createAuditIntentWriter, buildIntentRow } from "../../audit-intent.js";
 import { createTestDb, type TestDb } from "../../../__tests__/helpers/test-db.js";
@@ -270,6 +271,50 @@ describe("restart-recovery integration", () => {
     const stats = await rehydrateOrderPlane(plane, tdb.db, createTestLogger());
     expect(stats.orders_loaded).toBe(1);
     expect(plane.listOrders().map((o) => o.order_id)).toEqual(["ord-A"]);
+  });
+
+  it("stamps account_id from the audit_orders row onto the rehydrated order (QF-247)", async () => {
+    const writer = createAuditIntentWriter(tdb.db, createTestLogger());
+    await writer(
+      buildIntentRow({
+        intent_id: "int-acct",
+        signal_ids: [],
+        portfolio: "main",
+        symbol: "OPT:SPY:2026-06-19:C:500",
+        direction: "Short",
+        quantity: 1,
+        strategy_id: "vol-buyer-spy",
+        created_at: new Date().toISOString(),
+      }),
+    );
+    const orderWriter = createAuditOrderWriter(tdb.db, createTestLogger());
+    await orderWriter({
+      order_id: "ord-acct",
+      intent_id: "int-acct",
+      broker: "schwab",
+      execution_mode: "paper_local",
+      status: "submitted",
+      created_at: new Date().toISOString(),
+      risk_checked_at: null,
+      approved_at: null,
+      submitted_at: new Date().toISOString(),
+      completed_at: null,
+      broker_order_id: "bok-acct",
+      operator_edits: null,
+      risk_violations: null,
+      halt_reason: null,
+      broker_rejection_reason: null,
+      quote_failure_reason: null,
+      cancel_reason: null,
+      source: "qf",
+      correlation_id: null,
+      account_id: "acct-roth",
+    });
+
+    const plane = makePlaneWithWriters();
+    const stats = await rehydrateOrderPlane(plane, tdb.db, createTestLogger());
+    expect(stats.orders_loaded).toBe(1);
+    expect(plane.getOrder("ord-acct")?.account_id).toBe("acct-roth");
   });
 
   it("is idempotent — second rehydrate doesn't double-insert", async () => {
@@ -828,5 +873,378 @@ describe("restart-recovery — broker reconciliation walk (QF-230)", () => {
 
     expect(stats.errors).toBe(1);
     expect(plane.getOrder("I")?.status).toBe("submitted");
+  });
+});
+
+// QF-247 (M12-5) — multi-account reconciliation. With per-account
+// adapters wired, the walk partitions rehydrated orders by account_id and
+// looks each one's adapter up from the brokers map; an account with rows
+// but no adapter is logged + skipped (broker_reconcile_skipped_total).
+describe("restart-recovery — multi-account reconciliation (QF-247)", () => {
+  let tdb: TestDb;
+
+  beforeEach(async () => {
+    tdb = await createTestDb();
+  });
+
+  afterEach(() => {
+    tdb.close();
+  });
+
+  function mockObserverFor(
+    name: string,
+    replies: Map<string, BrokerOrderStatus>,
+  ): OrderObservationAdapter {
+    return {
+      name,
+      async available() {
+        return true;
+      },
+      async getOrderStatus(brokerOrderId) {
+        return (
+          replies.get(brokerOrderId) ?? {
+            broker_order_id: brokerOrderId,
+            status: "unknown",
+            filled_quantity: 0,
+            average_fill_price: null,
+            rejection_reason: null,
+          }
+        );
+      },
+      async getPositions() {
+        return [];
+      },
+      onFill() {},
+      onRejection() {},
+    };
+  }
+
+  function makeOrderPlane(): OrderPlane {
+    return createOrderPlane({
+      portfolioEngine: mockPortfolioEngine(),
+      broker: mockBroker(),
+      fillLog: mockFillLog(),
+      logger: createTestLogger(),
+      generateId: () => `ord-${Math.random().toString(36).slice(2, 10)}`,
+      mode: "paper_local",
+      auditOrderWriter: createAuditOrderWriter(tdb.db, createTestLogger()),
+      auditFillWriter: createAuditFillWriter(tdb.db, createTestLogger()),
+    });
+  }
+
+  // Reads back audit_fills rows so tests can assert what the synthesized
+  // reconciliation fill actually persisted (account_id attribution).
+  function queryAuditFills(): Promise<Array<{ fill_id: string; account_id: string }>> {
+    return new Promise((resolve, reject) => {
+      tdb.db.all(
+        "SELECT fill_id, account_id FROM audit_fills",
+        (err: Error | null, rows: unknown) => {
+          if (err) reject(err);
+          else resolve((rows as Array<{ fill_id: string; account_id: string }>) ?? []);
+        },
+      );
+    });
+  }
+
+  // Seeds the durable FK chain (audit_intents → audit_orders) so a
+  // synthesized reconciliation fill can be written to audit_fills without
+  // tripping the order_id foreign key, then rehydrates the in-memory order.
+  async function seedOrderForAccount(
+    plane: OrderPlane,
+    opts: { order_id: string; broker_order_id: string; account_id: string },
+  ): Promise<void> {
+    const intentId = `int-${opts.order_id}`;
+    const createdAt = new Date().toISOString();
+    const intent = makeIntent({ intent_id: intentId, quantity: 5 });
+
+    await createAuditIntentWriter(
+      tdb.db,
+      createTestLogger(),
+    )(
+      buildIntentRow({
+        intent_id: intentId,
+        signal_ids: intent.signal_ids,
+        portfolio: intent.portfolio,
+        symbol: intent.symbol,
+        direction: intent.direction,
+        quantity: intent.quantity,
+        strategy_id: intent.strategy_id,
+        created_at: createdAt,
+      }),
+    );
+    await createAuditOrderWriter(
+      tdb.db,
+      createTestLogger(),
+    )({
+      order_id: opts.order_id,
+      intent_id: intentId,
+      broker: "schwab",
+      execution_mode: "paper_local",
+      status: "submitted",
+      created_at: createdAt,
+      risk_checked_at: null,
+      approved_at: null,
+      submitted_at: createdAt,
+      completed_at: null,
+      broker_order_id: opts.broker_order_id,
+      operator_edits: null,
+      risk_violations: null,
+      halt_reason: null,
+      broker_rejection_reason: null,
+      quote_failure_reason: null,
+      cancel_reason: null,
+      source: "qf",
+      correlation_id: null,
+      account_id: opts.account_id,
+    });
+
+    plane.rehydrateOrder(
+      {
+        order_id: opts.order_id,
+        intent_id: intentId,
+        client_order_id: intentId,
+        portfolio: "main",
+        broker: "schwab",
+        execution_mode: "paper_local",
+        status: "submitted",
+        created_at: createdAt,
+        broker_order_id: opts.broker_order_id,
+        account_id: opts.account_id,
+      },
+      intent,
+    );
+  }
+
+  it("routes each rehydrated order to its account's adapter and reconciles per account", async () => {
+    const plane = makeOrderPlane();
+    await seedOrderForAccount(plane, {
+      order_id: "A",
+      broker_order_id: "B-A",
+      account_id: "acct-1",
+    });
+    await seedOrderForAccount(plane, {
+      order_id: "B",
+      broker_order_id: "B-B",
+      account_id: "acct-2",
+    });
+
+    // acct-1's broker says A filled; acct-2's broker says B is still working.
+    const adapter1 = mockObserverFor(
+      "acct-1",
+      new Map<string, BrokerOrderStatus>([
+        [
+          "B-A",
+          {
+            broker_order_id: "B-A",
+            status: "filled",
+            filled_quantity: 5,
+            average_fill_price: 10.0,
+            rejection_reason: null,
+          },
+        ],
+      ]),
+    );
+    const adapter2 = mockObserverFor(
+      "acct-2",
+      new Map<string, BrokerOrderStatus>([
+        [
+          "B-B",
+          {
+            broker_order_id: "B-B",
+            status: "working",
+            filled_quantity: 0,
+            average_fill_price: null,
+            rejection_reason: null,
+          },
+        ],
+      ]),
+    );
+
+    const stats = await reconcileOrdersWithBroker(
+      plane,
+      {
+        brokers: new Map<string, OrderObservationAdapter>([
+          ["acct-1", adapter1],
+          ["acct-2", adapter2],
+        ]),
+        defaultAccountId: "acct-1",
+      },
+      createTestLogger(),
+    );
+
+    expect(stats.checked).toBe(2);
+    expect(stats.filled_synthesized).toBe(1);
+    expect(stats.working).toBe(1);
+    expect(plane.getOrder("A")?.status).toBe("filled");
+    expect(plane.getOrder("B")?.status).toBe("submitted");
+
+    // The synthesized fill must reconstruct the broker-reported quantity
+    // and price onto the in-memory order (B-A: 5 @ 10.0).
+    expect(plane.getOrder("A")?.filled_quantity).toBe(5);
+    expect(plane.getOrder("A")?.average_fill_price).toBe(10.0);
+
+    // The synthesized fill must persist to the audit trail with the
+    // originating account_id (acct-1), not the default. The audit_fills
+    // writer is fire-and-forget, so flush pending microtasks first.
+    await new Promise((r) => setImmediate(r));
+    await new Promise((r) => setImmediate(r));
+    const auditFillRows = await queryAuditFills();
+    const synthesized = auditFillRows.find((f) => f.fill_id.startsWith("recon-A-"));
+    expect(synthesized).toBeDefined();
+    expect(synthesized?.account_id).toBe("acct-1");
+    // acct-2's working order produced no fill, so only one audit_fills row.
+    expect(auditFillRows).toHaveLength(1);
+  });
+
+  it("does not cross-fire: account A's adapter never sees account B's order", async () => {
+    const plane = makeOrderPlane();
+    await seedOrderForAccount(plane, {
+      order_id: "A",
+      broker_order_id: "B-A",
+      account_id: "acct-1",
+    });
+    await seedOrderForAccount(plane, {
+      order_id: "B",
+      broker_order_id: "B-B",
+      account_id: "acct-2",
+    });
+
+    const seenByAcct1: string[] = [];
+    const adapter1: OrderObservationAdapter = {
+      name: "acct-1",
+      async available() {
+        return true;
+      },
+      async getOrderStatus(brokerOrderId) {
+        seenByAcct1.push(brokerOrderId);
+        return {
+          broker_order_id: brokerOrderId,
+          status: "working",
+          filled_quantity: 0,
+          average_fill_price: null,
+          rejection_reason: null,
+        };
+      },
+      async getPositions() {
+        return [];
+      },
+      onFill() {},
+      onRejection() {},
+    };
+    const adapter2 = mockObserverFor("acct-2", new Map());
+
+    await reconcileOrdersWithBroker(
+      plane,
+      {
+        brokers: new Map<string, OrderObservationAdapter>([
+          ["acct-1", adapter1],
+          ["acct-2", adapter2],
+        ]),
+      },
+      createTestLogger(),
+    );
+
+    expect(seenByAcct1).toEqual(["B-A"]); // only its own account's broker_order_id
+  });
+
+  it("skips + counts orders whose account has no adapter (adapter_missing)", async () => {
+    const plane = makeOrderPlane();
+    // acct-1 is wired; acct-gone has rows but no adapter (disabled in brokers.json).
+    await seedOrderForAccount(plane, {
+      order_id: "A",
+      broker_order_id: "B-A",
+      account_id: "acct-1",
+    });
+    await seedOrderForAccount(plane, {
+      order_id: "Z",
+      broker_order_id: "B-Z",
+      account_id: "acct-gone",
+    });
+
+    const adapter1 = mockObserverFor(
+      "acct-1",
+      new Map<string, BrokerOrderStatus>([
+        [
+          "B-A",
+          {
+            broker_order_id: "B-A",
+            status: "working",
+            filled_quantity: 0,
+            average_fill_price: null,
+            rejection_reason: null,
+          },
+        ],
+      ]),
+    );
+
+    const metrics = createOrderPlaneMetrics();
+    const stats = await reconcileOrdersWithBroker(
+      plane,
+      {
+        brokers: new Map<string, OrderObservationAdapter>([["acct-1", adapter1]]),
+        metrics,
+      },
+      createTestLogger(),
+    );
+
+    // The missing-adapter order is skipped before it counts as "checked".
+    expect(stats.checked).toBe(1);
+    expect(stats.working).toBe(1);
+    expect(plane.getOrder("Z")?.status).toBe("submitted"); // untouched
+
+    const json = await metrics.registry.getMetricsAsJSON();
+    const skipped = json.find((m) => m.name === "broker_reconcile_skipped_total");
+    expect(skipped).toBeDefined();
+    const sample = skipped?.values.find(
+      (v) => v.labels.account_id === "acct-gone" && v.labels.reason === "adapter_missing",
+    );
+    expect(sample?.value).toBe(1);
+  });
+
+  it("falls back to defaultAccountId for rehydrated orders with no account_id", async () => {
+    const plane = makeOrderPlane();
+    // Pre-M12 order: no account_id stamped on the rehydrated row.
+    plane.rehydrateOrder(
+      {
+        order_id: "L",
+        intent_id: "int-L",
+        client_order_id: "int-L",
+        portfolio: "main",
+        broker: "schwab",
+        execution_mode: "paper_local",
+        status: "submitted",
+        created_at: new Date().toISOString(),
+        broker_order_id: "B-L",
+      },
+      makeIntent({ intent_id: "int-L", quantity: 5 }),
+    );
+
+    const adapter = mockObserverFor(
+      "default",
+      new Map<string, BrokerOrderStatus>([
+        [
+          "B-L",
+          {
+            broker_order_id: "B-L",
+            status: "cancelled",
+            filled_quantity: 0,
+            average_fill_price: null,
+            rejection_reason: null,
+          },
+        ],
+      ]),
+    );
+
+    const stats = await reconcileOrdersWithBroker(
+      plane,
+      {
+        brokers: new Map<string, OrderObservationAdapter>([["default", adapter]]),
+        defaultAccountId: "default",
+      },
+      createTestLogger(),
+    );
+
+    expect(stats.cancelled_synthesized).toBe(1);
+    expect(plane.getOrder("L")?.status).toBe("cancelled");
   });
 });

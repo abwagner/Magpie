@@ -40,7 +40,7 @@ const PROJECT_ROOT = resolve(__dirname, "..");
 // great home for them. Defaults assume the dev layout (data/chains
 // alongside the script).
 //
-// Container/server: DATA_URI=s3://quantfoundry-data + STATE_DIR=/data
+// Container/server: DATA_URI=s3://magpie-data + STATE_DIR=/data
 // (mounted host volume) yields parquet writes to MinIO while sidecars
 // remain on the host's local FS.
 
