@@ -15,7 +15,7 @@ python = ["dep:pyo3"]
 
 [dependencies]
 # Optional PyO3 binding. abi3-py310 = single wheel across Python 3.10+.
-pyo3 = { version = "=0.28.3", features = ["extension-module", "abi3-py310"], optional = true }
+pyo3 = { version = "=0.29.0", features = ["extension-module", "abi3-py310"], optional = true }
 
 [dev-dependencies]
 criterion = { version = "=0.7.0", default-features = false, features = ["plotters", "cargo_bench_support"] }
