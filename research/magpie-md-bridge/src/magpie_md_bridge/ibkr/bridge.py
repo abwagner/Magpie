@@ -196,24 +196,28 @@ class IbkrMdBridge:
     # ── RPC wiring ──
 
     async def _subscribe_rpcs(self) -> None:
+        # nats-py: the 2nd positional arg to subscribe() is `queue`, not the
+        # callback — the handler must be passed as `cb=`.
         self._subs.append(
-            await self._nats.subscribe(self._subjects["quote"], self._handle_quote)
+            await self._nats.subscribe(self._subjects["quote"], cb=self._handle_quote)
         )
         self._subs.append(
             await self._nats.subscribe(
-                self._subjects["expirations"], self._handle_expirations
+                self._subjects["expirations"], cb=self._handle_expirations
             )
         )
         self._subs.append(
-            await self._nats.subscribe(self._subjects["chain"], self._handle_chain)
+            await self._nats.subscribe(self._subjects["chain"], cb=self._handle_chain)
         )
         self._subs.append(
             await self._nats.subscribe(
-                self._subjects["historical_chain"], self._handle_historical_chain
+                self._subjects["historical_chain"], cb=self._handle_historical_chain
             )
         )
         self._subs.append(
-            await self._nats.subscribe(self._subjects["candles"], self._handle_candles)
+            await self._nats.subscribe(
+                self._subjects["candles"], cb=self._handle_candles
+            )
         )
 
     # ── RPC handlers ──

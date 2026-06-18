@@ -323,7 +323,7 @@ function AccountSelector({ connected }: { connected: boolean }) {
       <option value="">All accounts</option>
       {accounts.map((a) => (
         <option key={a.hashValue} value={a.hashValue}>
-          …{a.accountNumber.slice(-4)}
+          …{a.accountNumber?.slice(-4) ?? "????"}
           {a.type ? ` (${a.type})` : ""}
         </option>
       ))}

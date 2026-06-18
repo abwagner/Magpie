@@ -52,7 +52,9 @@ core/qf-optimizer/dist/
 # Discovery symlink to the sibling magpie-strategies repo
 # (`scripts/setup-strategies-symlink.sh`). Each operator creates it
 # locally; not tracked. See docs/RUNBOOK.md §"Operator setup".
-strategies
+# Anchored to the repo root so it only matches the top-level symlink, not
+# the tracked src/lib/strategies/ source dir.
+/strategies
 
 # session worktrees + editor settings (do not commit)
 .worktrees/

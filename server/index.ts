@@ -725,10 +725,7 @@ import { createAdapter as createIbkrAdapter } from "./market-data/adapters/ibkr.
 import { createAdapter as createDatabentoAdapter } from "./market-data/adapters/databento.js";
 import { createNtBridgeMdAdapter } from "./market-data/adapters/nt-bridge-md.js";
 import { parseNtBridgeMdConfig } from "./market-data/nt-bridge-md-config.js";
-import {
-  createFallbackSelector,
-  type FallbackSelector,
-} from "./market-data/fallback-selector.js";
+import { createFallbackSelector, type FallbackSelector } from "./market-data/fallback-selector.js";
 import type { BridgePolicy } from "./market-data/health.js";
 import { createMetricsRegistry } from "./market-data/metrics.js";
 // QF-221: book-budget allocator + priority comparator + L2 subscription
@@ -1228,6 +1225,10 @@ function matchRoute(method: string | undefined, pathname: string): Route | null 
 
   // Positions & accounts (Schwab)
   if (pathname === "/api/positions" && method === "GET") return { handler: "positions" };
+  // Broker account list (hashValue/accountNumber) for the account picker.
+  // Distinct from /api/accounts (QF-248 CRUD) which returns config-shaped
+  // records without the Schwab hash — sharing the path shadowed this.
+  if (pathname === "/api/broker/accounts" && method === "GET") return { handler: "brokerAccounts" };
   // QF-323 — operator manual liquidation. Exact multi-select route is
   // checked before the :id route (the latter requires a trailing
   // /liquidate, so they can't collide, but order keeps intent clear).
@@ -1359,8 +1360,7 @@ function matchRoute(method: string | undefined, pathname: string): Route | null 
 
   // QF-356: per-strategy monitoring (fills + P&L).
   m = pathname.match(/^\/api\/strategies\/([^/]+)\/monitor$/);
-  if (m && method === "GET")
-    return { handler: "strategiesMonitor", id: decodeURIComponent(m[1]!) };
+  if (m && method === "GET") return { handler: "strategiesMonitor", id: decodeURIComponent(m[1]!) };
 
   // Write-job dispatch (M10-1)
   m = pathname.match(/^\/api\/write-jobs\/([A-Za-z0-9-]+)$/);
@@ -1572,6 +1572,14 @@ const server = createServer(async (req, res) => {
       case "positions":
         if (marketDataApi) {
           await marketDataApi.handlePositions(req, res);
+          return;
+        }
+        json(res, 503, { error: "Market data service unavailable" });
+        return;
+
+      case "brokerAccounts":
+        if (marketDataApi) {
+          await marketDataApi.handleAccounts(req, res);
           return;
         }
         json(res, 503, { error: "Market data service unavailable" });

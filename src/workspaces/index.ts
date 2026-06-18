@@ -52,16 +52,18 @@ export const WORKSPACES: WorkspaceDef[] = [
   {
     id: "build",
     label: "Build",
-    subtitle: "Manual staging. Chain (with Greek Builder) · Payoff · Positions context",
+    subtitle: "Manual staging. Chain (Greek Builder) · Strategy Builder · Payoff · Positions",
     template: {
-      rows: "1fr 220px",
+      rows: "1fr 1fr 200px",
       cols: "1.4fr 1fr",
       areas: `
+        "chain    strategy"
         "chain    payoff"
-        "chain    pos2"
+        "pos2     pos2"
       `,
       cells: [
         { panel: "chain", area: "chain" },
+        { panel: "strategy-builder", area: "strategy" },
         { panel: "payoff", area: "payoff" },
         { panel: "pos-context", area: "pos2" },
       ],

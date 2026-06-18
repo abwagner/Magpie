@@ -22,12 +22,47 @@ from typing import Any, Literal
 
 
 @dataclass(frozen=True)
+class ComboLegWire:
+    """One leg of a multi-leg combo order (QF-363). Mirrors the TS
+    ``ComboLegSpec``. ``conid`` is the broker contract id when the TS side
+    already resolved it; otherwise the bridge resolves it from
+    right/strike/expiration against the underlying."""
+
+    leg_id: str
+    right: str  # "call" | "put"
+    side: str  # "buy" | "sell"
+    ratio: int
+    option_symbol: str
+    strike: float
+    expiration: str
+    conid: int | None = None
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> ComboLegWire:
+        return cls(
+            leg_id=str(d["leg_id"]),
+            right=str(d["right"]),
+            side=str(d["side"]),
+            ratio=int(d["ratio"]),
+            option_symbol=str(d["option_symbol"]),
+            strike=float(d["strike"]),
+            expiration=str(d["expiration"]),
+            conid=(int(d["conid"]) if d.get("conid") is not None else None),
+        )
+
+
+@dataclass(frozen=True)
 class SubmitOrderRequest:
     """Payload of ``orders.submit.schwab`` request.
 
     Mirrors the QF TS ``OrderIntent`` shape — the fields the bridge
     needs to build a Schwab REST body. Optional fields default to None
     so the same dataclass works for market and limit orders.
+
+    QF-363: ``legs`` is non-empty for a multi-leg combo. The parent
+    request describes the aggregate (``symbol`` = underlying, ``quantity``
+    = combo units, ``limit_price`` = net debit/credit per unit) and the
+    legs compose it.
     """
 
     intent_id: str
@@ -37,6 +72,11 @@ class SubmitOrderRequest:
     order_type: str = "market"  # "market" | "limit"
     limit_price: float | None = None
     time_in_force: str = "day"  # "day" | "gtc" | "ioc" | "fok"
+    legs: tuple[ComboLegWire, ...] = ()
+
+    @property
+    def is_combo(self) -> bool:
+        return len(self.legs) > 0
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> SubmitOrderRequest:
@@ -50,6 +90,7 @@ class SubmitOrderRequest:
                 float(d["limit_price"]) if d.get("limit_price") is not None else None
             ),
             time_in_force=str(d.get("time_in_force", "day")),
+            legs=tuple(ComboLegWire.from_dict(x) for x in (d.get("legs") or [])),
         )
 
 

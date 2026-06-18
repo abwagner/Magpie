@@ -22,7 +22,7 @@ interface PlotlyApi {
 let plotlyPromise: Promise<PlotlyApi> | null = null;
 function loadPlotly(): Promise<PlotlyApi> {
   if (!plotlyPromise) {
-    plotlyPromise = import("plotly.js-gl3d-dist").then((m) => {
+    plotlyPromise = import("plotly.js-basic-dist-min").then((m) => {
       const mod = m as { default?: PlotlyApi } & PlotlyApi;
       return (mod.default ?? mod) as PlotlyApi;
     });

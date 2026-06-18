@@ -388,7 +388,10 @@ export interface SchwabAccount {
   accountNumber: string;
   type?: string;
 }
-export const getAccounts = (): Promise<{ accounts: SchwabAccount[] }> => get("/api/accounts");
+// /api/broker/accounts (not /api/accounts — that path is the QF-248 CRUD
+// list, which omits the Schwab hashValue/accountNumber this picker needs).
+export const getAccounts = (): Promise<{ accounts: SchwabAccount[] }> =>
+  get("/api/broker/accounts");
 
 // QF-62: Trading accounts management (QF-248 API)
 export interface Account {
@@ -410,7 +413,9 @@ export const disableAccount = (
   accountId: string,
 ): Promise<{ account: Account; restart_required?: boolean }> =>
   post(`/api/accounts/${encodeURIComponent(accountId)}/disable`);
-export const relinkAccount = (accountId: string): Promise<{ redirect_url: string; account_id: string }> =>
+export const relinkAccount = (
+  accountId: string,
+): Promise<{ redirect_url: string; account_id: string }> =>
   post(`/api/accounts/${encodeURIComponent(accountId)}/re-link`);
 
 // Market Data

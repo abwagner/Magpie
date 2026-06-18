@@ -16,12 +16,15 @@ import "./styles/tokens.css";
 import "./styles/ui.css";
 
 import App from "./App.js";
+import { ErrorBoundary } from "./shell/ErrorBoundary.js";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Root element #root not found");
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </React.StrictMode>,
 );

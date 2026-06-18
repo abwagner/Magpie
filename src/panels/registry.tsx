@@ -19,6 +19,7 @@ import { JobQueuePanel } from "./JobQueuePanel.js";
 import { GridHeatmapPanel } from "./GridHeatmapPanel.js";
 import { WalkForwardPanel } from "./WalkForwardPanel.js";
 import { ComparisonPanel } from "./ComparisonPanel.js";
+import { StrategyBuilderPanel } from "./StrategyBuilderPanel.js";
 
 export type PanelId =
   | "risk"
@@ -32,6 +33,7 @@ export type PanelId =
   | "active-orders"
   | "chain"
   | "payoff"
+  | "strategy-builder"
   | "pos-context"
   | "job-queue"
   | "grid-heatmap"
@@ -55,6 +57,7 @@ export const PANEL_REGISTRY: Record<PanelId, ComponentType> = {
   // Build (Phase 2b) — Greek Builder UI lives inside ChainPicker (in ChainPanel).
   chain: ChainPanel,
   payoff: PayoffPanel,
+  "strategy-builder": StrategyBuilderPanel,
   "pos-context": PositionsPanel,
 
   // Research (Phase 2 — QF-112). Scaffolds wired to the orchestrator

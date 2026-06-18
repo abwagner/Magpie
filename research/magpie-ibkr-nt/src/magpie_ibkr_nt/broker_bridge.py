@@ -144,6 +144,9 @@ def intent_to_ibkr_body(req: SubmitOrderRequest) -> dict[str, Any]:
     if req.order_type == "limit" and req.limit_price is None:
         raise ValueError("order_type=limit requires limit_price")
 
+    if req.is_combo:
+        return _combo_body(req)
+
     body: dict[str, Any] = {
         "action": _direction_to_ib_action(req.direction),
         "orderType": "LIMIT" if req.order_type == "limit" else "MARKET",
@@ -153,6 +156,49 @@ def intent_to_ibkr_body(req: SubmitOrderRequest) -> dict[str, Any]:
     }
     if req.order_type == "limit":
         body["lmtPrice"] = req.limit_price
+    return body
+
+
+def _combo_body(req: SubmitOrderRequest) -> dict[str, Any]:
+    """Multi-leg combo (QF-363) → IB BAG/spread order spec.
+
+    Per the verified NT IBKR API a combo is ONE order against a ``BAG``
+    (``OptionSpread``) instrument with ``comboLegs``, priced at the net
+    ``lmtPrice``. The session client builds the ``OptionSpread`` + the
+    ``ComboLeg`` list from this spec, resolving each leg's ``conId`` from
+    right/strike/expiration when not pre-supplied. ``quantity`` is the
+    number of combo units; per-leg size = units × ratio.
+    """
+    combo_legs: list[dict[str, Any]] = []
+    for leg in req.legs:
+        if leg.right not in ("call", "put"):
+            raise ValueError(f"combo leg: unsupported right {leg.right!r}")
+        if leg.side not in ("buy", "sell"):
+            raise ValueError(f"combo leg: unsupported side {leg.side!r}")
+        if leg.ratio <= 0:
+            raise ValueError(f"combo leg: ratio must be positive, got {leg.ratio}")
+        combo_legs.append(
+            {
+                "action": "BUY" if leg.side == "buy" else "SELL",
+                "ratio": leg.ratio,
+                "right": leg.right.upper()[0],  # "C" | "P" (IB right code)
+                "strike": leg.strike,
+                "expiration": leg.expiration,
+                "optionSymbol": leg.option_symbol,
+                "conId": leg.conid,  # None ⇒ session resolves at submit
+            }
+        )
+
+    body: dict[str, Any] = {
+        "secType": "BAG",
+        "orderType": "LIMIT" if req.order_type == "limit" else "MARKET",
+        "quantity": req.quantity,
+        "tif": _tif_to_ib_tif(req.time_in_force),
+        "symbol": req.symbol,  # underlying for the spread
+        "comboLegs": combo_legs,
+    }
+    if req.order_type == "limit":
+        body["lmtPrice"] = req.limit_price  # net debit (+) / credit (−) per unit
     return body
 
 

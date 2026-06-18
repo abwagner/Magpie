@@ -46,7 +46,7 @@ members = [
 # (nautilus-trader[ib] extras). Patch-release range only; a major bump
 # would risk breaking nautilus-ibapi's ABI assumptions.
 [tool.uv]
-override-dependencies = ["protobuf>=5.29.6,<6"]
+override-dependencies = ["protobuf>=5.29.6,<6", "starlette>=1.3.1"]
 
 # ── Workspace-wide tool config ───────────────────────────────────────────
 # Each tool block applies to every workspace member unless that member
@@ -91,9 +91,15 @@ testpaths = [
   "magpie-prod-bundle/tests",
   "magpie-research/tests",
   "magpie-schwab-nt/tests",
+  # QF-363 — these workspace members had tests that were never in the CI
+  # test path; wired in here. `--import-mode=importlib` (below) lets the
+  # several same-named `test_broker_bridge.py` files coexist.
+  "magpie-ibkr-nt/tests",
+  "magpie-md-bridge/tests",
+  "magpie-risk-gate/tests",
   "tests",
 ]
-addopts = "-ra -v --strict-markers"
+addopts = "-ra -v --strict-markers --import-mode=importlib"
 # Auto-mode lets `pytest.mark.asyncio` work without per-test decorators
 # being strictly required, but we use the decorator explicitly in
 # schwab-nt tests so it works either way.

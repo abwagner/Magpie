@@ -36,7 +36,7 @@ from magpie_ibkr_nt.session import (
     IbkrSessionError,
     is_rejection_error_code,
 )
-from magpie_schwab_nt.wire import SubmitOrderRequest
+from magpie_schwab_nt.wire import ComboLegWire, SubmitOrderRequest
 
 # ── subjects_for ──────────────────────────────────────────────────
 
@@ -147,6 +147,100 @@ class TestIntentToIbkrBody:
         )
         with pytest.raises(ValueError, match="unsupported order_type"):
             intent_to_ibkr_body(req)
+
+    # ── QF-363 combos ──────────────────────────────────────────────
+    def _vertical_req(self) -> SubmitOrderRequest:
+        return SubmitOrderRequest(
+            intent_id="C1",
+            symbol="SPY",
+            direction="Long",
+            quantity=2.0,
+            order_type="limit",
+            limit_price=1.25,  # net debit per combo unit
+            time_in_force="day",
+            legs=(
+                ComboLegWire(
+                    leg_id="leg-0",
+                    right="call",
+                    side="buy",
+                    ratio=1,
+                    option_symbol="SPY_call100",
+                    strike=100.0,
+                    expiration="2026-07-17",
+                ),
+                ComboLegWire(
+                    leg_id="leg-1",
+                    right="call",
+                    side="sell",
+                    ratio=1,
+                    option_symbol="SPY_call105",
+                    strike=105.0,
+                    expiration="2026-07-17",
+                    conid=42,
+                ),
+            ),
+        )
+
+    def test_combo_builds_bag_with_combo_legs(self) -> None:
+        body = intent_to_ibkr_body(self._vertical_req())
+        assert body["secType"] == "BAG"
+        assert body["symbol"] == "SPY"
+        assert body["quantity"] == 2.0
+        assert body["orderType"] == "LIMIT"
+        assert body["lmtPrice"] == 1.25
+        legs = body["comboLegs"]
+        assert [leg["action"] for leg in legs] == ["BUY", "SELL"]
+        assert [leg["right"] for leg in legs] == ["C", "C"]
+        assert legs[1]["conId"] == 42  # pre-resolved conId passed through
+        assert legs[0]["conId"] is None  # session resolves at submit
+
+    def test_combo_rejects_bad_leg_side(self) -> None:
+        req = self._vertical_req()
+        bad = req.legs[0].__class__(
+            leg_id="x",
+            right="call",
+            side="hold",
+            ratio=1,
+            option_symbol="X",
+            strike=1.0,
+            expiration="2026-07-17",
+        )
+        req = SubmitOrderRequest(
+            intent_id="C2",
+            symbol="SPY",
+            direction="Long",
+            quantity=1.0,
+            order_type="market",
+            time_in_force="day",
+            legs=(bad,),
+        )
+        with pytest.raises(ValueError, match="unsupported side"):
+            intent_to_ibkr_body(req)
+
+    def test_combo_from_dict_roundtrip(self) -> None:
+        d = {
+            "intent_id": "C3",
+            "symbol": "SPY",
+            "direction": "Long",
+            "quantity": 1,
+            "order_type": "limit",
+            "limit_price": 0.8,
+            "legs": [
+                {
+                    "leg_id": "leg-0",
+                    "right": "put",
+                    "side": "sell",
+                    "ratio": 1,
+                    "option_symbol": "SPY_put95",
+                    "strike": 95,
+                    "expiration": "2026-07-17",
+                },
+            ],
+        }
+        req = SubmitOrderRequest.from_dict(d)
+        assert req.is_combo
+        assert req.legs[0].right == "put"
+        assert intent_to_ibkr_body(req)["secType"] == "BAG"
 
     def test_unsupported_tif_raises(self) -> None:
         req = SubmitOrderRequest(

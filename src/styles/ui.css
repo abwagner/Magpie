@@ -956,3 +956,79 @@ a:focus-visible,
   outline: 2px solid var(--border-focus);
   outline-offset: 1px;
 }
+
+/* ── Strategy Builder panel (QF-361) ──────────────────────────── */
+.strategy-builder__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+.strategy-builder__controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  color: var(--text-3);
+}
+.strategy-builder__error {
+  color: var(--neg);
+  font-size: 11px;
+  padding: 6px 0;
+}
+.strategy-builder__legs {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+.strategy-builder__legs th,
+.strategy-builder__legs td {
+  text-align: right;
+  padding: 2px 6px;
+}
+.strategy-builder__legs th {
+  color: var(--text-3);
+  font-weight: 500;
+}
+.strategy-builder__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 12px;
+  margin-bottom: 8px;
+}
+.strategy-builder__stat {
+  display: flex;
+  flex-direction: column;
+}
+.strategy-builder__stat-label {
+  font-size: 9px;
+  color: var(--text-4);
+  text-transform: uppercase;
+}
+.strategy-builder__stat-value {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+/* ── ErrorBoundary fallback ───────────────────────────────── */
+.error-boundary {
+  max-width: 520px;
+  margin: 15vh auto 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-1);
+}
+.error-boundary h1 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.error-boundary__detail {
+  margin: 16px 0;
+  padding: 12px;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  background: var(--bg-input);
+  border-radius: 6px;
+  font-size: 12px;
+}

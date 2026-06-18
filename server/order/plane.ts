@@ -321,6 +321,9 @@ export function createOrderPlane(deps: OrderPlaneDeps): OrderPlane {
         direction: intent.direction,
         quantity: intent.quantity,
         orderType: "market",
+        // QF-363 — forward combo legs so the NT bridge submits one BAG /
+        // spread order. Single-leg intents leave this undefined.
+        ...(intent.legs && intent.legs.length > 0 ? { legs: intent.legs } : {}),
       });
       order.broker_order_id = brokerOrderId;
       persist(order);

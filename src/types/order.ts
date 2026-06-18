@@ -84,6 +84,38 @@ export interface OrderIntent {
   // can be traced back to its execution profile composition.
   working_ttl_ms?: number;
   working_policy_id?: string;
+  // ── QF-362 — multi-leg combo orders ───────────────────────────────
+  // Present ⇒ this intent is a multi-leg option combo (vertical,
+  // calendar, condor, …). The parent intent describes the aggregate;
+  // `legs` are the child legs that compose it. `symbol` is the
+  // underlying, `quantity` the number of combo units, and (for a limit)
+  // `limit_price` the NET price per combo unit (debit > 0, credit < 0).
+  // At the IBKR boundary the combo is submitted as ONE BAG/spread order
+  // at the net price (verified NT API), so the legs are representational
+  // + the source of the broker's comboLegs — not separate submissions.
+  legs?: ComboLegSpec[];
+}
+
+// A leg of a multi-leg combo at intent time. `option_symbol` is the
+// per-leg option symbol (OCC / broker form) from the chain; `broker_conid`
+// is resolved by the broker bridge (IBKR conId) when building the combo.
+export interface ComboLegSpec {
+  leg_id: string;
+  right: "call" | "put";
+  side: "buy" | "sell";
+  ratio: number;
+  option_symbol: string;
+  strike: number;
+  expiration: string;
+  broker_conid?: number;
+}
+
+// A child leg of a live combo Order, with fill allocation. The combo
+// fills as a unit at a net price; per-leg quantity = combo units × ratio,
+// and `average_fill_price` is the leg's allocated share of the net fill.
+export interface OrderLeg extends ComboLegSpec {
+  filled_quantity?: number;
+  average_fill_price?: number;
 }
 
 export interface Fill {
@@ -144,6 +176,10 @@ export interface Order {
   // null/0 until the first fill.
   filled_quantity?: number;
   average_fill_price?: number;
+  // QF-362 — child legs when this order is a multi-leg combo (mirrors
+  // the parent intent's `legs`, carrying per-leg fill allocation). Absent
+  // for single-leg orders.
+  legs?: OrderLeg[];
   // QF-247 — M12-5: brokerage account this order routed to (the
   // SchwabAccountConfig.id from config/brokers.json). Mirrors the
   // audit_orders.account_id column written at submission time (QF-244).
@@ -246,6 +282,11 @@ export interface SubmitOrderParams {
   quantity: number;
   orderType: "market" | "limit";
   limitPrice?: number;
+  // QF-363 — multi-leg combo legs. When present, the Python bridge builds
+  // ONE IBKR BAG/spread order from these (`symbol` = underlying, `quantity`
+  // = combo units, the net price is the limit). `legs` is the same wire key
+  // on both sides; see broker-integration.md for the combo contract.
+  legs?: ComboLegSpec[];
 }
 
 export interface BrokerPosition {
