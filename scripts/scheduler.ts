@@ -71,9 +71,49 @@ function ts(): string {
   return new Date().toISOString();
 }
 
+// ── Alerting ───────────────────────────────────────────────
+// Push job failures to the swagner-server ntfy backbone so a broken nightly
+// ingest surfaces as a phone notification, not just a buried log line.
+// Best-effort: always logs; a notify outage must never break the loop.
+// Config: NTFY_URL (e.g. http://ntfy), NTFY_TOPIC, NTFY_TOKEN (from root .env).
+async function notify(subject: string, body: string): Promise<void> {
+  console.error(`[scheduler] ALERT: ${subject} — ${body}`);
+  const url = process.env.NTFY_URL;
+  const topic = process.env.NTFY_TOPIC;
+  if (!url || !topic) return;
+  const token = process.env.NTFY_TOKEN;
+  try {
+    // JSON publish (POST to base URL) so unicode in the title/message survives —
+    // ntfy's title HTTP header is ASCII-only.
+    const res = await fetch(url.replace(/\/+$/, ""), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        topic,
+        title: subject,
+        message: body,
+        priority: 4,
+        tags: ["warning"],
+      }),
+    });
+    if (!res.ok) console.error(`[scheduler] notify_failed: HTTP ${res.status}`);
+  } catch (e: unknown) {
+    console.error(`[scheduler] notify_failed:`, e);
+  }
+}
+
 function runJob(job: Job): Promise<void> {
   return new Promise((resolveRun) => {
     console.log(`[scheduler] ${ts()} ${job.name} starting`);
+    let settled = false;
+    const finish = (): void => {
+      if (settled) return;
+      settled = true;
+      resolveRun();
+    };
     const child = spawn(job.command, [...job.args], {
       cwd: PROJECT_ROOT,
       stdio: "inherit",
@@ -82,7 +122,22 @@ function runJob(job: Job): Promise<void> {
     child.on("exit", (code, signal) => {
       const status = code === 0 ? "ok" : `failed code=${code} signal=${signal ?? ""}`;
       console.log(`[scheduler] ${ts()} ${job.name} ${status}`);
-      resolveRun();
+      if (code !== 0) {
+        void notify(
+          `magpie: ${job.name} failed`,
+          `${job.name} exited ${status}. Nightly ingest did not complete; ` +
+            `check the magpie-scheduler logs. Retries on the next scheduled run.`,
+        );
+      }
+      finish();
+    });
+    child.on("error", (err: Error) => {
+      console.error(`[scheduler] ${ts()} ${job.name} spawn error:`, err);
+      void notify(
+        `magpie: ${job.name} failed to start`,
+        `${job.name} could not be spawned: ${err.message}`,
+      );
+      finish();
     });
   });
 }
