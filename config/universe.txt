@@ -3,7 +3,7 @@
 # Lines starting with # are comments.
 #
 # Sources: S&P 500 + NASDAQ-100 extras + sector ETFs + thematic
-# ~540 symbols total
+# 2,791 symbols total
 # At 100k credits/day, full 5yr collection takes ~8 days
 
 # ── Broad Market ETFs ─────────────────────────────────────────────

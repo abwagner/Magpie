@@ -14,11 +14,6 @@ on:
       - "core/Cargo.lock"
       - "research/uv.lock"
       - ".github/workflows/osv.yml"
-  schedule:
-    # 06:00 UTC daily — catches advisories published since the last PR run
-    # without waiting for the next merge. Per polyglot-migration-tdd.md §6.2
-    # ("OSV-Scanner runs on every PR — and nightly").
-    - cron: "0 6 * * *"
   # Manual trigger for one-off scans (post-incident, post-rotation, etc.).
   workflow_dispatch:
 

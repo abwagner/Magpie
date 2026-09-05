@@ -1,0 +1,7 @@
+{
+  "data_signals_path": "/data-signals",
+  "data_dir": "data/macro",
+  "ingress_url": "http://localhost:3001/signals",
+  "env": {},
+  "signals": {}
+}

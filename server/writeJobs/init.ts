@@ -18,6 +18,7 @@ import {
 } from "./tokens.js";
 import { fmpBackfillHandler } from "./handlers/fmp-backfill.js";
 import { collectBulkHandler } from "./handlers/collect-bulk.js";
+import { collectOhlcvHandler } from "./handlers/collect-ohlcv.js";
 import { ingestHandler } from "./handlers/ingest.js";
 import { syncToS3Handler } from "./handlers/sync-to-s3.js";
 import { chainStoreHandler } from "./handlers/chain-store.js";
@@ -64,6 +65,7 @@ export async function initWriteJobs(opts: WriteJobsInitOpts): Promise<WriteJobsM
   const runner = createWriteJobRunner({ store, logger: logger.child("write-jobs") });
   runner.registerHandler(fmpBackfillHandler);
   runner.registerHandler(collectBulkHandler);
+  runner.registerHandler(collectOhlcvHandler);
   runner.registerHandler(ingestHandler);
   runner.registerHandler(syncToS3Handler);
   runner.registerHandler(chainStoreHandler);

@@ -25,6 +25,7 @@
     "issue-write-token": "tsx scripts/issue-write-token.ts",
     "collect": "node scripts/collect-history.js",
     "collect:bulk": "tsx scripts/collect-bulk.ts",
+  "collect:ohlcv": "tsx scripts/collect-ohlcv.ts",
     "databento:pull": "tsx scripts/databento-pull.ts",
     "scheduler": "tsx scripts/scheduler.ts",
     "backup-observability": "tsx scripts/backup-observability.ts",

@@ -1,0 +1,62 @@
+name: claude-review
+
+# Agentic PR reviewer. Fires when a PR is marked ready for review (and on each
+# new push to an already-ready PR). Authenticates with a Claude Pro/Max OAuth
+# token stored as the CLAUDE_CODE_OAUTH_TOKEN repo secret, so review usage draws
+# from the subscription rather than a metered API key. Skips draft PRs.
+
+on:
+  pull_request:
+    types: [ready_for_review, synchronize]
+
+concurrency:
+  group: claude-review-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    name: claude reviews the diff
+    # Don't burn quota on drafts; `synchronize` also fires while a PR is still a
+    # draft, so gate on the draft flag rather than the event type alone.
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: "--max-turns 12"
+          prompt: |
+            You are reviewing a pull request for Magpie, an options trading
+            system (signal ingestion → strategy → risk → execution). Read
+            CLAUDE.md and the relevant docs/tdd/ files for the conventions this
+            repo enforces, then review the PR diff.
+
+            Prioritize, in order:
+            1. Correctness bugs and logic errors — especially anything touching
+               order construction, risk limits, position sizing, or money math.
+               Off-by-one, sign errors, and unit/precision mistakes here are
+               high severity.
+            2. Security and safety — secret handling, broker/API credentials,
+               input validation at boundaries (API endpoints, NATS handlers).
+            3. Convention violations that CLAUDE.md calls out explicitly: new
+               `.js`/`.jsx` files, `any` types, `catch {}` that swallows errors,
+               `console.log` in production code, missing `.test.ts` for new
+               modules, functions over ~40 lines.
+
+            Leave findings as inline review comments anchored to the offending
+            lines. Be specific and cite the rule or the bug. If the diff is
+            clean, say so briefly in a single summary comment rather than
+            inventing nits. Do not approve or request changes formally — comment
+            only; the human owns the merge decision.
